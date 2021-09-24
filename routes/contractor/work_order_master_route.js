@@ -53,77 +53,13 @@ router.get('/workordernew/add', function (req, res) {
 //Work_Order Insert
 router.post('/workordernew/add',(req,res,next)=>{
 
-        console.log(req.body);
+       // console.log(req.body);
 
         async function getWorkOrderValues(){
             try{
                 let pool = await sql.connect(config);
                 
-                await pool.request().query(`insert into cpcl_work_order_master_table_format (Contractor_Code
-                    ,Vendor_No
-                    ,subContractor_one
-                    ,subContractor_two
-                    ,subContractor_three
-                    ,EIC_PRNO
-                    ,Engineer_In_Charge
-                    ,Department
-                    ,Work_order_no
-                    ,Work_order_date
-                    ,Contract_Duration
-                    ,CLRA
-                    ,ISMW
-                    ,Wo_to_date
-                    ,Contractor_Value
-                    ,extra_workman
-                    ,clra_rcno
-                    ,scope
-                    ,clra_rc_str
-                    ,clra_lic_no
-                    ,clra_period_from
-                    ,clra_period_to
-                    ,clra_workmen
-                    ,ismw_rcno
-                    ,ismw_rc_str
-                    ,ismw_lic_no
-                    ,ismw_period_from
-                    ,ismw_period_to
-                    ,ismw_workmen
-                    ,Total_Workmen
-                    ,STATUS
-                    ,CREATED_BY)
-              VALUES
-                    ('${req.body.Contractor_Code}'
-                    ,'${req.body.Vendor_No}'
-                    ,'${req.body.subContractor_one}'
-                    ,'${req.body.subContractor_two}'
-                    ,'${req.body.subContractor_three}'
-                    ,'${req.body.EIC_PRNO}'
-                    ,'${req.body.Engineer_In_Charge}'
-                    ,'${req.body.Department}'
-                    ,'${req.body.Work_order_no}'
-                    ,'${req.body.Work_order_date}'
-                    ,'${req.body.Contract_Duration}'
-                    ,'${req.body.CLRA}'
-                    ,'${req.body.ISMW}'
-                    ,'${req.body.Wo_to_date}'
-                    ,'${req.body.Contractor_Value}'
-                    ,'${req.body.extra_workman}'
-                    ,'${req.body.clra_rcno}'
-                    ,'${req.body.scope}'
-                    ,'${req.body.clra_rc_str}'
-                    ,'${req.body.clra_lic_no}'
-                    ,'${req.body.clra_period_from}'
-                    ,'${req.body.clra_period_to}'
-                    ,'${req.body.clra_workmen}'
-                    ,'${req.body.ismw_rcno}'
-                    ,'${req.body.ismw_rc_str}'
-                    ,'${req.body.ismw_lic_no}'
-                    ,'${req.body.ismw_period_from}'
-                    ,'${req.body.ismw_period_to}'
-                    ,'${req.body.ismw_workmen}'
-                    ,'${req.body.Total_Workmen}'
-                    ,'1'
-                    ,'1')`,(err,result)=>{
+                await pool.request().query(`insert into cpcl_work_order_master_table_format (Contractor_Code,Vendor_No,subContractor_one,subContractor_two,subContractor_three,EIC_PRNO,Engineer_In_Charge,Department,Work_order_no,Work_order_date,Contract_Duration,CLRA,ISMW,Wo_to_date,Contractor_Value,extra_workman,clra_rcno,scope,clra_rc_str,clra_lic_no,clra_period_from,clra_period_to,clra_workmen,ismw_rcno,ismw_rc_str,ismw_lic_no,ismw_period_from,ismw_period_to,ismw_workmen,Total_Workmen,STATUS,CREATED_BY)VALUES('${req.body.Contractor_Code}','${req.body.Vendor_No}','${req.body.subContractor_one}','${req.body.subContractor_two}','${req.body.subContractor_three}','${req.body.EIC_PRNO}','${req.body.Engineer_In_Charge}','${req.body.Department}','${req.body.Work_order_no}','${req.body.Work_order_date}','${req.body.Contract_Duration}','${req.body.CLRA}','${req.body.ISMW}','${req.body.Wo_to_date}','${req.body.Contractor_Value}','${req.body.extra_workman}','${req.body.clra_rcno}','${req.body.scope}','${req.body.clra_rc_str}','${req.body.clra_lic_no}','${req.body.clra_period_from}','${req.body.clra_period_to}','${req.body.clra_workmen}','${req.body.ismw_rcno}','${req.body.ismw_rc_str}','${req.body.ismw_lic_no}','${req.body.ismw_period_from}','${req.body.ismw_period_to}','${req.body.ismw_workmen}','${req.body.Total_Workmen}','1','1')`,(err,result)=>{
 
 
                         if(err) throw err;
@@ -138,7 +74,8 @@ router.post('/workordernew/add',(req,res,next)=>{
             }
         }
        getWorkOrderValues();
-       // res.redirect("/workordernew")
+       res.redirect("/workordernew")
+
 });
 
 
@@ -147,8 +84,6 @@ router.post('/workordernew/add',(req,res,next)=>{
 router.get('/work_edit/:shiftid',(req,res) => {
 
     const shiftId = req.params.shiftid;
-    const worder = req.params.worder;
-    //console.log(shiftId+worder);
 
     async function workOrderUpdate(){
         try{
@@ -159,7 +94,9 @@ router.get('/work_edit/:shiftid',(req,res) => {
         catch(error){
             console.log(error);
         }
-    }  
+    }
+
+    console.log(workOrderUpdate());
 
     /*
      async function getClraDetails(){
