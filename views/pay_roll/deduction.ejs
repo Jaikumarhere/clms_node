@@ -1,0 +1,160 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+	<style>
+		table {
+	  counter-reset: rowNumber;
+	}
+	
+	table tbody tr::before {
+	  display: table-cell;
+	  counter-increment: rowNumber;
+	  content: counter(rowNumber);
+	  padding-right: 0.3em;
+	  text-align: center;
+	  vertical-align: middle;
+	}
+	</style>
+	
+		<!--Loading Images-->
+		<div class="preload loading_position">
+			<img src="assets/loading/Hourglass.gif">
+		</div>
+
+		<div id="overlay" class="overlayaligns" >
+			<div class="col-sm-12 text-right">
+				<a type="button" class="btn btn-gradient-primary btn-rounded btn-fw f-r m-b-20"
+					id="addbutton" href="/deduction/add">New</a>
+		
+				<button type="button" class="btn btn-gradient-info btn-icon-text"
+					onclick="window.print();">
+					Print <i class="mdi mdi-printer btn-icon-append"></i>
+				</button>
+				<button type="button" class="btn btn-gradient-info btn-icon-text"
+					onclick="window.excel();">
+					Excel <i class="mdi mdi-excel btn-icon-append"></i>
+				</button>
+				<br />
+		    </div>
+			<br />
+			<div class="col-lg-12 grid-margin stretch-card" id="table">
+				<div class="card tablecard">
+					<div class="card-body">
+						<h4 class="card-title titlealign">Advance Deduction Master</h4>
+						<!--Search Filter-->
+						<div class="form-group">
+							<input type="search" placeholder="Search Here" class="form-control search-input searchalign"
+								data-table="customers-list" />
+						</div>
+					
+						<!--Excel Download Table-->
+						<table class="table table-bordered customers-list">
+							<thead>
+								<tr>
+
+									<th>SL.NO</th>
+									<th>Payroll Month</th>
+									<th>Payroll Year</th>
+									<th>Payroll Date</th>
+									<th>Employee Code</th>
+									<th>Name</th>
+									<th>Work Order No</th>
+									<th>Advance Amount</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% deduction_view.forEach(function(deduction){ %>
+									<tr>
+										<td></td>
+										<td class="py-1">
+											<%= deduction.payroll_month %>
+										</td>
+										<td>
+											<%= deduction.payroll_year %>
+										</td>
+										<td>
+											<%= moment(deduction.date).format('YYYY-MM-DD'); %>
+										</td>
+										<td>
+											<%= deduction.id_card_no %>
+										</td>
+										<td>
+											<%= deduction.name %>
+										</td>
+										<td>
+											<%= deduction.workorder_no %>
+										</td>
+										<td>
+											<%= deduction.advance_amount %>
+										</td>
+										<td>
+											<a href="deduction_edit/<%= deduction.id %>" class="btn btn-sm btn-primary">Edit</a>
+										</td>
+
+										<td>
+											<a href="deduction_delete/<%= deduction.id %>" class="btn btn-sm btn-primary">Delete</a>
+										</td>
+									</tr>
+
+									<% }) %>
+							</tbody>
+						</table>
+						<!--Excel Download Table-->
+					</div>
+				</div>
+			</div>
+			<!--Form Start -->
+			<br /> <br />
+
+		</div>
+	<!-- Footer Page-->
+	<%- include('../nav/footer') %>
+
+	<!--Initial Loading-->
+	<script type="text/javascript">
+		window.onload = function () {
+			$(".preload").hide();
+			document.getElementById("overlay").style.display = "block";
+		};
+	</script>
+<!--Table Sort-->
+<script>
+	(function(document) {
+		'use strict';
+
+		var TableFilter = (function(myArray) {
+			var search_input;
+
+			function _onInputSearch(e) {
+				search_input = e.target;
+				var tables = document.getElementsByClassName(search_input.getAttribute('data-table'));
+				myArray.forEach.call(tables, function(table) {
+					myArray.forEach.call(table.tBodies, function(tbody) {
+						myArray.forEach.call(tbody.rows, function(row) {
+							var text_content = row.textContent.toLowerCase();
+							var search_val = search_input.value.toLowerCase();
+							row.style.display = text_content.indexOf(search_val) > -1 ? '' : 'none';
+						});
+					});
+				});
+			}
+
+			return {
+				init: function() {
+					var inputs = document.getElementsByClassName('search-input');
+					myArray.forEach.call(inputs, function(input) {
+						input.oninput = _onInputSearch;
+					});
+				}
+			};
+		})(Array.prototype);
+
+		document.addEventListener('readystatechange', function() {
+			if (document.readyState === 'complete') {
+				TableFilter.init();
+			}
+		});
+
+	})(document);
+</script>

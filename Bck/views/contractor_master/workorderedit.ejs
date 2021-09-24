@@ -1,0 +1,451 @@
+<%- include ('../nav/header') %>
+    <!-- Sidebar Page -->
+    <%- include('../nav/sidebar') %>
+    <a type="button" class="btn btn-gradient-danger btn-fw b-r-25 m-b-20" id="addbutton"
+    href="/workordernew">Back</a>
+        <div class="card" id="newform">
+            <div class="card-body">
+
+                <h4 class="card-title">Work Order</h4>
+                <% work_edit_data.forEach(function(work_edit_data) { %>
+                <form class="forms-sample" method="POST" action="/workordernew/update" onsubmit="showAlert()"> 
+                    <input type="hidden" value="<%= work_edit_data.id %>" name="id" />
+                    <div class="form-group row">
+                        <label for="exampleInputContractor Code" class="col-sm-3 col-form-label">Contractor Code</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="Contractor_Code" value="<%= work_edit_data.CCODE %>">
+                            
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputVendor No" class="col-sm-3 col-form-label">Vendor No</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Vendor_No" name="Vendor_No"
+                            value="<%= work_edit_data.VENDOR_NO %>" >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exampleInputWork order no" class="col-sm-3 col-form-label">Work order No</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Work_order_no" name="Work_order_no"
+                            value="<%= work_edit_data.WORK_ORDER %>" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputWork order Date" class="col-sm-3 col-form-label">Work From order Date</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Work_order_date" name="Work_order_date"
+                            value="<%= moment(work_edit_data.WO_FROM_DATE).format('YYYY-MM-DD'); %>" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputWork order Date" class="col-sm-3 col-form-label">Work order to Date</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Wo_to_date" name="Wo_to_date"
+                            value="<%= moment(work_edit_data.WO_TO_DATE).format('YYYY-MM-DD'); %>" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputWork order Date" class="col-sm-3 col-form-label">SAP Wo Number</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="sap_wo_no" name="sap_wo_no"
+                                value="<%= work_edit_data.SAP_WO_NO %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputContractor Value" class="col-sm-3 col-form-label">Contractor
+                            Value</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Contractor_Value" name="Contractor_Value"
+                            value="<%= work_edit_data.CVALUE %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputDuration of Month" class="col-sm-3 col-form-label">Duration Date<br/>(Years)</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="Duration_Date" name="Duration_Date"
+                            value="<%= work_edit_data.DURATION %>"  min="1" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputContract Duration" class="col-sm-3 col-form-label">Contract Duration<br/>(Months)
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="Contract_Duration" name="Contract_Duration"
+                            value="<%= work_edit_data.CDURATION %>"  min="1">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="EIC PRNO" class="col-sm-3 col-form-label">EIC PRNO</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="EIC_PRNO" name="EIC_PRNO"
+                            value="<%= work_edit_data.EIC_PRNO %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEngineer In Charge" class="col-sm-3 col-form-label">Engineer In
+                            Charge</label>
+                        <div class="col-sm-9">
+                           
+                        <input type="text" class="form-control" value="<%= work_edit_data.EIC %>" id="Engineer_In_Charge" 
+                        name="Engineer_In_Charge">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputJob Desc" class="col-sm-3 col-form-label">Job Desc</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Job_Desc" name="Job_Desc"
+                            value="<%= work_edit_data.JOB_DESC %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputDepartment" class="col-sm-3 col-form-label">Department</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Department" name="Department"
+                            value="<%= work_edit_data.DEPARTMENT %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputCLRA" class="col-sm-3 col-form-label">CLRA</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="CLRA" name="CLRA" value="<%= work_edit_data.CLRA %>" 
+                              max="19" oninput="totWoekman();">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputISMW" class="col-sm-3 col-form-label">ISMW</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="ISMW" name="ISMW" value="<%= work_edit_data.ISMW %>" 
+                             max="4" oninput="totWoekman();">
+                        </div>
+                    </div>
+
+                     <table class="table table-bordered dis-block overflow-x" id="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>RCNO</th>
+                                <th>RC_STR</th>
+                                <th>Licence_No</th>
+                                <th>Period_From</th>
+                                <th>Period_To</th>
+                                <th>Workmen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <% 
+                                
+                                if(clra_count>0)
+                                {
+
+                                    clraDetails.forEach(function(clradetails) 
+                                    {
+                                        %>
+                                    <td>CLRA</td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_rcno" id="clra_rcno"
+                                            value="<%= clradetails.clra_rcno %>"></td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_rc_str" id="clra_rc_str"
+                                        value="<%= clradetails.clra_rc_str %>"></td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_lic_no" id="lic_no"
+                                        value="<%= clradetails.licence_no %>"></td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_period_from" id="clra_period_from"
+                                        value="<%= moment(clradetails.period_from).format('YYYY-MM-DD'); %>"></td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_period_to" id="clra_period_to"
+                                        value="<%=  moment(clradetails.period_to).format('YYYY-MM-DD'); %>"></td>
+                                    <td><input type="number" class="form-control w-11-rem" name="clra_workmen" id="clra_workmen" 
+                                        min="0"  value="<%= clradetails.workmen %>" oninput="totWoekman();" >
+                                    </td>
+                                    <% })
+                                }
+                                else
+                                {
+                                    %>
+                                    <td>CLRA</td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_rcno" id="clra_rcno"
+                                            value=""></td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_rc_str" id="clra_rc_str"
+                                        value=""></td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_lic_no" id="lic_no"
+                                        value=""></td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_period_from" id="clra_period_from"
+                                        value=""></td>
+                                    <td><input type="text" class="form-control w-11-rem" name="clra_period_to" id="clra_period_to"
+                                        value=""></td>
+                                    <td><input type="number" class="form-control w-11-rem" name="clra_workmen" id="clra_workmen" 
+                                        min="0"  value="0" oninput="totWoekman();" >
+                                    </td>
+                                    <%    
+                                }
+                                
+                                %>
+                            </tr>
+                            <tr>
+                                <td>ISMW</td>
+
+                                <% 
+                                if(ismw_count>0)
+                                {
+                                    ismwDeatils.forEach(function(ismwdeatils) {
+                                        %>
+
+                                        <td><input type="text" class=" form-control w-11-rem" name="ismw_rcno" id="ismw_rcno"
+                                            value="<%= ismwdeatils.ismw_rcno %>"></td>
+                                        <td><input type="text" class=" form-control w-11-rem" name="ismw_rc_str" id="ismw_rc_str"
+                                            value="<%= ismwdeatils.ismw_rc_str %>"></td>
+                                        <td><input type="text" class=" form-control w-11-rem" name="ismw_lic_no" id="lic_no"
+                                            value="<%= ismwdeatils.licence_no %>"></td>
+                                        <td><input type="text" class=" form-control w-11-rem" name="ismw_period_from" id="ismw_period_from"
+                                            value="<%= moment(ismwdeatils.period_from).format('YYYY-MM-DD'); %>"></td>
+                                        <td><input type="text" class=" form-control w-11-rem" name="ismw_period_to" id="ismw_period_to"
+                                            value="<%= moment(ismwdeatils.period_to).format('YYYY-MM-DD'); %>"></td>
+                                        <td><input type="number" class=" form-control w-11-rem" name="ismw_workmen" id="ismw_workmen"
+                                            min="0" value="<%= ismwdeatils.workmen %>"  oninput="totWoekman();">
+                                        </td>
+        
+                                        <% 
+                                    })
+                                }
+                                else
+                                {
+
+                                    %>
+
+                                    <td><input type="text" class=" form-control w-11-rem" name="ismw_rcno" id="ismw_rcno"
+                                        value=""></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="ismw_rc_str" id="ismw_rc_str"
+                                        value=""></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="ismw_lic_no" id="lic_no"
+                                        value=""></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="ismw_period_from" id="ismw_period_from"
+                                        value=""></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="ismw_period_to" id="ismw_period_to"
+                                        value=""></td>
+                                    <td><input type="number" class=" form-control w-11-rem" name="ismw_workmen" id="ismw_workmen"
+                                        min="0" value="0"  oninput="totWoekman();">
+                                    </td>
+    
+                                    <% 
+                                }
+                                
+                                 %>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+
+                    <table class="table table-bordered dis-block overflow-x" id="cont_table">
+                        <thead>
+                            <tr>
+                                <th>Contractor Name:</th>
+                                <th>Licence no</th>
+                                <th>Period from</th>
+                                <th>Period TO</th>
+                                <th>Workmen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                             <% 
+                                
+                                if(eC_count>0)
+                                {
+
+                                    eContractorDetails.forEach(function(econtractordetails) 
+                                    {
+                                        %>
+                                        <td><input type="text" class=" form-control w-11-rem" name="e_contractor_name" id="e_contractor_name"
+                                            value="<%= econtractordetails.cname %>"></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="e_c_lic_no" id="e_c_lic_no"
+                                        value="<%= econtractordetails.licence_no %>"></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="e_c_period_from" id="e_c_period_from"
+                                        value="<%= moment(econtractordetails.period_from).format('YYYY-MM-DD'); %>"></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="e_c_period_to" id="e_c_period_to"
+                                        value="<%= moment(econtractordetails.period_to).format('YYYY-MM-DD'); %>"></td>
+                                    <td><input type="number" class=" form-control w-11-rem" name="e_c_workmen" id="e_c_workmen"
+                                        min="0" value="<%= econtractordetails.workmen %>"  oninput="totWoekman();"></td>
+                                    <% }
+                                    )
+                                }
+                                else
+                                {
+                                    %>
+                                    <td><input type="text" class=" form-control w-11-rem" name="e_contractor_name" id="e_contractor_name"
+                                    value=""></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="e_c_lic_no" id="e_c_lic_no"
+                                    value="0"></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="e_c_period_from" id="e_c_period_from"
+                                    value=""></td>
+                                    <td><input type="text" class=" form-control w-11-rem" name="e_c_period_to" id="e_c_period_to"
+                                    value=""></td>
+                                    <td><input type="number" class=" form-control w-11-rem" name="e_c_workmen" id="e_c_workmen"
+                                    min="0" value="0"  oninput="totWoekman();"></td>
+                                    <%    
+                                }
+                                
+                                %>
+                            </tr>
+                        </tbody>
+                    </table><br/>
+                    <br/> 
+                    <div class="form-group row">
+                        <label for="exampleInputISMW" class="col-sm-3 col-form-label">Total Workman</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Total_Workmen" value="<%= work_edit_data.WORKMEN_TOT %>" 
+                             name="Total_Workmen" readonly>
+                        </div>
+                    </div>
+                    <br /><br />
+                    
+                    <center>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </center>
+                </form>
+                <% }) %> 
+            </div>
+        </div>
+        <!-- Footer Page-->
+        <%- include('../nav/footer') %>
+
+    <script type="text/javascript">
+    function totWoekman() {
+            var eclra = document.getElementById("CLRA").value;
+            var eclra = parseInt(eclra, 10);
+
+            var eismw = document.getElementById("ISMW").value;
+            var eismw = parseInt(eismw, 10);
+
+            var eclraworkmen = document.getElementById("clra_workmen").value;
+            var eclraworkmen = parseInt(eclraworkmen, 10);
+
+            var eismwworkmen = document.getElementById("ismw_workmen").value;
+            var eismwworkmen = parseInt(eismwworkmen, 10);
+
+            var eecworkmen = document.getElementById("e_c_workmen").value;
+            var eecworkmen = parseInt(eecworkmen, 10); 
+
+            var total = eclra + eismw + eclraworkmen + eismwworkmen + eecworkmen;
+            document.getElementById("Total_Workmen").value = total;
+        }
+        
+        function getContName() {
+            var selectedValue = document.getElementById("contractor_code").value;
+            //alert(selectedValue);
+            $.ajax({
+                url: '/workordernew/add/getcontractorname',
+                type: 'POST',
+                data: { "contractor_code": selectedValue }
+            }).done(function (response) {
+                //callback to handle if it's successful
+            })
+        }
+    </script>
+
+    <!-- Dates Format-->
+    <script>
+        //Work Order From Date
+        $(document).ready(function () {
+            var currentDate = new Date();
+            $('#Work_order_date').datepicker({
+            dateFormat: 'yy-mm-dd',
+            autoclose:true,
+            endDate: "currentDate",
+            //maxDate: currentDate
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+        //Work Order TO Date
+        $(document).ready(function () {
+            var currentDate = new Date();
+            $('#Wo_to_date').datepicker({
+            dateFormat: 'yy-mm-dd',
+            autoclose:true,
+            endDate: "currentDate",
+            //maxDate: currentDate
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+        //ClRA Period From
+        $(document).ready(function () {
+            var currentDate = new Date();
+            $('#clra_period_from').datepicker({
+            dateFormat: 'yy-mm-dd',
+            autoclose:true,
+            endDate: "currentDate",
+            //maxDate: currentDate
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+        //ClRA Period To
+        $(document).ready(function () {
+            var currentDate = new Date();
+            $('#clra_period_to').datepicker({
+            dateFormat: 'yy-mm-dd',
+            autoclose:true,
+            endDate: "currentDate",
+            //maxDate: currentDate
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+        //ISMW Period From
+        $(document).ready(function () {
+            var currentDate = new Date();
+            $('#ismw_period_from').datepicker({
+            dateFormat: 'yy-mm-dd',
+            autoclose:true,
+            endDate: "currentDate",
+            //maxDate: currentDate
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+        //ISMW Period To
+        $(document).ready(function () {
+            var currentDate = new Date();
+            $('#ismw_period_to').datepicker({
+            dateFormat: 'yy-mm-dd',
+            autoclose:true,
+            endDate: "currentDate",
+            //maxDate: currentDate
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+        //Extra Contractor Workman Period From
+        $(document).ready(function () {
+            var currentDate = new Date();
+            $('#e_c_period_from').datepicker({
+            dateFormat: 'yy-mm-dd',
+            autoclose:true,
+            endDate: "currentDate",
+            //maxDate: currentDate
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+        //Extra Contractor Workman Period To
+        $(document).ready(function () {
+            var currentDate = new Date();
+            $('#e_c_period_to').datepicker({
+            dateFormat: 'yy-mm-dd',
+            autoclose:true,
+            endDate: "currentDate",
+            //maxDate: currentDate
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+    </script>
+    
+    <!--Show Alert-->
+    <script>
+        function showAlert() {
+            alert("Work Order Details Updated Successfully")
+        }
+    </script>

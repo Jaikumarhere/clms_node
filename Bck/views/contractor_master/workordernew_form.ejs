@@ -1,0 +1,606 @@
+<%- include ('../nav/header') %>
+    <!-- Sidebar Page -->
+    <%- include('../nav/sidebar') %>
+        <a type="button" class="btn btn-gradient-danger btn-fw b-r-25 m-b-20" id="addbutton" href="/workordernew"
+            style="margin-top: -10px">Back</a>
+        <div class="card" id="newform" style="margin-top: -15px;">
+            <div class="card-body" style="margin-top: -10px;">
+                <h4 class="card-title">Work Order</h4>
+                <form class="forms-sample" method="POST" action="/workordernew/add" autocomplete="off"
+                    onsubmit="getAlert()">
+                    <div style="margin-left: 10px;">
+                        <div class="form-group row" style="max-height: 30px;align-items: baseline;">
+                            <label for="exampleInputContractor Code" class="col-form-label">Contractor
+                                Code</label>
+                            <div style="margin-left: 40px;">
+                                <input list="Contractor_Code" class="form-control" name="Contractor_Code"
+                                    autocomplete="off" placeholder="Select Contractor Code"
+                                    style="max-height: 35px;min-width: 200px;">
+                                <datalist id="Contractor_Code">
+                                    <% codename.forEach(function(code) { %>
+                                        <option value="<%= code.CODE_NAME %>"></option>
+                                        <% }) %>
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" style="max-height: 30px;align-items: baseline;">
+                            <label for="exampleInputVendor No" class="col-form-label">Vendor No</label>
+                            <div style="margin-left: 77px;">
+                                <input type="text" class="form-control" id="Vendor_No" name="Vendor_No"
+                                    placeholder="Vendor No" style="max-height: 20px;min-width: 200px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group row" style="max-height: 30px;align-items: baseline;">
+                            <label for="exampleInputWork order no" class="col-form-label">Work Order No</label>
+                            <div style="margin-left: 50px;">
+                                <input type="text" class="form-control" id="Work_order_no" name="Work_order_no"
+                                    onchange="getWorkOrder()" placeholder="Work order no"
+                                    style="max-height: 20px;min-width: 200px;">
+                            </div>
+                        </div>
+                        <div class="form-group row" style="max-height: 30px;align-items: baseline;">
+                            <label for="exampleInputWork order Date" class="col-form-label">Work Order From
+                                Date</label>
+                            <div style="margin-left: 3px;width: 215px;">
+                                <input type="text" class="form-control" id="Work_order_date" name="Work_order_date"
+                                    maxlength="10" placeholder="YYYY-MM-DD &#xf073"
+                                    style="font-family:Arial, FontAwesome;max-height: 20px;min-width: 200px;">
+                            </div>
+                        </div>
+                        <div class="form-group row" style="max-height: 50px;align-items: center;">
+                            <label for="exampleInputContract Duration" class="col-form-label">Contract
+                                Duration<br />(Months)
+                            </label>
+                            <div style="margin-left: 32px;">
+                                <input type="number" class="form-control" id="Contract_Duration"
+                                    style="max-height: 50px;min-width: 200px;" name="Contract_Duration"
+                                    placeholder="Contract Duration In Months" oninput="getMonth(this.value)">
+                            </div>
+                        </div>
+
+                        <!--  <div class="form-group row">
+            <label for="exampleInputWork order Date" class="col-sm-3 col-form-label">SAP Wo Number</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="sap_wo_no" name="sap_wo_no"
+                    placeholder="SAP Wo Number">
+            </div>
+        </div> -->
+
+                        <div class="form-group row" style="max-height: 40px;align-items: center;">
+                            <label for="exampleInputJob Desc" class="col-form-label" style="max-width: 120px;">Job Desc
+                                / Scope Of
+                                Work</label>
+                            <div style="margin-left: 27px;">
+                                <input type="text" class="form-control" id="Job_Desc" name="Job_Desc"
+                                    placeholder="Job Desc" style="max-height: 50px;min-width: 200px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-left: 500px;margin-top: -260px;">
+                        <div class="form-group row" style="max-height: 30px;align-items: center;">
+                            <label for="exampleInputDepartment" class="col-form-label">Department</label>
+                            <div style="margin-left: 57px;">
+                                <input type="text" class="form-control" id="Department" name="Department"
+                                    placeholder="Department" style="max-height: 20px;min-width: 200px;">
+                            </div>
+                        </div>
+
+                        <!--  <div class="form-group row">
+            <label for="exampleInputDuration of Month" class="col-sm-3 col-form-label">Duration Date<br/>(Years)</label>
+            <div class="col-sm-9">
+                <input type="number" class="form-control" id="Duration_Date" name="Duration_Date"
+                    placeholder="Duration Date In Years"  min="1" oninput="getDurationMonth(this.value)">
+            </div>
+        </div> -->
+
+                        <div class="form-group row" style="max-height: 30px;align-items: center;">
+                            <label for="exampleInputEngineer In Charge" class="col-form-label">EIC PRNO</label>
+                            <div style="margin-left: 73px;">
+                                <input list="engcode" class="form-control" id="EIC_PRNO" name="EIC_PRNO"
+                                    onchange="getEicProNo(this.value)" autocomplete="off"
+                                    style="max-height: 35px;min-width: 200px;">
+                                <datalist id="engcode">
+                                    <% engcode.forEach(function(code) { %>
+                                        <option value="<%= code.EIC_PRNO %>">
+                                            <% }) %>
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="max-height: 30px;align-items: center;">
+                            <label for="exampleInputEngineer In Charge" class="col-form-label">EIC Name</label>
+                            <div style="margin-left: 74px;">
+                                <input type="text" class="form-control" id="Engineer_In_Charge"
+                                    name="Engineer_In_Charge" placeholder="EIC Name"
+                                    style="max-height: 20px;min-width: 200px;">
+                            </div>
+                        </div>
+                        <div class="form-group row" style="max-height: 30px;align-items: center;">
+                            <label for="exampleInputCLRA" class="col-form-label">CLRA</label>
+                            <div style="margin-left: 101px;">
+                                <input type="number" class="form-control" id="CLRA" name="CLRA" value="19" max="19"
+                                    oninput="calc();" style="max-height: 20px;min-width: 200px;">
+                            </div>
+                        </div>
+                        <div class="form-group row" style="max-height: 30px;align-items: center;">
+                            <label for="exampleInputISMW" class="col-form-label">ISMW</label>
+                            <div style="margin-left: 99px;">
+                                <input type="number" class="form-control" id="ISMW" name="ISMW" value="0" max="0"
+                                    oninput="calc();" style="max-height: 20px;min-width: 200px;">
+                            </div>
+                        </div>
+                        <div class="form-group row" style="max-height: 30px;align-items: baseline;">
+                            <label for="exampleInputWork order Date" class="col-form-label">Work Order To
+                                Date</label>
+                            <div style="margin-left: 8px;width: 215px;">
+                                <input type="text" class="form-control" id="Wo_to_date" name="Wo_to_date" maxlength="10"
+                                    placeholder="YYYY-MM-DD &#xf073"
+                                    style="font-family:Arial, FontAwesome;max-height: 20px;min-width: 200px;"
+                                    readonly="true">
+                            </div>
+                        </div>
+                        <div class="form-group row" style="max-height: 30px;align-items: baseline;">
+                            <label for="exampleInputContractor Value" class="col-form-label">Contract
+                                Value</label>
+                            <div style="margin-left: 41px;">
+                                <input type="number" class="form-control" id="Contractor_Value" name="Contractor_Value"
+                                    min="0" placeholder="Contractor Value" style="max-height: 20px;min-width: 200px;">
+                            </div>
+                        </div>
+                        <div class="form-group row" style="max-height: 40px;align-items: center;margin-left: -510px;">
+                            <label class="col-form-label">Extra Workman</label>
+                            <div style="margin-left: 50px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="extra_workman"
+                                            id="extra_workman" value="1" onchange="getWorkmanTable(1)"> Yes</label>
+                                </div>
+                            </div>
+                            <div style="margin-left: 100px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="extra_workman"
+                                            id="extra_workman" value="0" onchange="getWorkmanTable(0)" checked> No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered overflow-x dis-none" id="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>RCNO</th>
+                                <th>RC_STR</th>
+                                <th>Licence_No</th>
+                                <th>Period_From</th>
+                                <th>Period_To</th>
+                                <th>Workmen</th>
+                                <!--  <th>Total_Workmen</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CLRA</td>
+                                <td><input type="text" class="form-control w-11-rem" name="clra_rcno" id="clra_rcno">
+                                </td>
+                                <td><input type="text" class="form-control w-11-rem" name="clra_rc_str"
+                                        id="clra_rc_str"></td>
+                                <td><input type="text" class="form-control w-11-rem" name="clra_lic_no" id="lic_no">
+                                </td>
+                                <td><input type="text" class="form-control w-11-rem" name="clra_period_from"
+                                        id="clra_period_from" placeholder="Period From &#xf073"
+                                        style="font-family:Arial, FontAwesome"></td>
+                                <td><input type="text" class="form-control w-11-rem" name="clra_period_to"
+                                        id="clra_period_to" placeholder="Period To &#xf073"
+                                        style="font-family:Arial, FontAwesome"></td>
+                                <td><input type="number" class="form-control w-11-rem" name="clra_workmen"
+                                        id="clra_workmen" min="0" value="0" oninput="calc();"></td>
+                                <!--  <td><input type="text" class="form-control w-11-rem" name="Total_Workmen" id="total_workmen"
+                            placeholder=""></td> -->
+                            </tr>
+                            <tr>
+                                <td>ISMW</td>
+                                <td><input type="text" class=" form-control w-11-rem" name="ismw_rcno" id="ismw_rcno">
+                                </td>
+                                <td><input type="text" class=" form-control w-11-rem" name="ismw_rc_str"
+                                        id="ismw_rc_str"></td>
+                                <td><input type="text" class=" form-control w-11-rem" name="ismw_lic_no" id="lic_no">
+                                </td>
+                                <td><input type="text" class=" form-control w-11-rem" name="ismw_period_from"
+                                        id="ismw_period_from" placeholder="Period From &#xf073"
+                                        style="font-family:Arial, FontAwesome"></td>
+                                <td><input type="text" class=" form-control w-11-rem" name="ismw_period_to"
+                                        id="ismw_period_to" placeholder="Period To &#xf073"
+                                        style="font-family:Arial, FontAwesome"></td>
+                                <td><input type="number" class=" form-control w-11-rem" name="ismw_workmen"
+                                        id="ismw_workmen" min="0" value="0" oninput="calc();"></td>
+                                <!-- <td><input type="text" class=" form-control w-11-rem" name="ismw_total_workmen" id="total_workmen"></td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="form-group row"
+                        style="margin-left: -10px;max-height: 40px;align-items: center;margin-top: -30px;">
+                        <label class="col-form-label">Extra Contractor</label>
+                        <div style="margin-left: 42px;">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="extra_contractor"
+                                        id="extra_contractor" value="1" onchange="getContractorTable(1)"> Yes </label>
+                            </div>
+                        </div>
+                        <div style="margin-left: 100px;">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="extra_contractor"
+                                        id="extra_contractor" value="0" onchange="getContractorTable(0)" checked> No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered overflow-x dis-none" id="cont_table">
+                        <thead>
+                            <tr>
+                                <th>Contractor Name:</th>
+                                <th>Licence no</th>
+                                <th>Period from</th>
+                                <th>Period TO</th>
+                                <th>Workmen</th>
+                                <!-- <th>Total Workmen</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class=" form-control w-11-rem" name="e_contractor_name"
+                                        id="e_contractor_name" placeholder="Contractor Name"></td>
+                                <td><input type="text" class=" form-control w-11-rem" name="e_c_lic_no" id="e_c_lic_no"
+                                        placeholder="Licence no"></td>
+                                <td><input type="text" class=" form-control w-11-rem" name="e_c_period_from"
+                                        id="e_c_period_from" placeholder="Period From &#xf073"
+                                        style="font-family:Arial, FontAwesome"></td>
+                                <td><input type="text" class=" form-control w-11-rem" name="e_c_period_to"
+                                        id="e_c_period_to" placeholder="Period To &#xf073"
+                                        style="font-family:Arial, FontAwesome"></td>
+                                <td><input type="number" class=" form-control w-11-rem" name="e_c_workmen"
+                                        id="e_c_workmen" min="0" value="0" oninput="calc();"></td>
+                                <!--  <td><input type="text" class=" form-control w-11-rem" name="e_c_total_workmen" id="Total_Workmen"
+            placeholder="Total Workmen"></td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="form-group row" style="margin-top: -10px;margin-left: -10px;">
+                        <label for="exampleInputISMW" class="col-form-label">Total Workman</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Total_Workmen" value="19" name="Total_Workmen"
+                                readonly>
+                        </div>
+                    </div>
+                    <br /><br />
+                    <center style="margin-top: -40px;">
+                        <button type="submit" class="btn btn-gradient-success btn-fw">Save</button>
+                    </center>
+                </form>
+            </div>
+        </div>
+        <!-- Footer Page-->
+        <%- include('../nav/footer') %>
+
+            <script type="text/javascript">
+
+                function getWorkmanTable(a) {
+                    var value = document.getElementById("extra_workman").value;
+                    //alert(value);
+                    if (a == 1) {
+                        document.getElementById("table").style.display = "block";
+                    } else {
+                        document.getElementById("table").style.display = "none";
+                    }
+                }
+                function getContractorTable(b) {
+                    var value = document.getElementById("extra_contractor").value;
+                    //alert(value);
+                    if (b == 1) {
+                        document.getElementById("cont_table").style.display = "block";
+                    } else {
+                        document.getElementById("cont_table").style.display = "none";
+                    }
+                }
+                function getContName() {
+                    var selectedValue = document.getElementById("contractor_code").value;
+                    //alert(selectedValue);
+                    $.ajax({
+                        url: '/workordernew/add/getcontractorname',
+                        type: 'POST',
+                        data: { "contractor_code": selectedValue }
+                    }).done(function (response) {
+                        //callback to handle if it's successful
+                    })
+                }
+
+                function calc() {
+                    var amount = document.getElementById("CLRA").value;
+                    var amount = parseInt(amount, 10);
+
+                    var quantity = document.getElementById("ISMW").value;
+                    var quantity = parseInt(quantity, 10);
+
+                    var clraworkmen = document.getElementById("clra_workmen").value;
+                    var clraworkmen = parseInt(clraworkmen, 10);
+
+                    var ismwworkmen = document.getElementById("ismw_workmen").value;
+                    var ismwworkmen = parseInt(ismwworkmen, 10);
+
+                    var ecworkmen = document.getElementById("e_c_workmen").value;
+                    var ecworkmen = parseInt(ecworkmen, 10);
+
+                    var total = amount + quantity + clraworkmen + ismwworkmen + ecworkmen;
+                    document.getElementById("Total_Workmen").value = total;
+                }
+
+            </script>
+
+            <script>
+                function getWorkOrder() {
+                    var wo_order = document.getElementById("Work_order_no").value;
+                    // alert(wo_order);
+
+                    $.ajax({
+                        url: '/workorder_no/save',
+                        type: "POST",
+                        data: { "wo_number": wo_order },
+                        success: function (check_workorder_count) {
+                            console.log(check_workorder_count);
+                            var len = check_workorder_count.length;
+
+                            if (len > 0) {
+                                alert('Work order Number Already exist !!');
+                                //document.getElementById("Work_order_no").value(" ");
+                                $('#Work_order_no').val("");
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+
+                        }
+                    });
+
+                    /* $.ajax({
+                       url: '/workorder_no/save',
+                       type: 'POST' ,
+                       data: {"wo_number" : wo_order}
+                   }).done(function (response) {
+                       console.log(response.data);
+                       //callback to handle if it's successful
+                   })  */
+                }
+            </script>
+
+            <!-- Dates Fromat-->
+            <script>
+                //Work Order Date
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#Work_order_date').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                    $("#Work_order_date").keyup(function () {
+                        if ($(this).val().length == 4) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 7) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 10) {
+                            // $(this).val($(this).val() + "-");
+                        }
+                    });
+                });
+                //Work Order To Date
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#Wo_to_date').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                    $("#Wo_to_date").keyup(function () {
+                        if ($(this).val().length == 4) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 7) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 10) {
+                            // $(this).val($(this).val() + "-");
+                        }
+                    });
+                });
+                //ClRA Period From
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#clra_period_from').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                //ClRA Period To
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#clra_period_to').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                //ISMW Period From
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#ismw_period_from').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                //ISMW Period To
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#ismw_period_to').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                //Extra Contractor Workman Period From
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#e_c_period_from').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                //Extra Contractor Workman Period To
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#e_c_period_to').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+            </script>
+
+            <!--Show Month Automatically-->
+            <!-- <script>
+        function getDurationMonth(durationYear){
+            //alert(durationYear)
+            var durationMonth = Number(durationYear) * 12;
+            //alert(durationMonth);
+            $('#Contract_Duration').val(durationMonth);
+        }
+    </script> -->
+            <!--Show Alert-->
+            <script>
+                function getAlert() {
+                    alert("Work Order Deatils Saved Sucessfully ")
+                }
+            </script>
+            <!--Get EIC PRO Number-->
+            <script>
+                function getEicProNo(eicnumber) {
+                    // alert(eicnumber);
+                    $.ajax({
+                        type: 'POST',
+                        data: { "eicnumber": eicnumber },
+                        url: '/get/eic_name',
+                        success: function (data) {
+                            //console.log(data);
+                            $('#Engineer_In_Charge').empty();
+                            $('#Department').empty();
+                            for (i = 0; i < data.length; i++) {
+                                //console.log(data[i].name);
+                                var eic_name = data[i].name;
+                                var department = data[i].department;
+                                $('#Engineer_In_Charge').val(eic_name);
+                                $('#Department').val(department);
+                            }
+                        }
+                    });
+                }
+            </script>
+
+            <!--Get WO To Date-->
+            <script>
+                function getMonth(woMonth) {
+                    //alert(woMonth);
+                    var date = document.getElementById('Work_order_date').value;
+                    var fDate = date.split("-");
+                    // alert(fDate[0]);
+                    var fromYear = fDate[0];
+                    var fromMonth = fDate[1];
+                    var fromDate = fDate[2];
+                    //alert(fDate[1]);
+                    var j = 0;
+                    for (var i = 1; i <= woMonth; i++) {
+
+                        if (i % 12 == 0) {
+                            j++;
+                        }
+                    }
+                    console.log("balance year" + j);
+                    var balance = woMonth - (j * 12);
+                    console.log("balance month" + balance);
+                    if (j == 0 && balance == 0) {
+
+                        $('#Wo_to_date').val(date);
+
+                    } else if (j == 0 && balance > 0) {
+
+                        var toMonth = Number(balance) + Number(fromMonth);
+                        var toDate = fromYear + "-" + toMonth + "-" + fromDate;
+                        if (toMonth >= 10) {
+
+                            var toDate = fromYear + "-" + toMonth + "-" + fromDate;
+                            $('#Wo_to_date').val(toDate);
+
+                        } else {
+
+                            var toDate = fromYear + "-" + "0" + toMonth + "-" + fromDate;
+                            $('#Wo_to_date').val(toDate);
+
+                        }
+
+                    } else if (j > 0 && balance == 0) {
+
+                        var toYear = Number(fromYear) + Number(j);
+                        var toDate = toYear + "-" + fromMonth + "-" + fromDate;
+                        $('#Wo_to_date').val(toDate);
+
+                    } else {
+
+                        var toMonth = Number(balance) + Number(fromMonth);
+                        if (toMonth >= 10) {
+                            var toYear = Number(fromYear) + Number(j);
+                            var toDate = toYear + "-" + toMonth + "-" + fromDate;
+                            $('#Wo_to_date').val(toDate);
+
+                        } else {
+                            var toYear = Number(fromYear) + Number(j);
+                            var toDate = toYear + "-" + "0" + toMonth + "-" + fromDate;
+                            $('#Wo_to_date').val(toDate);
+                        }
+
+                    }
+
+
+                }
+            </script>

@@ -1,0 +1,393 @@
+
+   <%- include ('../nav/header') %>
+  <!-- Sidebar Page -->
+  <%- include('../nav/sidebar') %>
+    <a type="button" class="btn btn-gradient-primary btn-rounded btn-fw" id="addbutton"
+    href="/changerequestlist">Back</a>
+    <br/><br/>
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title"> Change Employee Company Details</h4>
+
+        <% Emp_edit_data.forEach(function(empdata) { %>
+
+          <form class="forms-sample" method="POST" action="/changereq/update" autocomplete="off" onsubmit="showAlert()">
+
+            <input type="hidden" name="id" value="<%= empdata.ID %>" />
+            <div class="form-group row">
+              <label for="code" class="col-sm-3 col-form-label">Contractor Code</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="ccode" id="code" value="<%= empdata.CCODE %>" readonly>
+              </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="work_order_no" class="col-sm-3 col-form-label">Work Order No</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="work_order_no" id="work_order_no" value="<%= empdata.WORK_ORDER_No %>" readonly>
+                </div>
+              </div>
+            
+           
+            
+            <div class="form-group row">
+                <label for="emp_code" class="col-sm-3 col-form-label">Employee Code</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" value="<%= empdata.NEW_CODE %>" name="emp_code" id="emp_code" readonly>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="emp_code" class="col-sm-3 col-form-label">Card Number</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="card_number" name="card_number"
+                    value="<%= empdata.ECODE %>" readonly>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="emp_code" class="col-sm-3 col-form-label">Old Employee Code</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="old_emp_number" name="old_emp_number"
+                      value="<%= empdata.PRE_CODE %>" readonly>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="emp_code" class="col-sm-3 col-form-label">Employee Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="emp_name" name="emp_name"
+                        value="<%= empdata.ENAME %>" readonly>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Requested Type</label>
+                <div class="col-sm-2" id="Request1">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check_type" id="check_type1" onclick="get_checktype1()"
+                           value="1">Designation</label>
+                    </div>
+                </div>
+                <div class="col-sm-2"  id="Request2">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check_type" id="check_type2" onclick="get_checktype2()"
+                            value="2">Work Spot/Department</label>
+                    </div>
+                </div>
+                <div class="col-sm-2" id="Request3">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check_type" id="check_type3" onclick="get_checktype3()"
+                            value="3">Area Of Work</label>
+                    </div>
+                </div>
+                <div class="col-sm-2"  id="Request4">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check_type" id="check_type4" onclick="get_checktype4()"
+                            value="4">Area Of Place</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row dis-none" id='designation'>
+                <label for="designation" class="col-sm-3 col-form-label">Designation</label>
+                <div class="col-sm-9 ">
+                     <input type="hidden" id="old_designation" name="old_designation" value="<%= empdata.DESIGNATION %>"/>
+                    <!--<input type="text" class="form-control" id="designation" name="designation" value="<%= empdata.DESIGNATION %>" >-->
+                    <select class="form-control" id="designation" name="designation">
+                        <option value="<%= empdata.DESIGNATION %>" selected>--<%= empdata.DESIGNATION %>--</option>
+                        <option>SITE INCHARGE</option>
+                        <option>MANAGER</option>
+                        <option>OWNER</option>
+                        <option>CONTRACT WORKMAN</option>
+                        <option>SUPERVISOR</option>
+                        <option>ENGINEER</option>
+                        <option>DRIVER</option>
+                        <option>ACCOUNTANT</option>
+                        <option>PROPRIETRO</option>
+                        <option>SECURITY GUARD</option>
+                        <option>CLEANER</option>
+                        <option>VICE PRESIDENT</option>
+                        <option>AUDITOR</option>
+                        <option>STAFF NURSE</option>
+                    </select>
+                </div>
+            </div>
+           
+            <div class="form-group row dis-none" id='Work_spot'>
+                <label for="Work_spot" class="col-sm-3 col-form-label">Work Spot/Department</label>
+                <div class="col-sm-9">
+                    <input type="hidden" id="old_Work_spot" name="old_Work_spot" value="<%= empdata.WROK_SPOT %>"/>
+                    <select class="form-control" id="Work_spot" name="Work_spot">
+                        <option value="<%= empdata.WROK_SPOT %>" selected>--<%= empdata.WROK_SPOT %>--</option>
+                        <option>FINANCE</option>
+                        <option>HR</option>
+                        <option>LOGISTICS</option>
+                        <option>MAINTENANCE</option>
+                        <option>OPERATION</option>
+                        <option>PROJECTS</option>
+                        <option>TECHNICAL</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row dis-none" id='Area_of_work'>
+                <label class="col-sm-3 col-form-label">Area Of Work</label>
+                <div class="col-sm-9">
+                    <input type="hidden" id="old_Area_of_work" name="old_Area_of_work" value="<%= empdata.AREA_OF_WORK %>"/>
+                    <select class="form-control" name="Area_of_work" id="Area_of_work" placeholder="Area Of Work">
+                        <option value="<%= empdata.AREA_OF_WORK %>" selected>--<%= empdata.AREA_OF_WORK %>--</option>
+                        <option> ADMIN </option>
+                        <option> E&I </option>
+                        <option> F&S </option>
+                        <option> GENERAL </option>
+                        <option> IT&S </option>
+                        <option> MAINTENANCE </option>
+                        <option> MATERIALS & CONTRACTS </option>
+                        <option> OHS </option>
+                        <option> OPERATION </option>
+                        <option> OTHERS </option>
+                        <option> PE </option>
+                        <option> POWER & UTILITIES </option>
+                        <option> PROJECTS </option>
+                        <option> PT&S </option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row dis-none" id='area_of_place'>
+                <label class="col-sm-3 col-form-label">Area Of Place</label>
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="hidden" value="<%= empdata.area_of_place %>" id="AREAOFPLACE" name="AREAOFPLACE"/>
+                            <input type="radio" class="form-check-input" name="area_of_place" id="area_of_place1"
+                                value="PLANT">PLANT</label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="area_of_place" id="area_of_place2"
+                            value="NON PLANT">NON PLANT</label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="area_of_place" id="area_of_place3"
+                            value="PLANT & NON PLANT">PLANT & NON PLANT</label>
+                    </div>
+                </div>
+            </div>
+                 
+            <center>
+             	<button type="submit" class="btn btn-primary">REQUEST</button>
+            </center>
+
+          </form>
+          <% }) %>
+
+         
+
+      </div>
+    </div>
+    <%- include('../nav/footer') %>
+   
+    <!--Radio Button Ckecked-->
+    <script>
+         //Area Of Place
+         var ap = document.getElementById("AREAOFPLACE").value;
+        if (ap == 'PLANT') {
+        document.getElementById("area_of_place1").checked = true;
+        }else if(ap == 'NON PLANT'){
+            document.getElementById("area_of_place2").checked = true;
+        }else if(ap == 'PLANT & NON PLANT'){
+            document.getElementById("area_of_place3").checked = true;
+        }
+        else if(ap == '' || status == 'NULL'){
+            document.getElementById("area_of_place1").checked = false;
+            document.getElementById("area_of_place2").checked = false;
+            document.getElementById("area_of_place3").checked = false;
+        }
+
+
+        //Status
+        var status = document.getElementById("STATUS").value;
+       // alert(status);
+        if (status == 1) {
+            document.getElementById("status1").checked = true;
+        }else if (status == 2) {
+            document.getElementById("status2").checked = true;
+        }else if(status == 0 ){
+            document.getElementById("status2").checked = true;
+        }else if(status == '' || status == 'NULL'){
+            document.getElementById("status1").checked = false;
+            document.getElementById("status2").checked = false;
+        }
+    </script>
+
+   <!-- Dates-->
+   <script>
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#safety_training_to').datepicker({
+            dateFormat: 'yy-mm-dd',
+            autoclose:true,
+            endDate: "currentDate",
+            //maxDate: currentDate
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });
+        });
+
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#safety_training_from').datepicker({
+       dateFormat: 'yy-mm-dd',
+       autoclose:true,
+       endDate: "currentDate",
+       //maxDate: currentDate
+       }).on('changeDate', function (ev) {
+           $(this).datepicker('hide');
+       });
+       });
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#pass_val_from').datepicker({
+        dateFormat: 'yy/-mm-dd',
+       autoclose:true,
+       endDate: "currentDate",
+       //maxDate: currentDate
+       }).on('changeDate', function (ev) {
+           $(this).datepicker('hide');
+       });
+       });
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#pass_val_to').datepicker({
+        dateFormat: 'yy-mm-dd',
+       autoclose:true,
+       endDate: "currentDate",
+       //maxDate: currentDate
+       }).on('changeDate', function (ev) {
+           $(this).datepicker('hide');
+       });
+       });
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#nominee_dob').datepicker({
+        dateFormat: 'yy-mm-dd',
+       autoclose:true,
+       endDate: "currentDate",
+       //maxDate: currentDate
+       }).on('changeDate', function (ev) {
+           $(this).datepicker('hide');
+       });
+       });
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#Engaged_Date').datepicker({
+        dateFormat: 'yy-mm-dd',
+       autoclose:true,
+       endDate: "currentDate",
+       //maxDate: currentDate
+       }).on('changeDate', function (ev) {
+           $(this).datepicker('hide');
+       });
+       });
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#dob').datepicker({
+        dateFormat: 'yy-mm-dd',
+       autoclose:true,
+       endDate: "currentDate",
+       //maxDate: currentDate
+       }).on('changeDate', function (ev) {
+           $(this).datepicker('hide');
+       });
+       });
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#workorder_date').datepicker({
+        dateFormat: 'yy-mm-dd',
+       autoclose:true,
+       endDate: "currentDate",
+       //maxDate: currentDate
+       }).on('changeDate', function (ev) {
+           $(this).datepicker('hide');
+       });
+       });
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#wo_val_from').datepicker({
+        dateFormat: 'yy-mm-dd',
+       autoclose:true,
+       endDate: "currentDate",
+       //maxDate: currentDate
+       }).on('changeDate', function (ev) {
+           $(this).datepicker('hide');
+       });
+       });
+       $(document).ready(function () {
+       var currentDate = new Date();
+       $('#wo_val_to').datepicker({
+        dateFormat: 'yy-mm-dd',
+       autoclose:true,
+       endDate: "currentDate",
+       //maxDate: currentDate
+       }).on('changeDate', function (ev) {
+           $(this).datepicker('hide');
+       });
+       });
+   </script>
+
+    <!--Show Alert-->
+    <script>
+        function showAlert() {
+            alert("Employee Details Successfully Updated");
+        }
+    </script>
+    	<!--Initial Loading-->
+	<script type="text/javascript">
+        function get_checktype1() {
+        var checkBox = document.getElementById("check_type1");
+        var text = document.getElementById("designation");
+        if (checkBox.checked == true){
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
+        }
+        function get_checktype2() {
+        var checkBox = document.getElementById("check_type2");
+        var text = document.getElementById("Work_spot");
+        if (checkBox.checked == true){
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
+        }
+        function get_checktype3() {
+        var checkBox = document.getElementById("check_type3");
+        var text = document.getElementById("Area_of_work");
+        if (checkBox.checked == true){
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
+        }
+        function get_checktype4() {
+        var checkBox = document.getElementById("check_type4");
+        var text = document.getElementById("area_of_place");
+        if (checkBox.checked == true){
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
+        }
+    </script>

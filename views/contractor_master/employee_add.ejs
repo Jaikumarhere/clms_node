@@ -1,0 +1,995 @@
+<%- include ('../nav/header') %>
+    <!-- Sidebar Page -->
+    <%- include('../nav/sidebar') %>
+        <a type="button" class="btn btn-gradient-primary btn-rounded btn-fw" id="addbutton" href="/employeenew"
+            style="margin-top: -10px;">Back</a>
+        <br /><br />
+        <div class="card" style="margin-top: -14px;overflow-y: auto;min-height: 1100px;">
+            <div class="card-body" style="margin-top: -35px;">
+                <h4 class="card-title">Employee Master</h4>
+                <p class="card-description"> </p>
+                <form class="forms-sample" method="POST" action="/employee/add" autocomplete="off"
+                    onsubmit="showAlert()" style="margin-top: -240px;">
+                    <div id="left">
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: -30px;">
+                            <label for="ccode" class="col-form-label" style="font-size: small;">Contractor Code</label>
+                            <div style="margin-top: -20px;">
+                                <input list="cont_code" class="form-control" name="ccode" id="ccode"
+                                    onchange="getuniqcode(this.value)" style="max-height: 10px;max-width: 250px;">
+                                <datalist id="cont_code">
+                                    <% conDetailsCode.forEach(function(concode){ %>
+                                        <option value="<%= concode.CODE_NAME %>">
+                                        </option>
+                                        <%})%>
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 20px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                            <label for="workorder" class="col-form-label" style="font-size: small;">Work Order
+                                No</label>
+                            <div style="margin-top: -20px;">
+                                <select class="form-control" name="work_order_no" id="work_order_no"
+                                    onchange="getWoDate(this.value)" style="max-height: 30px;max-width: 250px;">
+                                    <option value="NULL" selected>Select Work Order Number</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 32px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Work Order Date</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="workorder_date" name="workorder_date"
+                                    style="max-height: 30px;max-width: 250px;"
+                                    placeholder="Work Order Date Comes Here..." readonly />
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 32px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Total Work Man</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="workman_total"
+                                    style="max-height: 30px;max-width: 250px;"
+                                    placeholder="Total Work Man Comes Here..." disabled />
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Available Work Man</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="available_workman" name="available_work_man"
+                                    style="max-height: 30px;max-width: 250px;"
+                                    placeholder="Available Work Man Comes Here..." disabled />
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="emp_code" class="col-form-label" style="font-size: small;">New Employee
+                                Code</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="emp_code" name="emp_code"
+                                    style="max-height: 30px;max-width: 250px;" placeholder="emp code" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="emp_code" class="col-form-label" style="font-size: small;">Card Number *</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="card_number" name="card_number"
+                                    placeholder="Card Number" readonly style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="Aadhar_card_no" class="col-form-label" style="font-size: small;">Aadhar Card
+                                No</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Aadhar_card_no" name="Aadhar_card_no"
+                                    placeholder="Aadhar card no" onchange="check_aadharno(this.value)"
+                                    style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class=" form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="emp_code" class="col-form-label" style="font-size: small;">Old Employee
+                                Code</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="old_emp_number" name="old_emp_number"
+                                    placeholder="Old Employee Code" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="emp_code" class="col-form-label" style="font-size: small;">Employee Name <br />
+                                as per
+                                Aadhaar
+                                *</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="emp_name" name="emp_name"
+                                    placeholder="Enter Emp Name" required style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 48px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Wo validity from</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="wo_val_from" name="wo_val_from"
+                                    placeholder="Choose Wo validity from &#xf073"
+                                    style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome"
+                                    style="font-family:Arial, FontAwesome" />
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Wo validity To</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="wo_val_to" name="wo_val_to"
+                                    placeholder="Choose Wo validity To &#xf073"
+                                    style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome" />
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="Father" class="col-form-label" style="font-size: small;">Father / Husband
+                                Name</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Father" name="Father"
+                                    placeholder="Father Name" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="designation" class="col-form-label"
+                                style="font-size: small;">Designation</label>
+                            <div style="margin-top: -20px;">
+                                <select class="form-control" id="designation" name="designation"
+                                    style="max-height: 30px;max-width: 250px;">
+                                    <option value="" selected disabled>--Select Designation--</option>
+                                    <option>SITE INCHARGE</option>
+                                    <option>MANAGER</option>
+                                    <option>OWNER</option>
+                                    <option>CONTRACT WORKMEN</option>
+                                    <option>SUPERVISOR</option>
+                                    <option>ENGINEER</option>
+                                    <option>DRIVER</option>
+                                    <option>ACCOUNTANT</option>
+                                    <option>PROPRIETRO</option>
+                                    <option>SECURITY GUARD</option>
+                                    <option>CLEANER</option>
+                                    <option>VICE PRESIDENT</option>
+                                    <option>AUDITOR</option>
+                                    <option>STAFF NURSE</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Area Of Place</label>
+                            <div class="form-group row">
+                                <div style="margin-top: -30px;margin-left: 30px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="area_of_place"
+                                                style="max-height: 30px;max-width: 250px;" id="area_of_place" value="PLANT"
+                                                checked> PLANT</label>
+                                    </div>
+                                </div>
+                                <div style="margin-left: -60px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="area_of_place"
+                                                id="area_of_place" value="NON PLANT"
+                                                style="max-height: 30px;max-width: 250px;">
+                                            NON PLANT</label>
+                                    </div>
+                                </div>
+                                <div style="margin-left: -90px;margin-top:30px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="area_of_place"
+                                                style="max-height: 30px;max-width: 250px;" id="area_of_place"
+                                                value="PLANT & NON PLANT">PLANT & NON PLANT</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 90px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Pass Validity From</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" name="pass_val_from" id="pass_val_from"
+                                    placeholder="Pass Validity From &#xf073"
+                                    style="font-family:Arial, FontAwesome;max-height: 30px;max-width: 250px;" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="middle">
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: -30px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Pass Validity To</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" name="pass_val_to" id="pass_val_to"
+                                    placeholder="Choose Pass Validity To &#xf073"
+                                    style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;" />
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">DOB *</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="dob" name="dob"
+                                    placeholder="Choose DOB &#xf073"
+                                    style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Engaged Date *</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Engaged_Date" name="Engaged_Date"
+                                    placeholder="Coose Engaged Date &#xf073"
+                                    style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Gender</label>
+                            <div style="margin-top: -30px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="gender" id="gender1"
+                                            value="MALE" checked style="max-height: 30px;max-width: 250px;">
+                                        Male </label>
+                                </div>
+                            </div>
+                            <div style="margin-top: -36px;margin-left: 100px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="gender" id="gender2"
+                                            value="FEMALE" style="max-height: 30px;max-width: 250px;">
+                                        Female </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 32px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Marital Status</label>
+                            <div style="margin-top: -30px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="mstatus" id="mstatus1"
+                                            value="M" style="max-height: 30px;max-width: 250px;">
+                                        MARRIED </label>
+                                </div>
+                            </div>
+                            <div style="margin-top: -36px;margin-left: 100px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="mstatus" id="mstatus2"
+                                            value="S" checked style="max-height: 30px;max-width: 250px;">
+                                            UNMARRIED</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 32px;margin-left: 1px;">
+                            <label for="Present_address" class="col-form-label" style="font-size: small;">Present
+                                Address</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Present_address" name="Present_address"
+                                    placeholder="Present address" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                            <label for="permanent_address" class="col-form-label" style="font-size: small;">Permanent
+                                Address</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="permanent_address" name="permanent_address"
+                                    placeholder="permanent address" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                            <label for="permanent_address" class="col-form-label" style="font-size: small;">State
+                                *</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="state" name="state"
+                                    placeholder="Enter State" required style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                            <label for="phone_no" class="col-form-label" style="font-size: small;">Phone No</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="phone_no" name="phone_no"
+                                    placeholder="phone no" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                            <label for="email_id" class="col-form-label" style="font-size: small;">Email Id</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="email_id" name="email_id"
+                                    placeholder="email id" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                            <label for="Emergency_Mobile_Number" class="col-form-label"
+                                style="font-size: small;">Emergency Mobile
+                                Number</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Emergency_Mobile_Number"
+                                    name="Emergency_Mobile_Number" placeholder="Emergency Mobile Number"
+                                    style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                            <label for="nominee_name" class="col-form-label" style="font-size: small;">Nominee
+                                Name</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="nominee_name" name="nominee_name"
+                                    placeholder="nominee name" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                            <label for="nominee_relation" class="col-form-label" style="font-size: small;">Nominee
+                                Relation</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="nominee_relation" name="nominee_relation"
+                                    placeholder="nominee relation" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                            <label for="nominee_dob" class="col-form-label" style="font-size: small;">Nominee
+                                DOB</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="nominee_dob" name="nominee_dob"
+                                    placeholder="Nominee dob &#xf073"
+                                    style="font-family:Arial, FontAwesome;max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                            <label for="category" class="col-form-label" style="font-size: small;">Category</label>
+                            <div style="margin-top: -20px;">
+                                <select id="category" name="category" class="form-control"
+                                    style="max-height: 30px;max-width: 250px;" onchange="getWage(this.value)">
+                                    <option value="" selected disabled>--Select Skill--</option>
+                                    <option>UN SKILLED</option>
+                                    <option>SEMI SKILLED</option>
+                                    <option>SKILLED</option>
+                                    <option>HIGHLY SKILLED</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 32px;margin-left: 1px;">
+                            <label for="wage_per_day" class="col-form-label" style="font-size: small;">Wage Per
+                                Day</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" name="wage_per_day" id="wage_per_day"
+                                    style="max-height: 30px;max-width: 250px;" readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Safety Training From</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" name="safety_training_from"
+                                    placeholder="Choose Safety Training From &#xf073"
+                                    style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;"
+                                    id="safety_training_from" />
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Safety Training To</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" name="safety_training_to"
+                                    id="safety_training_to" placeholder="Choose Safety Training To &#xf073"
+                                    style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="right">
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: -30px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Payroll</label>
+                            <div style="margin-top: -30px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="payroll" id="payroll"
+                                            value="YES" checked style="max-height: 30px;max-width: 250px;">
+                                        YES </label>
+                                </div>
+                            </div>
+                            <div style="margin-top: -36px;margin-left: 100px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="payroll" id="payroll"
+                                            value="NO" style="max-height: 30px;max-width: 250px;">
+                                       NO </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="Incentive_per_day" class="col-form-label" style="font-size: small;">Incentive
+                                Per Day</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Incentive_per_day" name="Incentive_per_day"
+                                    style="max-height: 30px;max-width: 250px;" placeholder="Incentive per day">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                            <label for="Allowance_per_day" class="col-form-label" style="font-size: small;">Allowance
+                                Per Day</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Allowance_per_day" name="Allowance_per_day"
+                                    placeholder="Allowance per day" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                            <label for="Any_other_wages" class="col-form-label" style="font-size: small;">Any Other
+                                Wages</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" style="max-height: 30px;max-width: 250px;" class="form-control"
+                                    id="Any_other_wages" name="Any_other_wages" placeholder="Any other wages">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="UAN" class="col-form-label" style="font-size: small;">UAN</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="uan" name="uan" placeholder="UAN"
+                                    style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="ESI_no" class="col-form-label" style="font-size: small;">ESI No</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" style="max-height: 30px;max-width: 250px;" class="form-control"
+                                    id="ESI_no" name="ESI_no" placeholder="ESI no">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="Identical_mark1" class="col-form-label" style="font-size: small;">Identical
+                                Mark1</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Identical_mark1" name="Identical_mark1"
+                                    placeholder="Identical mark1" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                            <label for="Bank_name" class="col-form-label" style="font-size: small;">Bank Name</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Bank_name" name="Bank_name"
+                                    placeholder="Bank name" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="Account_no" class="col-form-label" style="font-size: small;">Account No</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Account_no" name="Account_no"
+                                    placeholder="Account no" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="Ifsc" class="col-form-label" style="font-size: small;">IFSC CODE</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" style="max-height: 30px;max-width: 250px;" class="form-control"
+                                    id="ifsc_code" name="ifsc_code" placeholder="Ifsc code">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                            <label for="Blood_grp" class="col-form-label" style="font-size: small;">Blood GRP</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Blood_grp" name="Blood_grp"
+                                    placeholder="Blood grp" style="max-height: 30px;max-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label for="Entry_gate" class="col-form-label" style="font-size: small;">Entry Gate</label>
+                            <div style="margin-top: -20px;">
+                                <select class="form-control" id="Entry_gate" name="Entry_gate"
+                                    style="max-height: 30px;max-width: 250px;">
+                                    <option value="" selected disabled>--Select Entry Gate--</option>
+                                    <option>ETP-II</option>
+                                    <option>LCG</option>
+                                    <option>LCG/LG/ETP-II</option>
+                                    <option>LG</option>
+                                    <option>LG/ETP-II</option>
+                                    <option>LG/ETP-II/TTP</option>
+                                    <option>LG/TTP</option>
+                                    <option>LG/WG-I/ETP-II/TTP</option>
+                                    <option>LG/WG-II/TTP/WG-I</option>
+                                    <option>TTP</option>
+                                    <option>WG-I</option>
+                                    <option>WG-I/ETP-II</option>
+                                    <option>WG-I/ETP-II/TTP</option>
+                                    <option>WG-I/TTP</option>
+                                    <option>WG-II</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 36px;margin-left: 1px;">
+                            <label for="Work_spot" class="col-form-label" style="font-size: small;">Department
+                                *</label>
+                            <div style="margin-top: -20px;">
+                                <!--<select class="form-control" id="Work_spot" name="Work_spot" required
+                                    style="max-height: 30px;max-width: 250px;">
+                                    <option value="" selected disabled>--Select Department--</option>
+                                    <option>FINANCE</option>
+                                    <option>HR</option>
+                                    <option>LOGISTICS</option>
+                                    <option>MAINTENANCE</option>
+                                    <option>OPERATION</option>
+                                    <option>PROJECTS</option>
+                                    <option>TECHNICAL</option>
+                                </select>-->
+                                <input type="text" class="form-control" id="Work_spot" name="Work_spot"
+                                placeholder="Department" style="max-height: 30px;max-width: 250px;" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Area Of Work</label>
+                            <div style="margin-top: -20px;">
+                                <input type="text" class="form-control" id="Area_of_work" name="Area_of_work"
+                                placeholder="Area of work" style="max-height: 30px;max-width: 250px;">
+                               <!--<select class="form-control" name="Area_of_work" id="Area_of_work"
+                                    placeholder="Area Of Work" style="max-height: 30px;max-width: 250px;">
+                                    <option value="" selected disabled>--Select Area Of Work--</option>
+                                    <option> ADMIN </option>
+                                    <option> E&I </option>
+                                    <option> F&S </option>
+                                    <option> GENERAL </option>
+                                    <option> IT&S </option>
+                                    <option> MAINTENANCE </option>
+                                    <option> MATERIALS & CONTRACTS </option>
+                                    <option> OHS </option>
+                                    <option> OPERATION </option>
+                                    <option> OTHERS </option>
+                                    <option> PE </option>
+                                    <option> POWER & UTILITIES </option>
+                                    <option> PROJECTS </option>
+                                    <option> PT&S </option>
+                                    <option> PLANT AREA </option>
+                                    <option> NON-PLANT AREA </option>
+                                    <option> PLANT & NON-PLANT AREA</option>
+                                </select>--> 
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">ESI ELIGIBLE</label>
+                            <div style="margin-top: -30px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="esi_eligible"
+                                            id="esi_eligible" value="YES" checked
+                                            style="max-height: 30px;max-width: 250px;">
+                                        YES </label>
+                                </div>
+                            </div>
+                            <div style="margin-top: -36px;margin-left: 100px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="esi_eligible"
+                                            id="esi_eligible" value="NO">
+                                        NO </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">PF ELIGIBLE</label>
+                            <div style="margin-top: -30px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="pf_eligible" id="pf_eligible"
+                                            value="YES" checked style="max-height: 30px;max-width: 250px;">
+                                        YES </label>
+                                </div>
+                            </div>
+                            <div style="margin-top: -36px;margin-left: 100px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="pf_eligible" id="pf_eligible"
+                                            value="NO" style="max-height: 30px;max-width: 250px;">
+                                        NO </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group column"
+                            style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                            <label class="col-form-label" style="font-size: small;">Status</label>
+                            <div style="margin-top: -30px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="status" id="status" value="1"
+                                            checked style="max-height: 30px;max-width: 250px;">
+                                        Active </label>
+                                </div>
+                            </div>
+                            <div style="margin-top: -36px;margin-left: 100px;">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="status" id="status" value="2"
+                                            style="max-height: 30px;max-width: 250px;">
+                                        Inactive </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <center style="margin-top: 270px;margin-left: 60px;">
+                        <input type="submit" class="btn btn-gradient-success btn-rounded btn-fw" id="save_button"
+                            value="Save" style="margin-top: 970px;margin-left: -440px;">
+                        <!--  <button class="btn btn-gradient-danger btn-rounded btn-fw">Cancel</button> -->
+                    </center>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer Page-->
+        <%- include('../nav/footer') %>
+            <!----- Aadhar no validate  ----->
+            <script>
+                function check_aadharno(aadhharno) {
+                    $.ajax({
+                        method: 'POST',
+                        url: '/employee_aadhaar/employee/onchange',
+                        data: { aadhharno: aadhharno },
+                        success: function (aadhardetails) {
+                            //var arr = aadhardetails[0]; 
+                            var len = aadhardetails.length;
+                            //console.log(len);
+                            if (len > 0) {
+                                alert("Aadhaar no already exist. please enter valid Aadhaar no");
+                                $('#Aadhar_card_no').val("");
+                            }
+                        }
+                    });
+                }
+            </script>
+            <!--Contractor Data Bind -->
+            <script>
+
+                function getuniqcode(ccodeName) {
+                    // alert(ccodeName);
+                    var ccode = ccodeName.split("-", 1);
+                    //console.log(ccode[0])
+                    $.ajax({
+                        type: 'POST',
+                        data: { "ccode": ccode[0] },
+                        url: '/get/contractor',
+                        success: function (data) {
+                            $('#work_order_no').empty();
+                            $('#emp_code').empty();
+                            $('#card_number').empty();
+                            $('#work_order_no').append("<option>Select Work Order Number</option >");
+                            //alert(data.length);
+                            console.log(data);
+                            //$('#emp_code').val(data.prfxCode.prefix_code);
+                            for (i = 0; i < data.length; i++) {
+                                var EmpCode = data[1][0].prefix_code;
+                                var EmpCodeCount = data[2][0].availableCount;
+                                var CardCount = data[3][0].card_count;
+                                //var newEmpCodeCount = Number(data[2][0].availableCount) + Number(1);
+                                var NewEmpCode = String(EmpCode) + String(EmpCodeCount);
+                                $('#emp_code').val(NewEmpCode);
+                                $('#card_number').val(CardCount);
+                                for (j = 0; data[0].length; j++) {
+                                    console.log(data[0].length);
+                                    $('#work_order_no').append("<option value = '" + data[0][j].WORK_ORDER + "' > " + data[0][j].WORK_ORDER + " </option > ");
+                                }
+                            }
+                        }
+                    });
+                }
+            </script>
+
+            <!--Get Work Order Date-->
+            <script>
+                function getWoDate(WoNumber) {
+                    //var WoNumber = document.getElementById("work_order_no").value;
+                   // alert(WoNumber);
+                    $.ajax({
+                        type: 'POST',
+                        data: { "wonumber": WoNumber },
+                        url: '/get/contractor/work_order_date',
+                        success: function (data) {
+                            //console.log(data);
+                            $('#workorder_date').empty();
+                            $('#available_workman').empty();
+                            $('#workman_total').empty();
+                            $('#wo_val_from').empty();
+                            $('#workman_total').empty();
+                            $('#Work_spot').empty();
+                            var i;
+                            for (i = 0; i < data.length; i++) {
+                                //alert(addressObj.availableCount);
+                                $('#workorder_date').val(data[0].WO_FROM_DATE.substring(0, 10));
+                                $('#wo_val_from').val(data[0].WO_FROM_DATE.substring(0, 10));
+                                $('#wo_val_to').val(data[0].WO_TO_DATE.substring(0, 10));
+                                $('#workman_total').val(data[0].WORKMEN_TOT);
+                                $('#Work_spot').val(data[0].DEPARTMENT);
+                                var WORKMEN_TOT = data[0].WORKMEN_TOT;
+
+                                var availableCount = data[1].availableCount;
+                                //alert(availableCount);
+
+                                var availableWorkman = Number(WORKMEN_TOT) - Number(availableCount);
+
+                                if (availableWorkman == 0 || availableWorkman < 0) {
+                                    alert('Available workman zero ,cant create the employee');
+                                    $('#available_workman').val(availableWorkman);
+                                    document.getElementById("save_button").style.display = "none";
+
+                                    //document.getElementById('save_button')
+                                }
+                                else {
+
+                                    $('#available_workman').val(availableWorkman);
+                                    document.getElementById("save_button").style.display = "block";
+                                }
+                            }
+                        }
+                    });
+                }
+            </script>
+
+            <!--Available Work Man Validation-->
+            <script>
+                function empFormValidation() {
+                    if (document.getElementById("available_workman").value === 21) {
+                        document.getElementById('Submit').disabled = true;
+                        window.alert("Available Work Man 0");
+                    } else {
+                        document.getElementById('Submit').disabled = false;
+                    }
+                }
+            </script>
+
+            <!--   Date Format-->
+            <script>
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#wo_val_from').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                    $("#wo_val_from").keyup(function () {
+                        if ($(this).val().length == 4) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 7) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 10) {
+                            // $(this).val($(this).val() + "-");
+                        }
+                    });
+                });
+
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#wo_val_to').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                    $("#wo_val_to").keyup(function () {
+                        if ($(this).val().length == 4) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 7) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 10) {
+                            // $(this).val($(this).val() + "-");
+                        }
+                    });
+                });
+
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#dob').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                    $("#dob").keyup(function () {
+                        if ($(this).val().length == 4) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 7) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 10) {
+                            // $(this).val($(this).val() + "-");
+                        }
+                    });
+                });
+
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#Engaged_Date').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                    $("#Engaged_Date").keyup(function () {
+                        if ($(this).val().length == 4) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 7) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 10) {
+                            // $(this).val($(this).val() + "-");
+                        }
+                    });
+                });
+
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#nominee_dob').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                    $("#nominee_dob").keyup(function () {
+                        if ($(this).val().length == 4) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 7) {
+                            $(this).val($(this).val() + "-");
+                        }
+                        else if ($(this).val().length == 10) {
+                            // $(this).val($(this).val() + "-");
+                        }
+                    });
+                });
+
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#pass_val_from').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#pass_val_to').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#safety_training_from').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#safety_training_to').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+            </script>
+
+            <!--Get Wage Value-->
+            <script>
+                function getWage(wage) {
+
+                    if (wage == "UN SKILLED") {
+                        
+                    $('#wage_per_day').val(645);
+
+                    } else if (wage == "SEMI SKILLED") {
+
+                    $('#wage_per_day').val(714);
+
+                    } else if (wage == "SKILLED") {
+
+                    $('#wage_per_day').val(784);
+
+                    } else if (wage == "HIGHLY SKILLED") {
+
+                    $('#wage_per_day').val(853);
+
+                    }
+                }
+            </script>
+
+            <!--Automatic Permanent Address-->
+            <script>
+                function getPresentAdd(a) {
+                    //alert(a);
+                    //$('#permanent_address').empty();
+                    var presentAdd = document.getElementById('Present_address').value;
+                    //alert(presentAdd);
+                    if (a == 1) {
+                        $('#permanent_address').val(presentAdd);
+                    } else if (a == 2) {
+                        $('#permanent_address').val("");
+                    }
+                }
+            </script>

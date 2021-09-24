@@ -1,0 +1,111 @@
+<%- include ('../nav/header') %>
+<!-- Sidebar Page -->
+<%- include('../nav/sidebar') %>
+<style>
+	table {
+		font-size: 0.6rem;
+	}
+	table td,th {
+		font-size: 0.6rem !important;
+	}
+</style>
+<!--Loading Images-->
+<div class="preload loading_position">
+	<img src="assets/loading/Hourglass.gif">
+</div>
+<div id="overlay" class="wage2overlayaligns">
+	<div class="content-wrapper">
+		<div class="col-lg-12 grid-margin stretch-card" id="table">
+			<div class="card tablecard">
+				<div class="card-body">
+					<h4 class="card-title titlealign">Deduction</h4>
+					<div class="col-sm-12 text-right">
+						<div class="w3-show-inline-block">
+							<div class="w3-bar">
+								<a type="button" class="btn btn-gradient-primary btn-rounded btn-fw f-r m-b-20"
+									id="addbutton" href="/deduction/add">New</a>
+
+								<button type="button" class="btn btn-gradient-info btn-icon-text"
+									onclick="window.print();">
+									Print <i class="mdi mdi-printer btn-icon-append"></i>
+								</button>
+								<button type="button" class="btn btn-gradient-info btn-icon-text"
+									onclick="window.excel();">
+									Excel <i class="mdi mdi-excel btn-icon-append"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<!--Form Data-->
+					<div class="card" id="newform">
+						<div class="card-body"></div>
+					</div>
+					<div class="col-lg-12 grid-margin stretch-card" id="table">
+						<div class="card overflow-x overflow-y-hidden">
+							<div class="card-body">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>Payroll Month</th>
+											<th>Payroll Year</th>
+											<th>Payroll Date</th>
+											<th>Employee Code</th>
+											<th>Name</th>
+											<th>Work Order No</th>
+											<th>Advance Amount</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<% deduction_view.forEach(function(deduction){ %>
+											<tr>
+												<td class="py-1">
+													<%= deduction.payroll_month %>
+												</td>
+												<td>
+													<%= deduction.payroll_year %>
+												</td>
+												<td>
+													<%= moment(deduction.date).format('YYYY-MM-DD'); %>
+												</td>
+												<td>
+													<%= deduction.id_card_no %>
+												</td>
+												<td>
+													<%= deduction.name %>
+												</td>
+												<td>
+													<%= deduction.workorder_no %>
+												</td>
+												<td>
+													<%= deduction.advance_amount %>
+												</td>
+												<td>
+													<a href="employee_Edit/<%= deduction.ID %>"
+														class="btn btn-sm btn-primary">Edit</a>
+												</td>
+											</tr>
+
+											<% }) %>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<!-- Footer Page-->
+	<%- include('../nav/footer') %>
+
+	<!--Initial Loading-->
+	<script type="text/javascript">
+		window.onload = function () {
+			$(".preload").hide();
+			document.getElementById("overlay").style.display = "block";
+		};
+	</script>
+

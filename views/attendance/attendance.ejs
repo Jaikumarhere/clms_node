@@ -1,0 +1,261 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+	<style>
+		table {
+			border: 1px solid;
+			font-family: auto;
+		}
+
+		table th {
+			border: 1px solid;
+		}
+
+		table td {
+			border: 1px solid;
+		}
+	</style>
+	<div id="overlay" class="overlayalign">
+		<div class="content-wrapper">
+			<div class="col-lg-12 grid-margin stretch-card" id="table">
+				<div class="card tablecard">
+					<div class="content-wrapper">
+						<div class="row">
+
+							<div class="card w-full">
+								<div class="card-body">
+									<h4 class="card-title titlealign">Attendence</h4>
+
+									<form class="form-inline">
+										<input list="cont_code" class="form-control" name="ccode" id="ccode"
+											required>
+										<datalist id="cont_code">
+											<option value="0">ALL</option>
+											<% conDetailsCode.forEach(function(concode){ %>
+												<option value="<%= concode.CODE_NAME %>">
+												</option>
+												<%})%>
+										</datalist>
+										&nbsp;&nbsp;
+										<!-- <label class="sr-only" for="from_date">From Date</label> -->
+										<input type="date" class="form-control mb-2 mr-sm-2 mr-10" id="from_date"
+											name="from_date" placeholder="from date">
+
+										<!-- <label class="sr-only" for="to_date">To Date</label> -->
+
+										<input type="date" class="form-control" id="to_date" name="to_date"
+											placeholder="to date">
+										&nbsp;&nbsp;
+										<input type="button" class="btn btn-gradient-primary mb-2 mr-10" value="Go"
+											onclick="get_contractor()" />
+										<!-- <button class="btn btn-gradient-primary mb-2" onclick="get_contractor()">Go</button> -->
+									</form>
+									<br /><br />
+									<div class="col-sm-12 text-right">
+										<div class="w3-show-inline-block">
+											<div class="w3-bar dis-none" id="btn_show">
+												<button type="button" class="btn btn-gradient-info btn-icon-text"
+													onclick="printDiv('att_datas')"> Print <i
+														class="mdi mdi-printer btn-icon-append"></i>
+												</button>
+
+												<a href="#" id="test" onclick="fnExcelReport();"
+													class="btn btn-success btn-sm h-2p5_rem p-12"><span
+														class="glyphicon glyphicon-download-alt"></span>Export to
+													Excel</a>
+											</div>
+										</div>
+									</div>
+									<br />
+									<!--Loading Images-->
+									<div class="preload loading_position">
+										<img src="assets/loading/Hourglass.gif">
+									</div>
+									<div class="container-fluid" id="att_datas">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<!-- Footer Page-->
+		<%- include('../nav/footer') %>
+
+		 <!--Initial Loading-->
+		 <script type="text/javascript">
+            window.onload = function () {
+                $(".preload").hide();
+                document.getElementById("overlay").style.display = "block";
+            };
+        </script>
+
+		<!--Table Append-->
+		<script>
+			function get_contractor() {
+				$(".preload").show();
+				document.getElementById('btn_show').style.display = 'block';
+				var contractor_code = document.getElementById("ccode").value;
+				var from_date = document.getElementById("from_date").value;
+				var to_date = document.getElementById("to_date").value;
+				//alert(contractor_code);
+				//alert(from_date);
+				//alert(to_date);
+				var attendance_mis_report = document.getElementById('att_datas');
+					$.ajax({
+						type: 'POST',
+						data: { contractor_code: contractor_code,from_date: from_date, to_date: to_date },
+						url: '/attendance/new',
+						success: function (data) {
+							$(".preload").hide();
+							//console.log(data);
+							attendance_mis_report.innerHTML = "";
+							
+							var tr = `<table class='w-full'><tr>
+								<th colspan='6'>SHIFT WISE REPORTED DETAILS ON ${from_date} To ${to_date}</th>
+							</tr>
+							<tr>
+								<th>ENTRY GATE</th>
+								<th>1st SHIFT</th>
+								<th>2nd SHIFT</th>
+								<th>3rd SHIFT</th>
+								<th>G SHIFT</th>
+								<th>Total</th>
+							</tr>`
+							
+							
+							var flags = [], output = [], l = data.length, i;
+							for (i = 0; i < l; i++) {
+								if (flags[data[i].name]) continue;
+								flags[data[i].name] = true;
+								output.push(data[i].name);
+							}
+							
+							//console.log(output)
+							var shift1_tot = 0;
+							var shiftg_tot = 0;
+							var shift2_tot = 0;
+							var shift3_tot = 0;
+							var g_t_total = 0;
+							for(j=0;j<output.length;j++){
+								tr +=`<tr><th>${output[j]}</th>`
+								attArr = [];
+								var total = 0;
+								var gtotal = 0;
+								gtotArr = [];
+
+								for(k=0;k<data.length;k++){
+									if(output[j] == data[k].name){
+										attArr.push(data[k]);
+										tr +=`<td>${data[k].ECOUNT}</td>`
+										total +=data[k].ECOUNT;
+									}
+									gtotal += data[k].ECOUNT;
+									//console.log(gtotal);
+									gtotArr.push(gtotal);
+									console.log(gtotArr);
+								}
+								//console.log("tets");
+								//console.log(attArr);
+								shift1_tot += attArr[0].ECOUNT;
+								shiftg_tot += attArr[1].ECOUNT;
+								shift2_tot += attArr[2].ECOUNT;
+								shift3_tot += attArr[3].ECOUNT;
+								g_t_total += total;
+								tr +=`<td>${total}</td></tr>`
+							}
+							//console.log(shift1_tot);
+							//console.log(shiftg_tot);
+							//console.log(shift2_tot);
+							//console.log(shift3_tot);
+
+							tr +=`<tr>
+									<th>GRAND TOTAL</th>
+									<th>${shift1_tot}</th>
+									<th>${shiftg_tot}</th>
+									<th>${shift2_tot}</th>
+									<th>${shift3_tot}</th>
+									<th>${g_t_total}</th>
+									</tr>`
+							attendance_mis_report.innerHTML += tr;
+						}
+					});
+			}
+		</script>
+
+		<!--Excel Download-->
+		<script>
+			function fnExcelReport() {
+				var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+				tab_text = tab_text + '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+				tab_text = tab_text + '<x:Name>Test Sheet</x:Name>';
+				tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+				tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+				tab_text = tab_text + "<table border='1px'>";
+
+				// Remove Dynamic hidden controls.
+				var list = $('#att_datas').find('.ng-hide');
+				for (var i = list.length - 1; 0 <= i; i--) {
+					if (list[i] && list[i].parentElement) {
+						list[i].parentElement.removeChild(list[i]);
+					}
+				}
+
+				// Getting dynamic controll values.
+				var list = $('#att_datas').find('.dvItems');
+				var values = "";
+				for (var i = 0; i <= list.length - 1; i++) {
+					if (list[i] && list[i].parentElement) {
+						values += $(list[i]).text().trim();
+					}
+				}
+				for (var i = 0; i <= list.length - 1; i++) {
+					if (i == 0) {
+						// Replace last comma and assign value.
+						$($('#att_datas').find('.dvItems')[i]).text(values.replace(/,\s*$/, ""));
+					}
+					else {
+						$($('#att_datas').find('.dvItems')[i]).text("");
+					}
+				}
+				tab_text = tab_text + $('#att_datas').html();
+				tab_text = tab_text + '</table></body></html>';
+				var data_type = 'data:application/vnd.ms-excel';
+				var ua = window.navigator.userAgent;
+				var msie = ua.indexOf("MSIE ");
+
+				if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+					if (window.navigator.msSaveBlob) {
+						var blob = new Blob([tab_text], {
+							type: "application/vnd.ms-excel;charset=utf-8;"
+						});
+						navigator.msSaveBlob(blob, 'Coupon.xls');
+					}
+				} else {
+					window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+				}
+			}
+		</script>
+
+		<!--print funtion-->
+		<script>
+			function printDiv(att_datas) {
+				var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+				mywindow.document.write('<html><head><title></title>');
+				mywindow.document.write('<style>table {width : 100%;border-collapse: collapse !important;}table th {color: black;border: 1px solid black;}table td {text-align: center;border: 1px solid black;}.f-w-b {font-weight: bold;}.fs-8 {font-size: 8px;}</style></head><body >');
+				//mywindow.document.write('<h1>' + document.title + '</h1>');
+				mywindow.document.write(document.getElementById(att_datas).innerHTML);
+				mywindow.document.write('</body></html>');
+
+				mywindow.document.close(); // necessary for IE >= 10
+				mywindow.focus(); // necessary for IE >= 10*/
+
+				mywindow.print();
+				mywindow.close();
+
+				return true;
+			}
+		</script>

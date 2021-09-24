@@ -1,0 +1,149 @@
+<%- include ('../nav/header') %>
+    <!-- Sidebar Page -->
+    <%- include('../nav/sidebar') %>
+
+     <!--Loading Images-->
+     <div class="preload loading_position">
+        <img src="assets/loading/Hourglass.gif">
+    </div>
+
+        <div id="overlay">
+            <div class="body">
+             
+                
+                <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card overflow-x overflow-y-hidden" id="table">
+                    <div class="card-body">
+                        <h4 class="card-title">Employee List</h4>
+                        <div class="form-group"> 
+                            <input type="search" placeholder="Search Here" class="form-control search-input" data-table="customers-list"/>
+                        </div>
+                        <table class="table table-striped mt32 customers-list">
+                            <thead>
+                                <tr>
+                                    <th>New Code</th>
+                                    <th>CARD NO</th>
+                                    <th>Contractor Code</th>
+                                    <th>DESIGNATION</th>
+                                    <!--<th>AREA OF WORK</th>
+                                    <th>AREA OF PLACE</th>-->
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% view.forEach(function(emp_master){ %>
+                                    <tr>
+                                        <td class="py-1">
+                                            <%= emp_master.NEW_CODE %>
+                                        </td>
+                                        <td>
+                                            <%= emp_master.ECODE %>
+                                        </td>
+                                        <td>
+                                            <label class="badge badge-gradient-success"><%= emp_master.CCODE %></label>
+                                            
+                                        </td>
+                                        <td>
+                                            <%= emp_master.DESIGNATION %>
+                                        </td>
+                                        <!--<td>
+                                            <%= emp_master.AREA_OF_WORK %>
+                                        </td>
+                                        <td>
+                                            <%= emp_master.area_of_place %>
+                                        </td>-->
+                                        <td>
+                                            <a href="changereq_Edit/<%= emp_master.ID %>" class="btn btn-sm btn-primary">View</a>
+                                            
+                                        </td>
+                                    </tr>
+
+                                    <% }) %>
+                            </tbody> 
+                        </table> 
+                    </div>
+                    
+                </div>
+
+                </div>
+            </div>
+        </div>
+
+    <!-- Footer Page-->
+    <%- include('../nav/footer') %>
+
+
+    <!--Onload Funcation-->
+    
+    <script type="text/javascript">
+        window.onload = function () {
+            $(".preload").hide();
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("newform").style.display = "none";
+        };
+    </script>
+
+    <!--Table Search-->
+    <script>
+        (function(document) {
+            'use strict';
+
+            var TableFilter = (function(myArray) {
+                var search_input;
+
+                function _onInputSearch(e) {
+                    search_input = e.target;
+                    var tables = document.getElementsByClassName(search_input.getAttribute('data-table'));
+                    myArray.forEach.call(tables, function(table) {
+                        myArray.forEach.call(table.tBodies, function(tbody) {
+                            myArray.forEach.call(tbody.rows, function(row) {
+                                var text_content = row.textContent.toLowerCase();
+                                var search_val = search_input.value.toLowerCase();
+                                row.style.display = text_content.indexOf(search_val) > -1 ? '' : 'none';
+                            });
+                        });
+                    });
+                }
+
+                return {
+                    init: function() {
+                        var inputs = document.getElementsByClassName('search-input');
+                        myArray.forEach.call(inputs, function(input) {
+                            input.oninput = _onInputSearch;
+                        });
+                    }
+                };
+            })(Array.prototype);
+
+            document.addEventListener('readystatechange', function() {
+                if (document.readyState === 'complete') {
+                    TableFilter.init();
+                }
+            });
+
+        })(document);
+    </script>
+
+    <!--Employee Delete-->
+    <script>
+        function empDelete(empId,empCode) {
+
+            if (confirm("Are you sure you want to delete this employee-->"+empCode)) {
+            // Delete Employee
+            $.ajax({
+                type: 'POST',
+                data: { "empId" : empId,"empCode" : empCode},
+                url: '/employee_delete',
+                success: function(data){
+                    //console.log(data);
+                    alert(data+"-->Deleted Successfully");
+                    location.reload();
+                }
+            });
+            } else {
+            // Do nothing
+            }
+        }
+    </script>
+
+

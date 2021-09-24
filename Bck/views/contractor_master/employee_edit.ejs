@@ -1,0 +1,848 @@
+<%- include ('../nav/header') %>
+    <!-- Sidebar Page -->
+    <%- include('../nav/sidebar') %>
+        <a type="button" class="btn btn-gradient-primary btn-rounded btn-fw" id="addbutton" href="/employeenew"
+            style="margin-top: -10px;">Back</a>
+        <br /><br />
+        <div class="card" style="margin-top: -14px;overflow-y: auto;min-height: 1100px;">
+            <div class="card-body" style="margin-top: -35px;">
+                <h4 class="card-title">Employee Edit</h4>
+
+                <% Emp_edit_data.forEach(function(empdata) { %>
+
+                    <form class="forms-sample" method="POST" action="/employee/update" autocomplete="off"
+                        onsubmit="showAlert()" style="margin-top: -240px;">
+                        <div id="left">
+                            <input type="hidden" name="id" value="<%= empdata.ID %>" />
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: -30px;">
+                                <label for="code" class="col-form-label" style="font-size: small;">Contractor
+                                    Code</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" name="ccode" id="code"
+                                        value="<%= empdata.CCODE %>" style="max-height: 10px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 20px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                                <label for="work_order_no" class="col-form-label" style="font-size: small;">Work Order
+                                    No</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" name="work_order_no" id="work_order_no"
+                                        value="<%= empdata.WORK_ORDER_No %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 32px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Work Order Date</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" value="<%= empdata.WORK_OR_DATE %>"
+                                        style="max-height: 30px;max-width: 250px;" id="workorder_date"
+                                        name="workorder_date" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="emp_code" class="col-form-label" style="font-size: small;">Employee
+                                    Code</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" value="<%= empdata.NEW_CODE %>"
+                                        name="emp_code" id="emp_code" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="emp_code" class="col-form-label" style="font-size: small;">Card
+                                    Number</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="card_number" name="card_number"
+                                        value="<%= empdata.ECODE %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="Aadhar_card_no" class="col-form-label" style="font-size: small;">Aadhar Card
+                                    No</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Aadhar_card_no" name="Aadhar_card_no"
+                                        value="<%= empdata.AADHAR %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="emp_code" class="col-form-label" style="font-size: small;">Old Employee
+                                    Code</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="old_emp_number" name="old_emp_number"
+                                        value="<%= empdata.PRE_CODE %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="emp_code" class="col-form-label" style="font-size: small;">Employee
+                                    Name</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="emp_name" name="emp_name"
+                                        value="<%= empdata.ENAME %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Wo validity from</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="wo_val_from" name="wo_val_from"
+                                        value="<%= empdata.WO_FROM %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Wo validity To</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="wo_val_to" name="wo_val_to"
+                                        value="<%= empdata.WO_TO %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 48px;margin-left: 1px;">
+                                <label for="Father" class="col-form-label" style="font-size: small;">Father / Husband
+                                    Name</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" value="<%= empdata.FATHER %>" id="Father"
+                                        name="Father" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="designation" class="col-form-label"
+                                    style="font-size: small;">Designation</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="designation" name="designation"
+                                        value="<%= empdata.DESIGNATION %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">DOB</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="dob" name="dob"
+                                        value="<%= empdata.DOB %>"
+                                        style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;">
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Area Of Place</label>
+                                <div class="form-group row">
+                                    <div style="margin-top: -30px;margin-left: 30px;">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="hidden" value="<%= empdata.area_of_place %>"
+                                                    id="AREAOFPLACE" />
+                                                <input type="radio" class="form-check-input" name="area_of_place"
+                                                    id="area_of_place1" value="PLANT"
+                                                    style="max-height: 30px;max-width: 250px;"> PLANT</label>
+                                        </div>
+                                    </div>
+                                    <div style="margin-left: -60px;">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" name="area_of_place"
+                                                    style="max-height: 30px;max-width: 250px;" id="area_of_place2"
+                                                    value="NON PLANT"> NON PLANT</label>
+                                        </div>
+                                    </div>
+                                    <div style="margin-left: -90px;margin-top:30px;">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" name="area_of_place"
+                                                    id="area_of_place3" value="PLANT & NON PLANT"
+                                                    style="max-height: 30px;max-width: 250px;">PLANT & NON PLANT</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 90px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Pass Validity From</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" name="pass_val_from" id="pass_val_from"
+                                        value="<%= empdata.PASS_VALID_FROM %>"
+                                        style="font-family:Arial, FontAwesome;max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Pass Validity To</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" name="pass_val_to" id="pass_val_to"
+                                        value="<%= empdata.PASS_VALID_TO %>"
+                                        style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="middle">
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: -30px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Engaged Date</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Engaged_Date" name="Engaged_Date"
+                                        value="<%= empdata.ENGAGED_DATE %>"
+                                        style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Gender</label>
+                                <div style="margin-top: -30px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="hidden" style="max-height: 30px;max-width: 250px;"
+                                                value="<%= empdata.GENDER %>" id="GENDER" />
+                                            <input type="radio" style="max-height: 30px;max-width: 250px;"
+                                                class="form-check-input" name="gender" id="gender1" value="MALE">
+                                            MALE </label>
+                                    </div>
+                                </div>
+                                <div style="margin-top: -36px;margin-left: 70px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="gender" id="gender2"
+                                                value="FEMALE">
+                                            FEMALE </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 32px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Marital Status</label>
+                                <div style="margin-top: -30px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="hidden" value="<%= empdata.MARITAL_STATUS %>"
+                                                style="max-height: 30px;max-width: 250px;" id="MARITALSTATUS" />
+                                            <input type="radio" class="form-check-input" name="mstatus" id="mstatus1"
+                                                value="MARRIED" style="max-height: 30px;max-width: 250px;">
+                                            MARRIED</label>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div style="margin-top: -36px;margin-left: 80px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="mstatus" id="mstatus2"
+                                                value="UNMARRIED">
+                                                UNMARRIED</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 32px;margin-left: 1px;">
+                                <label for="Present_address" class="col-form-label" style="font-size: small;">Present
+                                    Address</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Present_address" name="Present_address"
+                                        value="<%= empdata.PRE_ADDRESS %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="permanent_address" class="col-form-label"
+                                    style="font-size: small;">Permanent Address</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="permanent_address"
+                                        style="max-height: 30px;max-width: 250px;" name="permanent_address"
+                                        value="<%= empdata.PERMANENT_ADDRESS %>">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="permanent_address" class="col-form-label"
+                                    style="font-size: small;">State</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="state" name="state"
+                                        value="<%= empdata.STATE %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="phone_no" class="col-form-label" style="font-size: small;">Phone No</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="phone_no" name="phone_no"
+                                        value="<%= empdata.PHONE_NO %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="email_id" class="col-form-label" style="font-size: small;">Email Id</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="email_id" name="email_id"
+                                        value="<%= empdata.EMAIL_ID %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="Emergency_Mobile_Number" class="col-form-label"
+                                    style="font-size: small;">Emergency Mobile
+                                    Number</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Emergency_Mobile_Number"
+                                        style="max-height: 30px;max-width: 250px;" name="Emergency_Mobile_Number"
+                                        value="<%= empdata.MOBILE_NO %>">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="nominee_name" class="col-form-label" style="font-size: small;">Nominee
+                                    Name</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="nominee_name" name="nominee_name"
+                                        value="<%= empdata.NOMINEE_NAME %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="nominee_relation" class="col-form-label" style="font-size: small;">Nominee
+                                    Relation</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="nominee_relation"
+                                        style="max-height: 30px;max-width: 250px;" name="nominee_relation"
+                                        value="<%= empdata.NOMINEE_RELATION %>">
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="nominee_dob" class="col-form-label" style="font-size: small;">Nominee
+                                    DOB</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="nominee_dob" name="nominee_dob"
+                                        value="<%= empdata.NOMINEE_DOB %>"
+                                        style="font-family:Arial, FontAwesome;max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="category" class="col-form-label" style="font-size: small;">Category</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="category" name="category"
+                                        value="<%= empdata.Catogery %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 35px;margin-left: 1px;">
+                                <label for="wage_per_day" class="col-form-label" style="font-size: small;">Wage Per
+                                    Day</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="wage_per_day" name="wage_per_day"
+                                        value="<%= empdata.WAGE %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Safety Training From</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" name="safety_training_from"
+                                        style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;"
+                                        id="safety_training_from" value="<%= empdata.SAFETY_TRAINING_FROM %>">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Safety Training To</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" name="safety_training_to"
+                                        style="max-height: 30px;max-width: 250px;font-family:Arial, FontAwesome;"
+                                        id="safety_training_to" value="<%= empdata.SAFETY_TRAINING_TO %>" />
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Payroll</label>
+                                <div style="margin-top: -30px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="hidden" value="<%= empdata.payroll %>" id="PAYROLL" />
+                                            <input type="radio" class="form-check-input" name="payroll" id="payroll1"
+                                                value="YES" style="max-height: 30px;max-width: 250px;">
+                                                YES </label>
+                                    </div>
+                                </div>
+                                <div style="margin-top: -36px;margin-left: 100px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="payroll" id="payroll2"
+                                                value="NO" style="max-height: 30px;max-width: 250px;">
+                                            NO </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="right">
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: -30px;margin-left: 1px;">
+                                <label for="Incentive_per_day" class="col-form-label"
+                                    style="font-size: small;">Incentive Per Day</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Incentive_per_day"
+                                        style="max-height: 30px;max-width: 250px;" name="Incentive_per_day"
+                                        value="<%= empdata.INCENTIVE %>">
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                                <label for="Allowance_per_day" class="col-form-label"
+                                    style="font-size: small;">Allowance Per Day</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Allowance_per_day"
+                                        style="max-height: 30px;max-width: 250px;" name="Allowance_per_day"
+                                        value="<%= empdata.ALLOWANCE %>">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                                <label for="Any_other_wages" class="col-form-label" style="font-size: small;">Any Other
+                                    Wages</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Any_other_wages" name="Any_other_wages"
+                                        value="<%= empdata.OTHERS %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="UAN" class="col-form-label" style="font-size: small;">UAN</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="UAN" name="uan"
+                                        value="<%= empdata.UAN %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="ESI_no" class="col-form-label" style="font-size: small;">ESI No</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="ESI_no" name="ESI_no"
+                                        value="<%= empdata.ESI %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="Identical_mark1" class="col-form-label" style="font-size: small;">Identical
+                                    Mark1</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Identical_mark1" name="Identical_mark1"
+                                        value="<%= empdata.IDENTY_MARK %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                                <label for="Bank_name" class="col-form-label" style="font-size: small;">Bank
+                                    Name</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Bank_name" name="Bank_name"
+                                        value="<%= empdata.BANK_NAME %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="Account_no" class="col-form-label" style="font-size: small;">Account
+                                    No</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Account_no" name="Account_no"
+                                        value="<%= empdata.ACCOUNT_NO %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="Ifsc" class="col-form-label" style="font-size: small;">IFSC CODE</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="ifsc_code" name="ifsc_code"
+                                        value="<%= empdata.ifsc_code %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 40px;margin-left: 1px;">
+                                <label for="Blood_grp" class="col-form-label" style="font-size: small;">Blood
+                                    GRP</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Blood_grp" name="Blood_grp"
+                                        value="<%= empdata.BLOOD_GROUP %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label for="Entry_gate" class="col-form-label" style="font-size: small;">Entry
+                                    Gate</label>
+                                <div style="margin-top: -20px;">
+                                    <input type="text" class="form-control" id="Entry_gate" name="Entry_gate"
+                                        value="<%= empdata.ENTRY_GATE %>" style="max-height: 30px;max-width: 250px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 36px;margin-left: 1px;">
+                                <label for="Work_spot" class="col-form-label" style="font-size: small;">Department</label>
+                                <div style="margin-top: -20px;">
+                                    <select class="form-control" id="Work_spot" name="Work_spot"
+                                        style="max-height: 30px;max-width: 250px;">
+                                        <option value="<%= empdata.WROK_SPOT %>" selected>--<%= empdata.WROK_SPOT %>--
+                                        </option>
+                                        <option>FINANCE</option>
+                                        <option>HR</option>
+                                        <option>LOGISTICS</option>
+                                        <option>MAINTENANCE</option>
+                                        <option>OPERATION</option>
+                                        <option>PROJECTS</option>
+                                        <option>TECHNICAL</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Area Of Work</label>
+                                <div style="margin-top: -20px;">
+                                    <select class="form-control" name="Area_of_work" id="Area_of_work"
+                                        placeholder="Area Of Work" style="max-height: 30px;max-width: 250px;">
+                                        <option value="<%= empdata.AREA_OF_WORK %>" selected>--<%= empdata.AREA_OF_WORK
+                                                %>--
+                                        </option>
+                                        <option> ADMIN </option>
+                                        <option> E&I </option>
+                                        <option> F&S </option>
+                                        <option> GENERAL </option>
+                                        <option> IT&S </option>
+                                        <option> MAINTENANCE </option>
+                                        <option> MATERIALS & CONTRACTS </option>
+                                        <option> OHS </option>
+                                        <option> OPERATION </option>
+                                        <option> OTHERS </option>
+                                        <option> PE </option>
+                                        <option> POWER & UTILITIES </option>
+                                        <option> PROJECTS </option>
+                                        <option> PT&S </option>
+                                        <option> PLANT AREA </option>
+                                        <option> NON-PLANT AREA </option>
+                                        <option> PLANT & NON-PLANT AREA</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">ESI ELIGIBLE</label>
+                                <div style="margin-top: -30px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="hidden" value="<%= empdata.esi_eligible %>" id="ESIELIGIBLE" />
+                                            <input type="radio" class="form-check-input" name="esi_eligible"
+                                                id="esi_eligible1" value="YES" style="max-height: 30px;max-width: 250px;">
+                                            YES </label>
+                                    </div>
+                                </div>
+                                <div style="margin-top: -36px;margin-left: 100px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="esi_eligible"
+                                                id="esi_eligible2" value="NO">
+                                            NO </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">PF ELIGIBLE</label>
+                                <div style="margin-top: -30px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="hidden" value="<%= empdata.pf_eligible %>" id="PFELIGIBLE" />
+                                            <input type="radio" class="form-check-input" name="pf_eligible"
+                                                id="pf_eligible1" value="YES" style="max-height: 30px;max-width: 250px;">
+                                            YES </label>
+                                    </div>
+                                </div>
+                                <div style="margin-top: -36px;margin-left: 100px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="pf_eligible"
+                                                id="pf_eligible2" value="NO" style="max-height: 30px;max-width: 250px;">
+                                            NO </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group column"
+                                style="max-height: 15px;align-items: baseline;margin-top: 38px;margin-left: 1px;">
+                                <label class="col-form-label" style="font-size: small;">Status</label>
+                                <div style="margin-top: -30px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="hidden" value="<%= empdata.STATUS %>" id="STATUS" />
+                                            <input type="radio" class="form-check-input" name="status" id="status1"
+                                                value="1" style="max-height: 30px;max-width: 250px;">
+                                            Active </label>
+                                    </div>
+                                </div>
+                                <div style="margin-top: -36px;margin-left: 100px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+
+                                            <input type="radio" class="form-check-input" name="status" id="status2"
+                                                value="2" style="max-height: 30px;max-width: 250px;">
+                                            Inactive </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <center style="margin-top: 270px;margin-left: 60px;">
+                            <button type="submit" class="btn btn-primary"
+                                style="margin-top: 80px;margin-left: -120px;">Update</button>
+                        </center>
+                    </form>
+                    <% }) %>
+
+
+
+            </div>
+        </div>
+        <%- include('../nav/footer') %>
+
+            <!--Radio Button Ckecked-->
+            <script>
+                //Gender 
+                var gender = document.getElementById("GENDER").value;
+                if (gender == 'MALE') {
+                    document.getElementById("gender1").checked = true;
+                } else if (gender == 'FEMALE') {
+                    document.getElementById("gender2").checked = true;
+                } else if (gender == '' || status == 'NULL') {
+                    document.getElementById("gender1").checked = false;
+                    document.getElementById("gender2").checked = false;
+                }
+
+                //Marital Status
+                var ms = document.getElementById("MARITALSTATUS").value;
+                if (ms == 'MARRIED') {
+                    document.getElementById("mstatus1").checked = true;
+                } else if (ms == 'UNMARRIED') {
+                    document.getElementById("mstatus2").checked = true;
+                } else if (ms == '' || status == 'NULL') {
+                    document.getElementById("mstatus1").checked = false;
+                    document.getElementById("mstatus2").checked = false;
+                }
+
+                //Area Of Place
+                var ap = document.getElementById("AREAOFPLACE").value;
+                if (ap == 'PLANT') {
+                    document.getElementById("area_of_place1").checked = true;
+                } else if (ap == 'NON PLANT') {
+                    document.getElementById("area_of_place2").checked = true;
+                } else if (ap == 'NON & NONPLANT') {
+                    document.getElementById("area_of_place3").checked = true;
+                }
+                else if (ap == '' || status == 'NULL') {
+                    document.getElementById("area_of_place1").checked = false;
+                    document.getElementById("area_of_place2").checked = false;
+                    document.getElementById("area_of_place3").checked = false;
+                }
+
+                //Pay Roll
+                var pr = document.getElementById("PAYROLL").value;
+                //alert(pr)
+                if (pr == 'YES') {
+                    document.getElementById("payroll1").checked = true;
+                } else if (pr == 'NO') {
+                    document.getElementById("payroll2").checked = true;
+                } else if (pr == '' || status == 'NULL') {
+                    document.getElementById("payroll1").checked = false;
+                    document.getElementById("payroll2").checked = false;
+                }
+
+                //ESI ELIGIBLE
+                var ee = document.getElementById("ESIELIGIBLE").value;
+                if (ee == 'YES') {
+                    document.getElementById("esi_eligible1").checked = true;
+                } else if (ee == 'NO') {
+                    document.getElementById("esi_eligible2").checked = true;
+                } else if (ee == '' || status == 'NULL') {
+                    document.getElementById("esi_eligible1").checked = false;
+                    document.getElementById("esi_eligible2").checked = false;
+                }
+
+                //PF ELIGIBLE
+                var pe = document.getElementById("PFELIGIBLE").value;
+                if (pe == 'YES') {
+                    document.getElementById("pf_eligible1").checked = true;
+                } else if (pe == 'NO') {
+                    document.getElementById("pf_eligible2").checked = true;
+                } else if (pe == '' || status == 'NULL') {
+                    document.getElementById("pf_eligible1").checked = false;
+                    document.getElementById("pf_eligible2").checked = false;
+                }
+
+                //Status
+                var status = document.getElementById("STATUS").value;
+                if (status == 1) {
+                    document.getElementById("status1").checked = true;
+                } else if (status == 2) {
+                    document.getElementById("status2").checked = true;
+                } else if (status == 0) {
+                    document.getElementById("status2").checked = true;
+                } else if (status == '' || status == 'NULL') {
+                    document.getElementById("status1").checked = false;
+                    document.getElementById("status2").checked = false;
+                }
+            </script>
+
+            <!-- Dates-->
+            <script>
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#safety_training_to').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#safety_training_from').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#pass_val_from').datepicker({
+                        dateFormat: 'yy/-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#pass_val_to').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#nominee_dob').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#Engaged_Date').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#dob').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#workorder_date').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#wo_val_from').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+                $(document).ready(function () {
+                    var currentDate = new Date();
+                    $('#wo_val_to').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        autoclose: true,
+                        endDate: "currentDate",
+                        //maxDate: currentDate
+                    }).on('changeDate', function (ev) {
+                        $(this).datepicker('hide');
+                    });
+                });
+            </script>
+
+            <!--Show Alert-->
+            <script>
+                function showAlert() {
+                    alert("Employee Details Successfully Updated");
+                }
+            </script>

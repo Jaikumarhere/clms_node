@@ -1,0 +1,282 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+		<style>
+			table {
+				font-family: fangsong;
+			}
+
+			table th {
+				font-weight: bold;
+				border: 1px solid black !important;
+			}
+
+			table td {
+				border: 1px solid black !important;
+			}
+
+			h1 {
+				font-size: 20px;
+				font-family: fangsong;
+				font-weight: bold;
+			}
+
+			p {
+				font-weight: bold;
+			}
+		</style>
+		<!--Loading Images-->
+		<div class="preload loading_position">
+			<img src="assets/loading/Hourglass.gif">
+		</div>
+		<div id="overlay" class="wage2overlayaligns">
+			<div class="content-wrapper">
+				<div class="col-lg-12 grid-margin stretch-card" id="table">
+					<div class="card tablecard">
+						<div class="card-body">
+							<h4 class="card-title titlealign">Wage Slip 2</h4>
+
+							<form class="form-inline">
+								<input list="contract_code" class="form-control" name="contract_code_data" id="contract_code_data">
+								<datalist id="contract_code">
+									<% conDetailsCode.forEach(function(contractorlist){ %>
+										<option value="<%= contractorlist.contractor_code+'-'+contractorlist.contractor_name %>">
+										</option>
+										<%})%>
+								</datalist>
+								&nbsp;
+								
+								<select class="form-control mb-2 mr-sm-2" name="month_data" id="month_data"
+									placeholder="Select Month">
+									<option value="">Select Month</option>
+									<% MonthDetails.forEach(function(Monthlist) { %>
+										<option value="<%= Monthlist.MONTH+'-'+Monthlist.YEAR%>">
+											<%= Monthlist.MONTH+'-'+Monthlist.YEAR %>
+										</option>
+										<% }) %>
+								</select>
+								<input type="button" class="btn btn-gradient-primary mb-2" value="Go"
+									onClick="get_work_order_billing_report()">
+							</form>
+
+						</div>
+
+						<div id="hide_details" class="dis-none">
+							<div class="col-sm-12 text-right">
+
+								<div class="w3-show-inline-block">
+									<div class="w3-bar">
+
+										<button type="button" class="btn btn-gradient-info btn-icon-text"
+											onclick="printDiv('table_print')"> Print <i
+												class="mdi mdi-printer btn-icon-append"></i>
+										</button>
+
+										<a href="#" id="test" onclick="fnExcelReport();"
+											class="btn btn-success btn-sm h-2p5_rem p-12">
+											<span class="glyphicon glyphicon-download-alt"></span>
+											Export to Excel</a>
+									</div>
+								</div>
+							</div>
+							<!--Loading Images-->
+							<div class="preload loading_position">
+								<img src="assets/loading/Hourglass.gif">
+							</div>
+							<div class="col-lg-12 grid-margin stretch-card" id="table">
+								<div class="card overflow-x overflow-y-hidden">
+									<div class="card-body" id="table_print">
+										<div id="table_append">
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Footer Page-->
+		<%- include('../nav/footer') %>
+
+			<!--Initial Loading-->
+			<script type="text/javascript">
+				window.onload = function () {
+					$(".preload").hide();
+					document.getElementById("overlay").style.display = "block";
+				};
+			</script>
+
+			<!--Table Append-->
+			<script>
+				function get_work_order_billing_report() {
+					$(".preload").show();
+					var ccode = document.getElementById("contract_code_data").value;
+					var month = document.getElementById("month_data").value;
+					//alert(ccode);
+					//alert(month)
+					var wage_slip_2 = document.getElementById('table_append');
+					var date = month.split('-');
+					var fmonth = date[0];
+					var year = date[1];
+					if (fmonth == 1) {
+						var month = "January";
+					} else if (fmonth == 2) {
+						var aonth = "February";
+					} else if (fmonth == 3) {
+						var amonth = "March";
+					} else if (fmonth == 4) {
+						var amonth = "April";
+					} else if (fmonth == 5) {
+						var amonth = "May";
+					} else if (fmonth == 6) {
+						var amonth = "June";
+					} else if (fmonth == 7) {
+						var amonth = "July";
+					} else if (fmonth == 8) {
+						var amonth = "Agust";
+					} else if (fmonth == 9) {
+						var amonth = "September";
+					} else if (fmonth == 10) {
+						var amonth = "October";
+					} else if (fmonth == 11) {
+						var amonth = "November";
+					} else if (fmonth == 12) {
+						var amonth = "December";
+					}
+					$.ajax({
+						method: 'POST',
+						url: '/wo_billing/report',
+						data: { ccode: ccode, month: month },
+						success: function (data) {
+							wage_slip_2.innerHTML = "";
+							$(".preload").hide();
+							document.getElementById("hide_details").style.display = "block";
+							console.log(data);
+							$('.wo_billing_data').empty();
+							$('.form_name').empty();
+							var flags = [], output = [], l = data.length, i;
+							for (i = 0; i < l; i++) {
+								if (flags[data[i].work_order_number]) continue;
+								flags[data[i].work_order_number] = true;
+								output.push(data[i]);
+							}
+							//console.log(output);
+							for (n = 0; n < output.length; n++) {
+								var tr = `<table class="table table-bordered">
+									<center class="form_name">
+										${output[n].con_name}<br/>
+										${output[n].work_order_number}
+										<p>FormXIX Wage Slip Received for the month of ${amonth} ${year}</p>
+									</center>
+									<thead>
+										<tr>
+											<th>SlNo</th>
+											<th> Emp.No</th>
+											<th>Employee Name</th>
+											<th>Gross Wages</th>
+											<th>Total Deduction</th>
+											<th>Net wages</th>
+											<th>Signature of Workmen</th>
+										</tr>
+									</thead><tbody class="wo_billing_data">`
+								var slno = 1;
+								for (j = 0; j < data.length; j++) {
+									if (output[n].work_order_number == data[j].work_order_number) {
+										tr += `<tr>
+												<td>${slno}</td>
+												<td>${data[j].emp_new_code}</td>
+												<td style='text-align: left;'>${data[j].emp_name}</td>
+												<td>${data[j].gross_salary}</td>
+												<td>${Math.round(Number(data[j].pf_amount)+Number(data[j].esi_amount)+Number(data[j].lwf)+Number(data[j].ptf_amount)+Number(data[j].salary_advance))}</td>
+												<td>${Math.round(data[j].net_pay)}</td>
+												<td style='width: 40%;'></td></tr>`
+										slno++;
+									}
+
+								}
+
+								tr += `</tbody></table><div style="page-break-after:always;"></div>`
+								wage_slip_2.innerHTML += tr;
+							}
+						}
+					});
+				}
+			</script>
+
+			<!--Excel Download-->
+			<script>
+				function fnExcelReport() {
+					var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+					tab_text = tab_text + '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+					tab_text = tab_text + '<x:Name>Test Sheet</x:Name>';
+					tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+					tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+					tab_text = tab_text + "<table border='1px'>";
+
+					// Remove Dynamic hidden controls.
+					var list = $('#table_print').find('.ng-hide');
+					for (var i = list.length - 1; 0 <= i; i--) {
+						if (list[i] && list[i].parentElement) {
+							list[i].parentElement.removeChild(list[i]);
+						}
+					}
+
+					// Getting dynamic controll values.
+					var list = $('#table_print').find('.dvItems');
+					var values = "";
+					for (var i = 0; i <= list.length - 1; i++) {
+						if (list[i] && list[i].parentElement) {
+							values += $(list[i]).text().trim();
+						}
+					}
+					for (var i = 0; i <= list.length - 1; i++) {
+						if (i == 0) {
+							// Replace last comma and assign value.
+							$($('#table_print').find('.dvItems')[i]).text(values.replace(/,\s*$/, ""));
+						}
+						else {
+							$($('#table_print').find('.dvItems')[i]).text("");
+						}
+					}
+					tab_text = tab_text + $('#table_print').html();
+					tab_text = tab_text + '</table></body></html>';
+					var data_type = 'data:application/vnd.ms-excel';
+					var ua = window.navigator.userAgent;
+					var msie = ua.indexOf("MSIE ");
+
+					if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+						if (window.navigator.msSaveBlob) {
+							var blob = new Blob([tab_text], {
+								type: "application/vnd.ms-excel;charset=utf-8;"
+							});
+							navigator.msSaveBlob(blob, 'Coupon.xls');
+						}
+					} else {
+						window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+					}
+				}
+			</script>
+
+			<!--print funtion-->
+			<script>
+				function printDiv(table_print) {
+					var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+					mywindow.document.write('<html><head><title></title>');
+					mywindow.document.write('<style>table {width : 100%;border-collapse: collapse !important;text-align: left;}table th {color: black;border: 1px solid black;}table td {border: 1px solid black;}lable{font-weight: normal;font-family: auto;}.text-center{text-align: center}.sig {color: black;}.text-left {text-align : left}.f-r {float: right}</style></head><body >');
+					//mywindow.document.write('<h1>' + document.title + '</h1>');
+					mywindow.document.write(document.getElementById(table_print).innerHTML);
+					mywindow.document.write('</body></html>');
+
+					mywindow.document.close(); // necessary for IE >= 10
+					mywindow.focus(); // necessary for IE >= 10*/
+
+					mywindow.print();
+					mywindow.close();
+
+					return true;
+				}
+			</script>

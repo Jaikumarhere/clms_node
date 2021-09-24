@@ -1,0 +1,211 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+	<a type="button" class="btn btn-gradient-danger btn-fw b-r-25 m-b-20" id="addbutton"
+    href="/contractornew">Back</a>
+	<div class="card tablecard">
+		<div class="card-body">
+			
+
+			<h4 class="card-title titlealign">Contractor Master Edit</h4>
+
+			<% con_edit_data.forEach(function(cont_data)
+			{
+			%>
+				<form class="forms-sample" action="/contractornew/update" method="POST" autocomplete="off">
+				<input type="hidden" value="<%= cont_data.id %>" name="id">
+				<div class="card-body">
+					<h5><b>Company Details</b></h5>
+					<div class="form-group row groupform">
+					<label for="exampleInputContractor Code" class="col-sm-3 col-form-label">Contractor Code</label>
+					<div class="col-sm-6">
+					<input type="text" name="Contractor_Code" id="contractor_code" class="form-control" value="<%= cont_data.contractor_code %>" readonly="true">
+					</div>
+					</div>
+					
+					<div class="form-group row groupform">
+					<label for="cname" class="col-sm-3 col-form-label">Contractor name</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="cname" name="cname" value="<%= cont_data.contractor_name %>" readonly="true">
+					</div> 
+					</div>
+					<div class="form-group row" id="work">					
+					</div>
+					<div class="form-group row groupform">
+					<label for="pass_from" class="col-sm-3 col-form-label">Preferential Bidder</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control mb-2 mr-sm-2"  name="pre_bidder" id="pre_bidder" value="<%= cont_data.preferntial_bidder %>"  />
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="pass_to" class="col-sm-3 col-form-label">Preference Category</label>
+					<div class="col-sm-6">
+					<input type="hidden" name="pass_to_hidden" id="pass_to_hidden" >
+					<input type="text" class="form-control mb-2 mr-sm-2" name="pre_category" id="pre_category" value="<%= cont_data.preference_category %>"/>
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Registration Number</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="reg_number" name="reg_number" value="<%= cont_data.reg_no %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Registered Address</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="reg_address" name="reg_address" value="<%= cont_data.reg_address %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Name of Partneres/Directors</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control mb-2 mr-sm-2" id="director_name" name="director_name" value="<%= cont_data.partners %>">	
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">City</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="city" name="city" value="<%= cont_data.city %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">State</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="state" name="state" value="<%= cont_data.state %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Postal Code</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="postal_code" name="postal_code" value="<%= cont_data.postal_code %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Pan Number</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="pannumber" name="pannumber" value="<%= cont_data.pan_no %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">TAN Number</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="tan_number" name="tan_number"  value="<%= cont_data.tan_no %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Company's Establishment Year</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="company_year" name="company_year" value="<%= cont_data.establish_year %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Company's Nature Of Business</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="business_nature" name="business_nature" value="<%= cont_data.business_nature %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Company's Legal Status</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="legal_status" name="legal_status" value="<%= cont_data.legal_status %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Company Category</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="category" name="category" value="<%= cont_data.com_category %>">
+					</div>
+					</div>
+					<h5><b>Contact Details</b></h5>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Tittle</label>
+					<div class="col-sm-6"><input type="text" class="form-control" id="title" name="title" value="<%= cont_data.title %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Contact Name</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="con_name" name="con_name" value="<%= cont_data.contact_name %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">DOB(Date of Birth)</label>
+					<div class="col-sm-6">
+					<input type="date" class="form-control" id="dob" name="dob" value="<%= cont_data.dob %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Correspondance Email</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="email" name="email" value="<%= cont_data.email %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Designation</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="designation" name="designation" value="<%= cont_data.desgination %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Phone</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="phone" name="phone" value="<%= cont_data.phone %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Mobile</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="mobile" name="mobile" value="<%= cont_data.mobile %>">
+					</div>
+					</div>
+					<h5><b>Bidder Pre Registration Details</b></h5>
+					<h5><b>Digital Signature Certificate Details</b></h5>
+					
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Date of Registration</label>
+					<div class="col-sm-6">
+					<input type="date" class="form-control" id="reg_date" name="reg_date" value="<%= cont_data.date_reg %>">
+					</div>
+					</div>
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Digital Signature Certificate Registered</label>
+					<div class="col-sm-6">
+					<input type="text" class="form-control" id="sign_certificate" name="sign_certificate" value="<%= cont_data.dsc %>">
+					</div>
+					</div>
+					
+					<div class="form-group row groupform">
+					<label for="no_of_pass" class="col-sm-3 col-form-label">Date of DSC Expiry</label>
+					<div class="col-sm-6">
+					<input type="date" class="form-control" id="dsc_expiry" name="dsc_expiry" value="<%= cont_data.dsc_Expiry %>">
+					</div>
+					</div>
+					<br/>
+					<br/>
+				</div>
+
+				<% 
+				}) 
+				%>
+				<center>
+				<button type="submit" class="btn btn-primary">Update</button>
+				</center>
+				</form>
+		</div>
+	</div>
+<!-- Footer Page-->
+<%- include('../nav/footer') %>
+
+<!--Radio Button Ckecked-->
+<script>
+	//Status 
+	var status = document.getElementById("STATUS").value;
+	if (status == '1') {
+		document.getElementById("active").checked = true;
+	}else if(status == '2'){
+		document.getElementById("inactive").checked = true;
+	}else if(status == '' || status == 'NULL'){
+		document.getElementById("active").checked = false;
+		document.getElementById("inactive").checked = false;
+	}
+</script>

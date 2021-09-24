@@ -1,0 +1,220 @@
+<%- include ('../../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../../nav/sidebar') %>
+<!--Form Data-->
+<div class="card" id="newform">
+    <div class="card-body">
+
+        <h4 class="card-title">Contractor Pass Request</h4>
+
+        <!--From Start-->
+
+        <div class="card-body">
+
+            <form class="forms-sample" method="POST" >
+                
+            
+                <div class="form-group row">
+                    <label for="exampleInputContractor Code" class="col-sm-3 col-form-label">Contractor Code</label>
+                    <div class="col-sm-9">
+                        <select  name="Contractor_Code" id="contractor_code" class="form-control" onchange="chage_workno(this.value)">
+                            <option value="">Select Contractor</option>
+                        <% contractor_details.forEach(function(code) { %>
+                            <option value="<%= code.contractor_code %>">
+                                <%= code.contractor_code %>-<%= code.contractor_name %> 
+                            </option>
+                            <% }) %>
+                    </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="workorder_no" class="col-sm-3 col-form-label">Workorder No</label>
+                    <div class="col-sm-9">
+                        <select  name="workorder_no" id="workorder_no" class="form-control" onchange="get_employee(this.value)">
+                            <option value="">Select Workorder</option>
+                        
+                    </select>
+                    </div>
+                </div>
+                </div>
+              <!--   <div class="form-group row">
+                    <label for="cname" class="col-sm-3 col-form-label">Contractor name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="cname" name="cname"
+                           value="">
+                    </div> 
+                </div>-->
+               
+                <div class="form-group row">
+                    <label for="pass_from" class="col-sm-3 col-form-label">Pass Request From</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control" id="pass_from" name="pass_from"
+                            placeholder="Pass From">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="pass_to" class="col-sm-3 col-form-label">Pass Request To</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control" id="pass_to" name="pass_to"
+                            placeholder="Pass To">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="no_of_pass" class="col-sm-3 col-form-label">Number Of Pass</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="no_of_pass" name="no_of_pass"
+                            placeholder="Number Of Pass">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="no_of_pass" class="col-sm-3 col-form-label">Nature Of Jobs</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="nature_of_jobs" name="nature_of_jobs"
+                            placeholder="Number Of Pass">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="no_of_pass" class="col-sm-3 col-form-label">Job Completion Date</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control" id="job_completion_date" name="job_completion_date"
+                            placeholder="Number Of Pass">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="no_of_pass" class="col-sm-3 col-form-label">Contractor SAP No</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="contractor_sap_no" name="contractor_sap_no"
+                            placeholder="Number Of Pass">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="pass_type" class="col-sm-3 col-form-label">Pass Type</label>
+                    <div class="col-sm-9">
+                        <select class="form-control form-control-lg" name="pass_type" id="pass_type">
+
+                            <option>Fresh</option>
+                            <option>Renewal</option>
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card-body overflow-x">
+                <!--Table Start-->
+
+                <table class="table table-bordered" > 				
+                    <thead>
+                        <tr>
+                            <th>Check</th>
+                            <th># </th>
+                            <th>Ecode</th>
+                            <th>Name Of The Contract Worker</th>
+                            <th>Father 'S / Huspand Name</th>
+                            <th>Residential Address</th>
+                            <th>Age / Sex</th>
+                            <th>Work Spot</th>
+                            <th>Safety Pass Validity From</th>
+                            <th>Safety Pass Validity To</th>
+                            <th>Work Order Number</th>
+                            <th>Work Order Date</th>
+                            
+                        </tr>
+                    </thead>                    
+                </table>
+                <table class="table table-striped" id="rsa">
+
+                </table>  
+               
+                <!--Table End-->
+                </div>
+                <br/><br/>
+                <button type="button"  id="sub_btn" class="btn btn-gradient-primary mb-2 f-r">Submit</button>
+            </form>
+        </div>
+        <!--From Start-->
+    </div>
+</div>
+
+
+<!--Footer-->
+<%- include('../../nav/footer') %>
+
+
+    <script>
+        function chage_workno(v){
+
+            $.ajax({
+            type:'POST',
+            data: { "ccode": v },
+            url:'/get/workorder',
+            success: function(data){
+                //console.log(data);
+                 $('#workorder_no').empty();
+                  $('#emp').empty();
+             $('#workorder_no').append("<option > Select workorder_no..</option>");
+             $.each(data, function (index, addressObj) {
+                    $('#workorder_no').append("<option value = '" + addressObj.WORK_ORDER + "' > " + addressObj.WORK_ORDER + ". </option > ");
+                    //$('#address').append("<input value = '" + addressObj.WORK_ORDER + "' >");
+                });
+            }
+        });
+        }
+
+    function get_employee(v){
+
+        $.ajax({
+        type:'POST',
+        data: { "ccode": v },
+        url:'/get/employee',
+        success: function(data){
+            console.log(data);
+
+            $('#emp').empty();
+            var len=$('#rsa tr').length;
+             $.each(data, function (index, addressObj) {
+                  //  $('#emp').append("<input type="text" >");
+                  $('.table-striped').append('<tr class="row_'+addressObj.id+'"><td><input type="checkbox" name="check" id="check_value_'+addressObj.ECODE+'" value="'+addressObj.id+'" "></td><td>'+addressObj.id+'</td><td>'+addressObj.ECODE+'</td><td>'+addressObj.ENAME+'</td><td>'+addressObj.FATHER+'</td><td>'+addressObj.PRE_ADDRESS+'</td><td>'+addressObj.GENDER+'</td><td>'+addressObj.WROK_SPOT+'</td><td>'+addressObj.SAFETY_TRAINING_FROM+'</td><td>'+addressObj.SAFETY_TRAINING_TO+'</td><td>'+addressObj.WORK_ORDER_No+'</td><td>'+addressObj.WORK_OR_DATE+'</td></tr>');
+                });
+            }
+        });         
+    } 
+    
+
+ $("#sub_btn").click(function (event) {
+    event.preventDefault();
+   
+    var ccode=$('#contractor_code').val(); 
+    var workorder_no=$('#workorder_no').val();
+    var pass_from=$('#pass_from').val();
+    var pass_to=$('#pass_to').val();
+    var no_of_pass=$('#no_of_pass').val();
+    var nature_of_jobs=$('#nature_of_jobs').val();
+    var job_completion_date=$('#job_completion_date').val();
+    var contractor_sap_no=$('#contractor_sap_no').val();
+    var pass_type=$('#pass_type').val();
+   
+ /*    var searchIDs = $("#rsa input:checkbox:checked").map(function () {
+        return $(this).val();
+    }).get(); */
+  
+  var favorite = [];
+            $.each($("input[name='check']:checked"), function(){
+                favorite.push($(this).val());
+            });
+            alert("My favourite sports are: " + favorite[0]);
+        console.log(favorite);
+    
+    $.ajax({
+       url:'/pass_req_new_1/add',
+       type:'post',
+       data:{favorite:favorite},
+       success:function(response){
+          console.log(response);
+       }
+    });
+}); 
+</script>

@@ -1,0 +1,74 @@
+<%- include ('../nav/header') %>
+    <!-- Sidebar Page -->
+    <%- include('../nav/sidebar') %>
+    <a type="button" class="btn btn-gradient-primary btn-rounded btn-fw" id="addbutton"
+    href="/deduction">Back</a>
+<br/><br/>
+<div class="card">
+    <div class="card-body">
+        <p class="card-description"> </p>
+        <form class="forms-sample" method="POST" action="/deduction/update" name="EngForm" onsubmit="showAlert()">           
+               
+                <% Emp_edit_data.forEach(function(empdata) { %>
+
+                <div class="form-group row">
+                <label for="payroll_month" class="col-sm-3 col-form-label">Payroll ID</label>
+                <div class="col-sm-9">
+                <input type="text" class="form-control" id="deduction_id" name="deduction_id" value="<%= empdata.id %>" readonly>
+                </div>
+                </div>
+                <div class="form-group row">
+
+                <label for="payroll_month" class="col-sm-3 col-form-label">Payroll Month</label>
+                <div class="col-sm-9">
+                <input type="text" class="form-control" id="payroll_month" name="payroll_month" value="<%= empdata.payroll_month %>">
+                </div>
+                </div>
+
+                    <div class="form-group row">
+                    <label for="payroll_month" class="col-sm-3 col-form-label">Payroll Year</label>
+                    <div class="col-sm-9">
+                    <input type="text" class="form-control" id="payroll_year" name="payroll_year" value="<%= empdata.payroll_year %>">
+                    </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="payroll_month" class="col-sm-3 col-form-label">Date</label>
+                        <div class="col-sm-9">
+                        <input type="date" class="form-control" id="deduction_date" name="deduction_date" value="<%= empdata.date %>">
+                        </div>
+                        </div>
+
+        <div class="form-group row">
+            <label for="ccode" class="col-sm-3 col-form-label">Employee Code</label>
+            <div class="col-sm-9">
+                <input list="cont_code" class="form-control" name="ecode" id="ecode" onchange="getuniqcode(this.value)" value="<%= empdata.id_card_no+'-'+empdata.name %>" required>
+               
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="ccode" class="col-sm-3 col-form-label">Work Order No</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="wonumber" id="wonumber" value="<%= empdata.workorder_no %>" required>
+               
+            </div>
+        </div>
+        
+        <div class="form-group row">
+        <label for="exampleInputAmount" class="col-sm-3 col-form-label">Amount</label>
+        <div class="col-sm-9">
+        <input type="text" class="form-control" id="amount" name="amount" value="<%= empdata.advance_amount %>">
+        </div>
+        </div>
+        <center>
+        <button type="Submit" value="send" name="Submit" class="btn btn-gradient-success btn-fw">Update</button>
+        </center>
+
+        <%})%>
+        </form>
+    </div>
+</div>
+
+<!-- Footer Page-->
+<%- include('../nav/footer') %>

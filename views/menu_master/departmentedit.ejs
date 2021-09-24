@@ -1,0 +1,91 @@
+<%- include ('../nav/header') %>
+  <!-- Sidebar Page -->
+  <%- include('../nav/sidebar') %>
+    <a type="button" class="btn btn-gradient-danger btn-fw m-b-20 b-r-25" id="addbutton"
+    href="/department">Back</a>
+    <div class="card tablecard" id="table">
+      <div class="card-body">
+        <div class="container">
+
+          <h4 class="card-title titlealign">Department Master Edit</h4>
+
+          <% department_edit_data.forEach(function(department_edit_data) { %>
+
+            <form action="/deptupdate" method="POST" onsubmit="showAlert()">
+              <input type="hidden" value="<%= department_edit_data.id %>" name="id">
+
+              
+              <div class="form-group row" style="max-height: 45px;align-items: baseline;">
+                <label for="exampleInputDepartment" class="col-sm-3 col-form-label">Department</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="department" name="department" style="max-height: 40px;"
+                    value="<%= department_edit_data.department %>" placeholder="Department">
+                </div>
+              </div>
+              <div class="form-group row" style="max-height: 45px;align-items: baseline;">
+                <label for="exampleInputDepartment" class="col-sm-3 col-form-label">Username</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="username" name="username" style="max-height: 40px;"
+                    value="<%= department_edit_data.user_name %>" placeholder="Username">
+                </div>
+              </div>
+              <div class="form-group row" style="max-height: 45px;align-items: baseline;">
+                <label for="exampleInputDepartment" class="col-sm-3 col-form-label">Username</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="password" name="password" style="max-height: 40px;"
+                    value="<%= department_edit_data.password %>" placeholder="Password">
+                </div>
+              </div>
+             
+              <div class="form-group row" style="max-height: 45px;align-items: baseline;">
+                <label class="col-sm-3 col-form-label">Status</label>
+                <div class="col-sm-4">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="hidden" value="<%= department_edit_data.status %>" id="STATUS" />
+                      <input type="radio" class="form-check-input" name="status" id="status1" value="1">
+                      Active </label>
+                  </div>
+                </div>
+                <div class="col-sm-5">
+                  <div class="form-check">
+                    <label class="form-check-label">
+
+                      <input type="radio" class="form-check-input" name="status" id="status2" value="2">
+                      Inactive </label>
+                  </div>
+                </div>
+              </div>
+              <center>
+                <button type="submit" class="btn btn-primary">Update</button>
+              </center>
+            </form>
+
+            <% }) %>
+
+        </div>
+
+      </div>
+    </div>
+
+<!-- Footer Page-->
+<%- include('../nav/footer') %>
+
+<!--Show Alert-->
+<script>
+  //Status
+  var status = document.getElementById("STATUS").value;
+        if (status == 1) {
+            document.getElementById("status1").checked = true;
+        }else if (status == 2) {
+            document.getElementById("status2").checked = true;
+        }else if(status == 0 ){
+            document.getElementById("status2").checked = true;
+        }else if(status == '' || status == 'NULL'){
+            document.getElementById("status1").checked = false;
+            document.getElementById("status2").checked = false;
+        }
+  function showAlert() {
+      alert("Department Details Successfully Updated");
+  }
+</script>

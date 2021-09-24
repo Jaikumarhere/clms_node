@@ -1,0 +1,379 @@
+<%- include ('../nav/header') %>
+  <!-- Sidebar Page -->
+  <%- include('../nav/sidebar') %>
+    <!--Loading Images-->
+    <div class="preload loading_position">
+      <img src="assets/loading/Hourglass.gif">
+    </div>
+
+    <div id="overlay" class="overlayaligns">
+      <a href="/workordernew/add" class="btn btn-gradient-primary btn-rounded btn-fw m-b-20" id="addbutton">New</a>
+      <button type="button" class="col-2 btn btn-info f-r b-r-25" onclick="ExportToExcel('tableid')">
+        <i class="mdi mdi-upload btn-icon-prepend"></i> Excel </button>
+      <br />
+      <!--Upload Excel-->
+      <!--Upload Excel-->
+      <div class="card cardalign" id="table">
+        <div class="card-body cardinsides">
+          <a href="/workorder_excell_download">Download Template</a>
+          <section id="upload-data-panel" class="sectionaligns">
+            <form id="upload-form" action="/uploads/work_order_csv" method="post" enctype="multipart/form-data">
+              <fieldset>
+                <legend>Upload Data</legend>
+                <div class="uploadalign">
+                  <!-- The name here is important, and will be used later to reference the data -->
+                  <input type="file" name="csvdata" accept="text/cvs">
+                </div>
+                <div class="uploadbtnalign">
+                  <input type="submit" class="btn btn-gradient-danger btn-icon-text" value="Upload" />
+                </div>
+              </fieldset>
+            </form>
+          </section>
+        </div>
+      </div>
+      <br />
+
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card tablecard" id="table">
+          <div class="card-body">
+            <h4 style="margin-top: -25px;" class="card-title titlealign">Work Order</h4>
+            <div class="form-group">
+              <!--Search Filter-->
+              <input type="search" placeholder="Search Here" class="form-control search-input searchalign"
+                data-table="customers-list" />
+            </div>
+            <style>
+              td,
+              th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+                font-size: 8px;
+              }
+
+              .card .card-body {
+                padding: 2.5rem 2.5rem;
+              }
+            </style>
+            <table class="customers-list">
+              <thead>
+                <tr>
+                  <th>CCODE</th>
+                  <th>WORDER</th>
+                  <th>FROM</th>
+                  <th>TO</th>
+                  <th>DURATION</th>
+                  <th>C Licence</th>
+                  <th>C From</th>
+                  <th>C To</th>
+                  <th>C Workman</th>
+                  <th>I Licence</th>
+                  <th>I From</th>
+                  <th>I To</th>
+                  <th>I Workman</th>
+                  <th>TOTAL WORKMAN</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% data.forEach(function(work_order){ %>
+                  <tr>
+                    <td class="py-1">
+                      <%= work_order.CCODE %>
+                    </td>
+                    <td>
+                      <%= work_order.WORK_ORDER %>
+                    </td>
+                    <td>
+                      <label class="badge badge-gradient-info">
+                        <%= moment(work_order.WO_FROM_DATE).format('YYYY-MM-DD'); %>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="badge badge-gradient-info">
+                        <%= moment(work_order.WO_TO_DATE).format('YYYY-MM-DD'); %>
+                      </label>
+                    </td>
+                    <td>
+                      <%= work_order.CDURATION %>
+                    </td>
+                    <td>
+                      <%= work_order.alicence %>
+                    </td>
+                    <td> <label class="badge badge-gradient-info">
+                        <%= moment(work_order.afrom).format('YYYY-MM-DD'); %>
+                      </label></td>
+                    <td> <label class="badge badge-gradient-info">
+                        <%= moment(work_order.ato).format('YYYY-MM-DD'); %>
+                      </label></td>
+                    <td>
+                      <%= work_order.awman %>
+                    </td>
+                    <td>
+                      <%= work_order.blicence %>
+                    </td>
+                    <td> <label class="badge badge-gradient-info">
+                        <%= moment(work_order.bfrom).format('YYYY-MM-DD'); %>
+                      </label></td>
+                    <td> <label class="badge badge-gradient-info">
+                        <%= moment(work_order.bto).format('YYYY-MM-DD'); %>
+                      </label></td>
+                    <td>
+                      <%= work_order.bwam %>
+                    </td>
+                    <td>
+                      <%= work_order.WORKMEN_TOT %>
+                    </td>
+                    <td>
+                      <a href="work_edit/<%= work_order.id %>" class="btn btn-sm btn-primary">Edit</a>
+                    </td>
+                  </tr>
+                  <% }) %>
+              </tbody>
+            </table>
+            <br /><br />
+            <!-- Excel Upload-->
+            <table class="table table-striped mt32 customers-list dis-none" id="tableid">
+              <thead>
+                <tr>
+                  <th>CCODE</th>
+                  <th>CNAME</th>
+                  <th>VENDOR_NO</th>
+                  <th>WORK_ORDER</th>
+                  <th>WORK_FROM_DATE</th>
+                  <th>WORK_TO_DATE</th>
+                  <th>CVALUE</th>
+                  <th>DURATION</th>
+                  <th>CDURATION</th>
+                  <th>EIC_PRNO</th>
+                  <th>EIC</th>
+                  <th>JOB_DESC</th>
+                  <th>DEPARTMENT</th>
+                  <th>EMPLOYEE_COUNT</th>
+                  <th>CLRA</th>
+                  <th>ISMW</th>
+                  <th>WORKMEN_TOT</th>
+                  <th>EXCESS_CLRA_COUNT</th>
+                  <th>EXCESS_CLRA_CONT_COUNT</th>
+                  <th>STATUS</th>
+                  <th>CREATED_BY</th>
+                  <th>CREATED_ON</th>
+                  <th>MODIFIED_BY</th>
+                  <th>MODIFIED_ON</th>
+                </tr>
+              </thead>
+              <tbody>
+
+
+
+                <% data.forEach(function(work_order){ %>
+                
+                  <tr>
+                    <td>
+                      <%= work_order.CCODE %>
+                    </td>
+                    <td>
+                      <%= work_order.CNAME %>
+                    </td>
+                    <td>
+                      <%= work_order.VENDOR_NO %>
+                    </td>
+                    <td>
+                      <%= work_order.WORK_ORDER %>
+                    </td>
+                    <td>
+                      <%= moment(work_order.WO_FROM_DATE).format('YYYY-MM-DD') %>
+                    </td>
+                    <td>
+                      <%= moment(work_order.WO_TO_DATE).format('YYYY-MM-DD') %>
+                    </td>
+                    <td>
+                      <%= work_order.CVALUE %>
+                    </td>
+                    <td>
+                      <%= work_order.DURATION %>
+                    </td>
+
+
+
+                    <td>
+                      <%= work_order.CDURATION %>
+                    </td>
+                    <td>
+                      <%= work_order.EIC_PRNO %>
+                    </td>
+                    <td>
+                      <%= work_order.EIC %>
+                    </td>
+                    <td>
+                      <%= work_order.JOB_DESC %>
+                    </td>
+                    <td>
+                      <%= work_order.DEPARTMENT %>
+                    </td>
+                    <td>
+                      <%= work_order.EMPLOYEE_COUNT %>
+                    </td>
+                    <td>
+                      <%= work_order.CLRA %>
+                    </td>
+                    <td>
+                      <%= work_order.ISMW %>
+                    </td>
+                    <td>
+                      <%= work_order.WORKMEN_TOT %>
+                    </td>
+                    <td>
+                      <%= work_order.EXCESS_CLRA_COUNT %>
+                    </td>
+                    <td>
+                      <%= work_order.EXCESS_CLRA_CONT_COUNT %>
+                    </td>
+                    <td>
+                      <%= work_order.STATUS %>
+                    </td>
+
+                  </tr>
+
+                  <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Page-->
+    <%- include('../nav/footer') %>
+
+
+
+      <script type="text/javascript">
+        window.onload = function () {
+          $(".preload").hide();
+          document.getElementById("overlay").style.display = "block";
+          document.getElementById("newform").style.display = "none";
+        };
+
+
+        function addWorkOrder(a) {
+
+          if (a == 1) {
+            $.ajax({
+              url: '/workordernew/add',
+              type: 'GET',
+              //data: { "id": data }
+            }).done(function (response) {
+              //callback to handle if it's successful
+            })
+          } else {
+            document.getElementById("newform").style.display = "none";
+          }
+        }
+      </script>
+
+      <!--Table Sort-->
+      <script>
+        (function (document) {
+          'use strict';
+
+          var TableFilter = (function (myArray) {
+            var search_input;
+
+            function _onInputSearch(e) {
+              search_input = e.target;
+              var tables = document.getElementsByClassName(search_input.getAttribute('data-table'));
+              myArray.forEach.call(tables, function (table) {
+                myArray.forEach.call(table.tBodies, function (tbody) {
+                  myArray.forEach.call(tbody.rows, function (row) {
+                    var text_content = row.textContent.toLowerCase();
+                    var search_val = search_input.value.toLowerCase();
+                    row.style.display = text_content.indexOf(search_val) > -1 ? '' : 'none';
+                  });
+                });
+              });
+            }
+
+            return {
+              init: function () {
+                var inputs = document.getElementsByClassName('search-input');
+                myArray.forEach.call(inputs, function (input) {
+                  input.oninput = _onInputSearch;
+                });
+              }
+            };
+          })(Array.prototype);
+
+          document.addEventListener('readystatechange', function () {
+            if (document.readyState === 'complete') {
+              TableFilter.init();
+            }
+          });
+
+        })(document);
+      </script>
+
+      <!--Ecxel Download -->
+      <script>
+        function ExportToExcel(tableid) {
+          var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+          var textRange; var j = 0;
+          tab = document.getElementById(tableid);//.getElementsByTagName('table'); // id of table
+          if (tab == null) {
+            return false;
+          }
+          if (tab.rows.length == 0) {
+            return false;
+          }
+
+          for (j = 0; j < tab.rows.length; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            //tab_text=tab_text+"</tr>";
+          }
+
+          tab_text = tab_text + "</table>";
+          tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+          tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+          tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+          var ua = window.navigator.userAgent;
+          var msie = ua.indexOf("MSIE ");
+
+          if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+          {
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", true, "Employee.xls");
+          }
+          else                 //other browser not tested on IE 11
+            //sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+            try {
+              var blob = new Blob([tab_text], { type: "application/vnd.ms-excel" });
+              window.URL = window.URL || window.webkitURL;
+              link = window.URL.createObjectURL(blob);
+              a = document.createElement("a");
+              if (document.getElementById("caption") != null) {
+                a.download = document.getElementById("caption").innerText;
+              }
+              else {
+                a.download = 'workorder_master_details';
+              }
+
+              a.href = link;
+
+              document.body.appendChild(a);
+
+              a.click();
+
+              document.body.removeChild(a);
+            } catch (e) {
+            }
+
+
+          return false;
+          //return (sa);
+        }
+      </script>

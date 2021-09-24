@@ -1,0 +1,488 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+	<style>
+
+		table {
+			counter-reset: rowNumber;
+			}
+	
+	table tbody tr::before {
+	display: table-cell;
+	counter-increment: rowNumber;
+	content: counter(rowNumber);
+	padding-right: 0.3em;
+	text-align: center;
+	vertical-align: middle;
+	}
+
+	</style>
+
+		<!--Loading Images-->
+		<div class="preload loading_position">
+			<img src="assets/loading/Hourglass.gif">
+		</div>
+
+		<div id="overlay" class="overlayaligns">
+			<button type="button" class="btn btn-gradient-primary btn-rounded btn-fw m-b-20" id="addbutton"
+				onclick="addContractor(3)">New Contractor</button>
+				<!--button type="button" class="btn btn-gradient-primary btn-rounded btn-fw m-b-20" id="addbutton"
+				onclick="addContractor(1)">Contractor Details</button-->
+			<button type="button" class="btn btn-gradient-danger btn-fw f-r b-r-25 m-b-20 dis-none" id="backbutton"
+				onclick="addContractor(2)">Back</button>
+			<button type="button" class="col-2 btn btn-info f-r b-r-25" onclick="ExportToExcel('tableid')"
+				id="uploadbutton">
+				<i class="mdi mdi-upload btn-icon-prepend"></i> Excel </button>
+			<br />
+			<!--Upload Excel-->
+			<!--div class="card cardalign" id="excel_div">
+				<div class="card-body cardinside">
+					<a href="/contractor_master_excell_download">Download Template</a>
+					<section id="upload-data-panel" class="sectionaligns">
+						<form id="upload-form" action="/excel_upload/Contractor_csv" method="post"
+							enctype="multipart/form-data">
+							<fieldset>
+								<legend>Upload Data</legend>
+								<div class="uploadalign">
+									<input type="file" name="csvdata" accept="text/cvs">
+								</div>
+								<div class="uploadbtnalign">
+									<input type="submit" class="btn btn-gradient-danger btn-icon-text" value="Upload" />
+								</div>
+							</fieldset>
+						</form>
+					</section>
+				</div>
+			</div-->
+			<br />
+			<div class="col-lg-12 grid-margin stretch-card" id="table">
+				<div class="card tablecard">
+					<div class="card-body">
+						<h4 class="card-title titlealign">Contractor Master</h4>
+						<!--Search Filter-->
+						<div class="form-group">
+							<input type="search" placeholder="Search Here" class="form-control search-input searchalign"
+								data-table="customers-list" />
+						</div>
+						<table class="table table-striped mt32 customers-list">
+							<thead>
+								<tr>
+									<th>SL.NO</th>
+									<th>CCODE</th>
+									<th>CNAME</th>
+									<th>PREFIX CODE</th>
+									<th>User Name</th>
+									<th>STATUS</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<% data.forEach(function(contract){ %>
+									<tr>
+										<td class="py-1">
+											<%= contract.contractor_code %>
+										</td>
+										<td>
+											<%= contract.contractor_name %>
+										</td>
+										<td>
+											<%= contract.prefix_code %>
+										</td>
+										<td>
+											<%= contract.user_name %>
+										</td>
+										<% if(contract.status=='1' ){ status="Active" ; }else if(contract.status=='2' ){
+											status="InActive" ; }else{ status="NULL" ; } %>
+											<td>
+												<label class="badge badge-danger">
+													<%= status %>
+												</label>
+											</td>
+
+											<td>
+												<a href="contractor_edit/<%= contract.id %>"
+													class="btn btn-sm btn-primary">Edit</a>
+											</td>
+									</tr>
+
+									<% }) %>
+							</tbody>
+						</table>
+						<br /><br />
+						<!--Excel Download Table-->
+						<table class="table table-striped mt32 customers-list dis-none" id="tableid">
+							<thead>
+								<tr>
+									<th>contractor_code</th>
+									<th>contractor_name</th>
+									<th>address</th>
+									<th>prefix_code</th>
+									<th>proprietor</th>
+									<th>owner</th>
+									<th>md</th>
+									<th>partner</th>
+									<th>contractor_mail</th>
+									<th>ESI_Code_No</th>
+									<th>PF_Code_No</th>
+									<th>Contractor_PAN_No</th>
+									<th>Contractor_LIN</th>
+									<th>Mobile_No</th>
+									<th>Name_of_person</th>
+									<th>compliance_Mail_id</th>
+									<th>hr_department</th>
+									<th>sign</th>
+									<th>status</th>
+									<th>created_by</th>
+									<th>created_on</th>
+									<th>modified_by</th>
+									<th>modified_on</th>
+									<th>user_name</th>
+									<th>password</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<% data.forEach(function(contract){ %>
+									<tr>
+										<td>
+											<%= contract.contractor_code %>
+										</td>
+										<td>
+											<%= contract.contractor_name %>
+										</td>
+										<td>
+											<%= contract.address %>
+										</td>
+										<td>
+											<%= contract.prefix_code %>
+										</td>
+										<td>
+											<%= contract.proprietor %>
+										</td>
+										<td>
+											<%= contract.owner %>
+										</td>
+										<td>
+											<%= contract.md %>
+										</td>
+										<td>
+											<%= contract.partner %>
+										</td>
+										<td>
+											<%= contract.contractor_mail %>
+										</td>
+										<td>
+											<%= contract.ESI_Code_No %>
+										</td>
+										<td>
+											<%= contract.PF_Code_No %>
+										</td>
+										<td>
+											<%= contract.Contractor_PAN_No %>
+										</td>
+										<td>
+											<%= contract.Contractor_LIN %>
+										</td>
+										<td>
+											<%= contract.Mobile_No %>
+										</td>
+										<td>
+											<%= contract.Name_of_person %>
+										</td>
+										<td>
+											<%= contract.compliance_Mail_id %>
+										</td>
+										<td>
+											<%= contract.hr_department %>
+										</td>
+										<td>
+											<%= contract.sign %>
+										</td>
+										<td>
+											<%= contract.status %>
+										</td>
+										<td>
+											<%= contract.created_by %>
+										</td>
+										<td>
+											<%= contract.created_on %>
+										</td>
+										<td>
+											<%= contract.modified_by %>
+										</td>
+										<td>
+											<%= contract.modified_on %>
+										</td>
+										<td>
+											<%= contract.user_name %>
+										</td>
+										<td>
+											<%= contract.password %>
+										</td>
+									</tr>
+
+									<% }) %>
+							</tbody>
+						</table>
+						<!--Excel Download Table-->
+					</div>
+				</div>
+			</div>
+			<!--Form Start -->
+			<br /> 
+			<br />
+		
+		<!-- new contractor-->
+		<div class="card" id="newcontract" style="margin-top: -25px;max-height: 500px;">
+			<div class="card-body">
+				<h4 class="card-title" style="margin-top: -15px;">New Contractor </h4>
+				<form class="forms-sample" method="POST" action="/contractor/newcontractor" autocomplete="off"
+					onsubmit="showAlert()">
+					<div style="margin-left: 10px;">
+						<div class="form-group row" style="max-height: 30px;align-items: baseline;">
+							<label for="Contractor_Code" class="col-form-label">Contractor Code</label>
+							<div style="margin-left: 40px;">
+								<input type="text" class="form-control" name="Contractor_Code"
+									style="max-height: 20px;min-width: 200px;" value="<%= char %><%=ccode %>"
+									readonly>
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 30px;align-items: baseline;">
+							<label for="prefix_code" class="col-form-label">Prefix Code</label>
+							<div style="margin-left: 40px;">
+								<input type="text" class="form-control" name="prefix_code"
+									style="max-height: 20px;min-width: 200px;" value="">
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 35px;align-items: baseline;">
+							<label for="Contractor_Name" class="col-form-label">Contractor Name</label>
+							<div style="margin-left: 37px;">
+								<input type="text" class="form-control" id="Contractor_Name" name="Contractor_Name"
+									placeholder="Contractor Name" required
+									style="max-height: 20px;min-width: 200px;">
+							</div>
+						</div>
+						</div>
+						<div class="form-group row" style="max-height: 70px;align-items: baseline;">
+							<label for="Contractor_Name" class="col-form-label" style="margin-left: 10px;">Contractor Email</label>
+							<div style="margin-left: 40px;">
+								<input type="text" class="form-control" id="email" name="email"
+									placeholder="Email" required
+									style="max-height: 20px;min-width: 200px;">
+							</div>
+						</div>
+						<center>
+							<button type="submit" class="btn btn-gradient-success btn-fw">Save</button>
+						</center>
+						</div>
+			</div>
+			</div>
+		</div>
+		
+<!-- Footer Page-->
+<%- include('../nav/footer') %>
+
+
+<!--Initial Loading-->
+<script type="text/javascript">
+
+	window.onload = function () {
+		$(".preload").hide();
+		document.getElementById("overlay").style.display = "block";
+		document.getElementById("newform").style.display = "none";
+		document.getElementById("backbutton").style.display = "none";
+		document.getElementById("newcontract").style.display = "none";
+
+	};
+
+	function addContractor(a) {
+
+		if (a == 1) {
+			document.getElementById("backbutton").style.display = "block";
+			document.getElementById("newform").style.display = "block";
+			document.getElementById("table").style.display = "none";
+			document.getElementById("addbutton").style.display = "none";
+			document.getElementById("excel_div").style.display = "none";
+			document.getElementById("uploadbutton").style.display = "none";
+			document.getElementById("newcontract").style.display = "none";
+		}
+		else if(a == 2) {
+			document.getElementById("table").style.display = "block";
+			document.getElementById("addbutton").style.display = "block";
+			document.getElementById("backbutton").style.display = "none";
+			document.getElementById("newform").style.display = "none";
+			document.getElementById("newcontract").style.display = "none";
+			location.reload();
+		}
+		else if(a == 3) {
+			document.getElementById("table").style.display = "none";
+			document.getElementById("addbutton").style.display = "none";
+			document.getElementById("backbutton").style.display = "block";
+			document.getElementById("newform").style.display = "none";
+			document.getElementById("newcontract").style.display = "block";			
+			document.getElementById("excel_div").style.display = "none";
+			document.getElementById("uploadbutton").style.display = "none";
+
+			$.ajax({
+			type: 'POST',
+			data: { "a": a },
+			url: '/contractornew',
+			success: function (data) {
+				$('#Contractor_Code').empty();
+				
+				alert(data.length);
+				console.log(data);
+				//$('#emp_code').val(data.prfxCode.prefix_code);
+				for (i = 0; i < data.length; i++) {
+					var CCCode ='CT';
+					var CodeCount = data[1][0].cccode;
+					//var CardCount = data[3][0].card_count;
+					//var newEmpCodeCount = Number(data[2][0].availableCount) + Number(1);
+					var NewccCode = String(CCCode) + String(CodeCount);
+					$('#Contractor_Code').val(NewccCode);
+					//$('#Contractor_Code').val(CardCount);
+					
+				}
+			}
+		    });
+			//location.reload();
+		}
+	}
+
+	//function backContractor() {
+</script>
+
+<!--Show alert-->
+<script>
+	function showAlert() {
+		alert("Contractor Details Saved Successfully");
+		location.reload();
+	}
+</script>
+
+<!--Table Sort-->
+<script>
+	(function(document) {
+		'use strict';
+
+		var TableFilter = (function(myArray) {
+			var search_input;
+
+			function _onInputSearch(e) {
+				search_input = e.target;
+				var tables = document.getElementsByClassName(search_input.getAttribute('data-table'));
+				myArray.forEach.call(tables, function(table) {
+					myArray.forEach.call(table.tBodies, function(tbody) {
+						myArray.forEach.call(tbody.rows, function(row) {
+							var text_content = row.textContent.toLowerCase();
+							var search_val = search_input.value.toLowerCase();
+							row.style.display = text_content.indexOf(search_val) > -1 ? '' : 'none';
+						});
+					});
+				});
+			}
+
+			return {
+				init: function() {
+					var inputs = document.getElementsByClassName('search-input');
+					myArray.forEach.call(inputs, function(input) {
+						input.oninput = _onInputSearch;
+					});
+				}
+			};
+		})(Array.prototype);
+
+		document.addEventListener('readystatechange', function() {
+			if (document.readyState === 'complete') {
+				TableFilter.init();
+			}
+		});
+
+	})(document);
+</script>
+
+<!--Ecxel Download -->
+<script>
+	function ExportToExcel(tableid) {
+			var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+			var textRange; var j = 0;
+			tab = document.getElementById(tableid);//.getElementsByTagName('table'); // id of table
+			if (tab==null) {
+				return false;
+			}
+			if (tab.rows.length == 0) {
+				return false;
+			}
+
+			for (j = 0 ; j < tab.rows.length ; j++) {
+				tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+				//tab_text=tab_text+"</tr>";
+			}
+
+			tab_text = tab_text + "</table>";
+			tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+			tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+			tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+			var ua = window.navigator.userAgent;
+			var msie = ua.indexOf("MSIE ");
+
+			if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+			{
+				txtArea1.document.open("txt/html", "replace");
+				txtArea1.document.write(tab_text);
+				txtArea1.document.close();
+				txtArea1.focus();
+				sa = txtArea1.document.execCommand("SaveAs", true, "Employee.xls");
+			}
+			else                 //other browser not tested on IE 11
+				//sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+				try {
+					var blob = new Blob([tab_text], { type: "application/vnd.ms-excel" });
+					window.URL = window.URL || window.webkitURL;
+					link = window.URL.createObjectURL(blob);
+					a = document.createElement("a");
+					if (document.getElementById("caption")!=null) {
+						a.download=document.getElementById("caption").innerText;
+					}
+					else
+					{
+						a.download = 'contractor_master_details';
+					}
+
+					a.href = link;
+
+					document.body.appendChild(a);
+
+					a.click();
+
+					document.body.removeChild(a);
+				} catch (e) {
+				}
+
+
+			return false;
+			//return (sa);
+		}
+</script>
+<!--prefix code  validation -->
+<script>
+	function check_prefix(prefixcode) {
+		
+		$.ajax({
+			method: 'POST',
+			url: '/contractor/onchange',
+			data: { prefixcode: prefixcode },
+			success: function (prefixdetails) {
+				//var arr = aadhardetails[0]; 
+				var len = prefixdetails.length;
+				console.log(len);
+				if (len > 0) {
+					alert("Prefix Code already exist. please enter valid Prefix Code");
+					$('#Prefix_Code').val("");
+				}
+			}
+		});
+	}
+</script>

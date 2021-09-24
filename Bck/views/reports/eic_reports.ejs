@@ -1,0 +1,79 @@
+<%- include ('../nav/header')  %>        
+<!-- Sidebar Page -->
+<%- include('../nav/sidebar') %>
+
+  <div class="content-wrapper">
+		<div class="col-lg-12 grid-margin stretch-card" id="table">
+			<div class="card overflow-x overflow-y-hidden">
+  <div class="content-wrapper">
+		<div class="row">
+	 <div class="col-12 grid-margin stretch-card">
+			<div class="card">
+			  <div class="card-body">
+				<h4 class="card-title">EIC Master Report</h4>
+				
+				<form class="form-inline">
+				  <label class="sr-only" for="inlineFormInputName2">EIC No</label>
+				  <input type="text" class="form-control mb-2 mr-sm-2" id="eic_no" name="eic_no"  placeholder="eic_no">
+				  <label class="sr-only" for="inlineFormInputName2">EIC Name</label>
+				  <input type="text" class="form-control mb-2 mr-sm-2" id="eic_name" name="eic_name"  placeholder="eic name">
+				  
+				 
+				  <button type="submit" class="btn btn-gradient-primary mb-2">Go</button>
+				
+				</form>  
+			  <!--   <div class="template-demo"> -->
+					  
+					  <div class="col-sm-12 text-right">
+					
+				 	   <div class="w3-show-inline-block">
+  <div class="w3-bar"> 
+					
+					<button type="button" class="btn btn-gradient-info btn-icon-text" onclick="window.print();"> Print <i class="mdi mdi-printer btn-icon-append"></i>
+					  </button>
+					 
+					 
+					  <button type="button" class="btn btn-gradient-info btn-icon-text" onclick="window.excel();"> Excel <i class="mdi mdi-excel btn-icon-append"></i>
+					  </button>
+					</div>
+					</div> 
+  </div>
+					 
+					<!-- </div> -->
+					
+<table class="table table-bordered"> 				
+<thead>
+<tr>
+	  <th>EICPRNO:</th>			 
+      <th colspan="5">EICNAME: null</th>
+      
+</tr>	 
+</thead>
+<tbody>
+<tr>
+ 
+					<td>S.NO</td> 
+					<td>EICPRNO</td>
+					<td>EICNAME</td>
+					<td>EICDESIG</td>
+					<td>EICEMAIL</td>
+					<td>EICMOBILE</td>
+					
+					
+</tr> 
+
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>  
+		  <!-- Footer Page-->
+<%- include('../nav/footer') %>
+		  
+		  
+		  

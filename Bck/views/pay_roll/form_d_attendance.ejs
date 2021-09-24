@@ -1,0 +1,372 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+		<style>
+			table {
+				border: 1px solid;
+				margin: 0px 15px 10px 15px;
+				font-size: 0.3rem;
+				font-family: auto;
+			}
+
+			table th {
+				color: black;
+				border: 1px solid black;
+			}
+
+			table td {
+				border: 1px solid black;
+				width: 10px;
+
+			}
+
+			.border-none {
+				border-collapse: collapse;
+				border: none;
+				border-right: none;
+				border-right-style: hidden;
+				border-left-style: hidden;
+				border-bottom-style: hidden;
+			}
+		</style>
+
+		<div id="overlay" class="wage2overlayaligns">
+			<div class="content-wrapper">
+				<div class="col-lg-12 grid-margin stretch-card" id="table">
+					<div class="card tablecard">
+
+						<div class="card-body">
+							<h4 class="card-title titlealign">Form D Attendance Register</h4>
+
+							<form class="form-inline" method="POST" action="/formDAttendance/formDAttendance">
+								<input list="cont_code" class="form-control" name="ccode" id="ccode">
+								<datalist id="cont_code">
+									<% form_d_data.forEach(function(formddata){ %>
+										<option value="<%= formddata.CODE_NAME %>">
+										</option>
+										<%})%>
+								</datalist>
+								&nbsp;
+								<select class="form-control mb-2 mr-sm-2 mr-10" name="month_data" id="month_data"
+									placeholder="Select Month">
+									<option value="">Select Month</option>
+									<% MonthDetails.forEach(function(Monthlist) { %>
+										<option value="<%= Monthlist.MONTH+'-'+Monthlist.YEAR%>">
+											<%= Monthlist.MONTH+'-'+Monthlist.YEAR %>
+										</option>
+										<% }) %>
+								</select>
+								<input type="button" class="btn btn-gradient-primary mb-2 mr-10" value="Go"
+									onClick="get_from_d_attendance()">
+							</form>
+						</div>
+
+						<div id="form_d_table">
+							<div class="col-sm-12 text-right">
+								<div class="w3-show-inline-block">
+									<div class="w3-bar dis-none" id="btn_show">
+
+										<button type="button" class="btn btn-gradient-info btn-icon-text h-2p5_rem"
+											onclick="printDiv('form_d_attendance')"> Print <i
+												class="mdi mdi-printer btn-icon-append"></i>
+										</button>
+
+										<a href="#" id="test" onclick="fnExcelReport();"
+											class="btn btn-success btn-sm h-2p5_rem p-12">
+											<span class="glyphicon glyphicon-download-alt"></span>Export to Excel</a>
+
+									</div>
+								</div>
+							</div>
+							<!--Loading Images-->
+							<div class="preload loading_position">
+								<img src="assets/loading/Hourglass.gif">
+							</div>
+							<div class="card overflow-x overflow-y-hidden">
+								<br />
+								<div class="card-body" id="form_d_attendance">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Footer Page-->
+		<%- include('../nav/footer') %>
+
+			<!--Initial Loading-->
+			<script type="text/javascript">
+				window.onload = function () {
+					$(".preload").hide();
+					document.getElementById("overlay").style.display = "block";
+				};
+			</script>
+
+			<!-- Table Append-->
+			<script>
+				function get_from_d_attendance() {
+					$(".preload").show();
+					debugger;
+					document.getElementById('btn_show').style.display = 'block';
+					var report_page = document.getElementById('form_d_attendance');
+					debugger;
+
+					var ccode = document.getElementById("ccode").value;
+					var month = document.getElementById("month_data").value;
+
+					var payroll = month.split("-");
+					var payroll_month = payroll[0];
+					var payroll_year = payroll[1];
+
+					//console.log(payroll_month)
+					// console.log(payroll_year)
+					//var from_date = payroll_year+'-'+'0'+payroll_month+'-'+'0'+1; 
+					var from_date = '0' + 1 + '-' + '0' + payroll_month + '-' + payroll_year;
+					var getDaysInMonth = function (month, year) {
+						// Here January is 1 based
+						//Day 0 is the last day in the previous month
+						return new Date(year, month, 0).getDate();
+						// Here January is 0 based
+						// return new Date(year, month+1, 0).getDate();
+					};
+					var end_of_month = getDaysInMonth(payroll_month, payroll_year);
+					//var end_date = payroll_year+'-'+'0'+payroll_month+'-'+end_of_month; 
+					var end_date = end_of_month + '-' + '0' + payroll_month + '-' + payroll_year;
+
+					$.ajax({
+						method: 'POST',
+						url: '/pay_roll/form_d_attendance_data',
+						data: { ccode: ccode, month: month },
+						success: function (data) {
+							debugger;
+							$(".preload").hide();
+							var report_data = data.PayrollData;
+							//console.log(report_data);
+							//code for distinct work order 2
+							report_page.innerHTML = "";
+							debugger;
+							var flags = [], output = [], l = report_data.length, i;
+							for (i = 0; i < l; i++) {
+								if (flags[report_data[i].PO_NUM]) continue;
+								flags[report_data[i].PO_NUM] = true;
+								output.push(report_data[i].PO_NUM);
+							}
+
+							//code  close for distinct work order
+							//console.log(output1.length);    length 135
+
+
+							//Workorder start 
+
+							for (var k = 0; k < output.length; k++) {
+								daysArr = [];
+								var cols = data.days;
+
+								if (cols == "28") {
+									var colspan = cols + 9;
+								} else {
+									var colspan = cols + 6;
+								}
+								//console.log(colspan)
+								//console.log(output[k]);
+								var tr = "<center><h5>FORM D</br>Attendance Register</h5></center>";
+								tr += "<table id='tableid' style='page-break-after: always;'><thead><tr class='h-40 fs15'><th colspan='3'>Name and address of Contractor :</th><td colspan='13' id='conname'>" + report_data[0].CNAME + "</td><th colspan='5'>Name and address of Principal employer :</th><td colspan='13'>CHENNAI PETROLEUM CORPORATION LIMITED MANALI, CHENNAI-600068</td><th colspan='4'>Name of Owner <br /> LIN</th><th colspan='3'></th></tr><tr id='date_period'></tr>";
+								tr += "<tr class='h-40 fs15'><th colspan='3'>Wage period</th><td colspan='11'>From " + from_date + " To " + end_date + "</td><td colspan='12'>(Monthly/Fortnight/Weekly/Daily/Piece Rated)</td><th colspan='9'>Work order</th><td colspan='6'>" + output[k] + "</td></tr>";
+								tr += "<tr class='h-40 fs15'><th rowspan='2'>S.No</th><th rowspan='2'>Sl. No. in <br />Employee Register</th><th rowspan='2'>Name</th><th rowspan='2'>Relay # or Set Work</th><th rowspan='2'>Place of Work*</th><th rowspan='2'>IN OUT</th><th colspan=" + data.days + " class='t-a-c' style='text-align: center;'>DATES</th><th rowspan='2'>Summary <br />No.of Days</th><th rowspan='2'>Remarks <br />No.of Hours</th><th rowspan='2' >**Signature of <br />Register Keeper</th></tr><tr class='h-40'>";
+								//console.log(data.days);
+								for (z = 1; z <= data.days; z++) {
+									tr += "<th class='w10px fs15'>" + z + "</th>";
+									daysArr.push(z);
+								}
+								//console.log(daysArr);
+								tr += "</tr><tr class='t-a-c h-40 fs15'><th>1</th><th>1(a)</th><th>2</th><th>3</th><th>4</th><th>5,6</th><th class='fs15' colspan=" + data.days + " class='t-a-c'>7</th><th>8</th><th>9</th><th colspan='2'>10</th></tr></thead>";
+
+								tr += "<tbody>";
+
+								var emp_code = [];
+
+
+								for (var i = 0; i < report_data.length; i++) {
+
+									if (report_data[i].PO_NUM == output[k]) {
+										emp_code.push(report_data[i]);
+									}
+								}
+								//code for distinct work emp_code 4 record
+								//console.log(emp_code);
+
+								//console.log(emp_code.Shift_date);
+
+
+
+								var flags1 = [], output1 = [], l = emp_code.length, i;
+								for (a = 0; a < l; a++) {
+									if (flags1[emp_code[a].EMPCODE]) continue;
+									flags1[emp_code[a].EMPCODE] = true;
+									output1.push(emp_code[a]);
+
+								}
+								var sum_total_days = 0;
+								for (var z = 0; z < output1.length; z++) {
+									console.log(output1[z]);
+									tr += "<tr class='h-35 fs15'><td>" + (z + 1) + "</td><td>" + output1[z].IDCARDNO + "</td><td style='text-align: left;'>" + output1[z].Employee_Name + "</td><td></td><td></td><td></td>";
+
+									var attend_date = [];
+									for (var d = 0; d < emp_code.length; d++) {
+										if (emp_code[d].EMPCODE == output1[z].EMPCODE) {
+											attend_date.push(emp_code[d].Shift_date);
+										}
+									}
+                                    
+									//console.log(attend_date);
+									
+
+									//console.log(daysArr);//1,2,3,4,5...31
+									//console.log(attend_date); //1,2,3,4,5
+
+									var Attendance = [];
+									for (var o = 0; o < daysArr.length; o++)	//1,2,3,4,5...31
+									{
+										var ispresent = false;
+
+										for (var w = 0; w < attend_date.length; w++) {
+											if (attend_date[w] == daysArr[o]) {
+												ispresent = true;
+												Attendance.push('P');
+												break;
+											}
+										}
+										if (ispresent == false) 
+										{
+											Attendance.push('A');
+										}
+
+									}
+
+									//console.log(attend_date);
+									//console.log(Attendance);
+
+									for (var s = 0; s < Attendance.length; s++) {
+										tr += "<td style='max-width:18px;min-width:18px;'>" + Attendance[s] + "</td>";
+									}
+
+									var day_count = 0;
+									for (var c = 0; c < emp_code.length; c++) {
+										if (emp_code[c].EMPCODE == output1[z].EMPCODE) {
+											day_count++;
+										}
+
+									}
+									sum_total_days += day_count;
+									tr += "<td>" + day_count + "</td><td></td><td></td></tr>";
+								}
+								tr += "<tr class='h-35 fs15''><th colspan =" + colspan + "  style='text-align: right;'> TOTAL</th><th>" + sum_total_days + "</th><th></th><th></th></tr>";
+								tr += "<tr class='border-none'><td colspan = '45'><div class='iddiv' align='start' style='font-size:xx-small;'>#Relay and *Place of Work in case of Mines only(Underground/Opencast/Surface) In case an employee is not present the following to be entered:<br/>A: Absent, NH: National Holiday, FH: Festival Holiday, EH:Election Holiday<br/>** Not necessary in case of E Form maintenance.</div></td></tr></tbody></table>"
+
+								// tr += "</tr></tbody></table><div style='font-size:10px;margin-left:15px;border: none !important; width:100%;text-align: left;'><tr style='border: none !important;'><td style='border: none !important;'>#Relay and *Place of Work in case of Mines only(Underground/Opencast/Surface) In case an employee is not present the following to be entered:<br/>A: Absent, NH: National Holiday, FH: Festival Holiday, EH:Election Holiday<br/>** Not necessary in case of E Form maintenance.</td></tr></div>"
+
+								// tr += "</tr></tbody><tfoot> <tr><td colspan='45'><p style='font-size: 10px;'class='col-sm-12'>#Relay and *Place of Work in case of Mines only(Underground/Opencast/Surface) In case an employee is not present the following to be entered:<br/>A: Absent, NH: National Holiday, FH: Festival Holiday, EH:Election Holiday<br/>** Not necessary in case of E Form maintenance.</p></td></tr></tfoot></table>";
+
+								report_page.innerHTML += tr;
+							}	//Work order wise loop
+						}	//succes function loop close
+
+
+					}); //$.ajax function loop close
+				}
+			</script>
+
+			<!--Excel Download-->
+			<script>
+				function fnExcelReport() {
+					var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+					tab_text = tab_text + '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+					tab_text = tab_text + '<x:Name>Test Sheet</x:Name>';
+					tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+					tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+					tab_text = tab_text + "<table border='1px'>";
+
+					// Remove Dynamic hidden controls.
+					var list = $('#form_d_attendance').find('.ng-hide');
+					for (var i = list.length - 1; 0 <= i; i--) {
+						if (list[i] && list[i].parentElement) {
+							list[i].parentElement.removeChild(list[i]);
+						}
+					}
+
+					// Getting dynamic controll values.
+					var list = $('#form_d_attendance').find('.dvItems');
+					var values = "";
+					for (var i = 0; i <= list.length - 1; i++) {
+						if (list[i] && list[i].parentElement) {
+							values += $(list[i]).text().trim();
+						}
+					}
+					for (var i = 0; i <= list.length - 1; i++) {
+						if (i == 0) {
+							// Replace last comma and assign value.
+							$($('#form_d_attendance').find('.dvItems')[i]).text(values.replace(/,\s*$/, ""));
+						}
+						else {
+							$($('#form_d_attendance').find('.dvItems')[i]).text("");
+						}
+					}
+					tab_text = tab_text + $('#form_d_attendance').html();
+					tab_text = tab_text + '</table></body></html>';
+					var data_type = 'data:application/vnd.ms-excel';
+					var ua = window.navigator.userAgent;
+					var msie = ua.indexOf("MSIE ");
+
+					if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+						if (window.navigator.msSaveBlob) {
+							var blob = new Blob([tab_text], {
+								type: "application/vnd.ms-excel;charset=utf-8;"
+							});
+							navigator.msSaveBlob(blob, 'Coupon.xls');
+						}
+					} else {
+						window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+					}
+				}
+			</script>
+
+			<!--Print Function-->
+			<script>
+				function printDiv(form_d_attendance) {
+					var mywindow = window.open('', 'PRINT', 'height=400,width=800px');
+
+					mywindow.document.write('<html><head><title>' + '' + '</title>');
+					mywindow.document.write(`<style>
+					table {font-size: 0.3rem;margin: 9px 15px 24px 15px;border-collapse: collapse !important;text-align : center;}
+					table th {color: black;border: 1px solid black;}
+					table td {border: 1px solid black; width: 10px; !important}
+					.fs15 {font-size: 15px; width: 10px; !important}
+					.h-30 {height: 30px; !important  width: 10px; !important}
+					.h-35 {height: 35px; !important width: 10px; !important}
+					.h-40 {height: 40px; !important width: 10px; !important}
+					.h-50 {height: 50px; !important width: 10px; !important}
+					.w10px {width: 25px; !important width: 10px; !important}
+					.border-none {
+						border-collapse: collapse;
+						border: none;
+						border-right: none;
+						border-right-style: hidden;
+						border-left-style: hidden;
+						border-bottom-style: hidden;
+			        }
+					.iddiv {
+						style='font-size:xx-large;'
+					}
+					</style></head><body >`);
+					mywindow.document.write(document.getElementById(form_d_attendance).innerHTML);
+					mywindow.document.write('</body></html>');
+					mywindow.document.close(); // necessary for IE >= 10
+					mywindow.focus(); // necessary for IE >= 10*/
+
+					mywindow.print();
+					mywindow.close();
+
+					return true;
+				}
+			</script>

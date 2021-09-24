@@ -1,0 +1,302 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+		<style>
+			table {
+				font-size: 0.3rem;
+				margin: 9px 15px 24px 15px;
+				font-family: auto;
+			}
+
+			table th {
+				color: black;
+				border: 1px solid black;
+			}
+
+			table td {
+				border: 1px solid black;
+				color: black;
+			}
+		</style>
+
+		<div id="overlay" class="wage2overlayaligns">
+			<!--form b wage register design-->
+			<div class="content-wrapper">
+				<div class="col-lg-12 grid-margin stretch-card" id="table">
+					<div class="card tablecard">
+						<div class="card-body">
+							<h4 class="card-title titlealign">Wage Register</h4>
+							<form class="form-inline">
+							
+
+								<input list="contract_code" class="form-control" name="contract_code_data" id="contract_code_data">
+								<datalist id="contract_code">
+									<% conDetailsCode.forEach(function(contractorlist){ %>
+										<option value="<%= contractorlist.contractor_code+'-'+contractorlist.contractor_name %>">
+										</option>
+										<%})%>
+								</datalist>
+								&nbsp;
+
+
+								<label class="sr-only" for="from_date">Month</label>
+								<select class="form-control mb-2 mr-sm-2" name="month_data" id="month_data"
+									placeholder="Select Month">
+									<option value="">Select Month</option>
+									<% MonthDetails.forEach(function(Monthlist) { %>
+										<option value="<%= Monthlist.MONTH+'-'+Monthlist.YEAR%>">
+											<%= Monthlist.MONTH+'-'+Monthlist.YEAR %>
+										</option>
+										<% }) %>
+								</select>
+								<input type="button" class="btn btn-gradient-primary mb-2" value="Go"
+									onClick="get_form_b_wage_data()">
+							</form>
+						</div>
+						<div class="col-sm-12 text-right">
+							<div class="w3-show-inline-block">
+								<div class="w3-bar dis-none" id="btn_show">
+									<button type="button" class="btn btn-gradient-info btn-icon-text"
+										onclick="printDiv('wage_register')"> Print <i
+											class="mdi mdi-printer btn-icon-append"></i>
+									</button>
+
+									<a href="#" id="test" onclick="fnExcelReport();"
+										class="btn btn-success btn-sm h-2p5_rem p-12"><span
+											class="glyphicon glyphicon-download-alt"></span>Export to Excel</a>
+								</div>
+							</div>
+						</div>
+						<!--Loading Images-->
+						<div class="preload loading_position">
+							<img src="assets/loading/Hourglass.gif">
+						</div>
+						<!--form b wage data list part-->
+						<div class="col-lg-12 grid-margin stretch-card" id="table tableid">
+							<div class="card overflow-x overflow-y-hidden">
+								<div class="card-body dis-none" id="wage_register">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Footer Page-->
+		<%- include('../nav/footer') %>
+
+			<!--Initial Loading-->
+			<script type="text/javascript">
+				window.onload = function () {
+					$(".preload").hide();
+					document.getElementById("overlay").style.display = "block";
+				};
+			</script>
+
+			<!-- Table Append-->
+			<script>
+				function get_form_b_wage_data() {
+					$(".preload").show();
+					//	tr +="<tr class='t-a-c'><th>1</th><th>1(a)</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>11(a)</th><th>11(b)</th><th>11(c)</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>19(a)</th><th>19(b)</th><th>19(c)</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th></tr></thead><tbody id='form_b_wage'></tbody></table></thead><tbody></tbody></table>";
+					document.getElementById('btn_show').style.display = 'block';
+
+					var ccode = document.getElementById("contract_code_data").value;
+					var month = document.getElementById("month_data").value;
+
+					var payroll = month.split("-");
+					var payroll_month = payroll[0];
+					var payroll_year = payroll[1];
+
+					//console.log(payroll_month)
+
+					//var from_date = payroll_year+'-'+'0'+payroll_month+'-'+'0'+1; 
+					var from_date = '0' + 1 + '-' + '0' + payroll_month + '-' + payroll_year;
+					var getDaysInMonth = function (month, year) {
+						// Here January is 1 based
+						//Day 0 is the last day in the previous month
+						return new Date(year, month, 0).getDate();
+						// Here January is 0 based
+						// return new Date(year, month+1, 0).getDate();
+					};
+					var end_of_month = getDaysInMonth(payroll_month, payroll_year);
+					//var end_date = payroll_year+'-'+'0'+payroll_month+'-'+end_of_month; 
+					var end_date = end_of_month + '-' + '0' + payroll_month + '-' + payroll_year;
+
+					//console.log(from_date);
+					//console.log(end_date)
+					document.getElementById("wage_register").style.display = "block";
+					var report_page = document.getElementById('wage_register');
+
+					$.ajax({
+						method: 'POST',
+						url: '/pay_roll/form_b_wage_reg_data',
+						data: { ccode: ccode, month: month },
+						success: function (data) {
+							$(".preload").hide();
+							report_page.innerHTML = "";
+
+							//console.log(data);
+							for (i = 0; i < data.length; i++) {
+								var con_name = data[1].con_name;
+
+							}
+
+							//console.log(con_name)
+
+							//code for distinct work order
+							var flags = [], output = [], l = data.length, i;
+							for (i = 0; i < l; i++) {
+								if (flags[data[i].work_order_number]) continue;
+								flags[data[i].work_order_number] = true;
+								output.push(data[i].work_order_number);
+							}
+
+
+
+							for (var k = 0; k < output.length; k++) {
+
+								console.log(payroll_month);
+								if (payroll_month >= 4) {
+									var tr = "<caption><center><b><H5>FORM B</br>WAGE REGISTER</H5></b></center></caption><center><table  align='center' style='font-size: 15px;width: 50%; text-align:center;margin-left: auto;margin-right: auto;'><thead><tr><td rowspan='3' align='center'>CATEGORY OF WORK </td></tr><tr class='h-30'><td>Existing Old Rate</td><td align='center'>Revised New Rate <br/> W.E.F 01.04.2021</td></tr><tr class='h-30'><td align='center'>Total</td><td align='center'>Total</td></tr><tr class='h-30'><td align='left'>UNSKILLED</td><td align='center'>639</td><td align='center'>645</td></tr><tr class='h-30'><td align='left'>SEMI SKILLED</td><td align='center'>707</td><td align='center'>714</td></tr><tr class='h-30'><td align='left'>SKILLED</td><td align='center'>777</td><td align='center'>784</td></tr><tr class='h-30'><td align='left'>HIGHLY SKILLED</td><td align='center'>845</td><td align='center'>853</td></tr></thead></table></center>";
+								} else if (payroll_month <= 10) {
+									var tr = "<caption><center><b><H5>FORM B</br>WAGE REGISTER</H5></b></center></caption><table> <thead><center><table align='center' style='font-size: 15px;width: 50%; text-align:center;margin-left: auto;margin-right: auto;'><thead><tr class='h-30'><td colspan='5' align='center'>Rate of Minimum Wages and since the date  </td></tr><tr class='h-30'><td></td><td align='center'>Highly Skilled</td><td align='center'>Skilled</td><td align='center'>Semi-Skilled</td><td align='center'>Un Skilled</td></tr><tr class='h-30'><td>Minimum Basic</td><td align='center'>845.00</td><td align='center'>777.00</td><td align='center'>707.00</td><td align='center'>639.00</td></tr><tr class='h-30'><td>DA</td><td colspan='4'align='center'>Include in Minimum Basic</td></tr><tr class='h-30'><td>Overtime</td><td colspan='4' align='center'>Double The Rate Of Wages</td></tr></thead></table></center>";
+								}
+								tr += "<center><table id='tableid' style='page-break-after: always;'><thead><tr class='h-40'><td colspan='3'>Name and address of Contractor : </td><td colspan='11'>" + con_name + "</td><td colspan='3'>Name and address of <br/>Principal employer :</td><td colspan='9'>CHENNAI PETROLEUM CORPORATION LIMITED MANALI, CHENNAI-600068</td><td colspan='3'>Name of Owner <br/>LIN</td><td colspan='3'></td></tr><tr><td colspan='3'>Wage period</td><td colspan='11'>From : " + from_date + " To : " + end_date + "</td><td colspan='12'>(Monthly/Fortnight/Weekly/Daily/Piece Rated)</td><td colspan='3'>Work order</td><td colspan='3'>" + output[k] + "</td></tr><tr><th rowspan='2'>S.No</th><th rowspan='2'>Sl. No. in <br/>Employee Register</th><th rowspan='2'>Name</th><th rowspan='2'>Rate of wage</th><th rowspan='2'>No. of days Worked</th><th rowspan='2'>Over time Hours Worked</th><th colspan='10' class='t-a-c' style='text-align:center';>Earnings</th><th colspan='11' class='t-a-c' style='text-align:center';>Deductions</th><th rowspan='2'>Net <br/>Payment</th><th rowspan='2'>Employee share PF Welfare</th><th rowspan='2'>Receipt by Employee/Bank Transaction ID</th><th rowspan='2'>Date of payment</th><th rowspan='2'>Remarks</th>	</tr><tr class='t-a-c'><th>Basic</th><th>Special Basic</th><th>DA</td><th>Payments Overtime</th><th>HRA</th><th>Other Allowance</th><th>Incentive</th><th>Arrear Basic</th><th>Misc.<br/>Credit</th><th>Total</th><th>PF</th><th>ESIC</th><th>Society</th><th>Income Tax</th><th>Insurance</th><th>Others</th><th>Recoveries</th><th>PTAX</th><th>LWF</th><th>Misc.Ded</th><th>Total Deduction</th></tr>";
+
+								tr += "<tbody>";
+								tr += "<tr><th>1</th><th>1(a)</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>11(a)</th><th>11(b)</th><th>11(c)</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>19(a)</th><th>19(b)</th><th>19(c)</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th></tr>";
+								var m = 1;
+								//var t_pd_wages = 0;
+								var t_no_of_days = 0;
+								var t_basic = 0;
+								var t_pd_allow = 0;
+								var t_pd_incen = 0;
+								var t_gross_salary = 0;
+								var t_pf_amount = 0;
+								var t_esi_amount = 0;
+								var t_lwf = 0;
+								var t_adv = 0;
+								var t_tot_deduction = 0;
+								var t_netpay = 0;
+								for (var i = 0; i < data.length; i++) {
+
+									if (data[i].work_order_number == output[k]) {
+										tr += "<tr class='h-35'><td>" + m + "</td><td>" + data[i].emp_new_code + "</td><td style='text-align: left;'>" + data[i].emp_name + "</td><td>" + data[i].pd_wages + "</td><td>" + data[i].no_of_days + "</td><td style='text-align: right;'>0</td><td style='text-align: right;'>" + data[i].basic + "</td><td style='text-align: right;'>0</td><td style='text-align: right;'>0</td><td style='text-align: right;'>0</td><td style='text-align: right;'>0</td><td style='text-align: right;'>" + data[i].pd_allow + "</td><td style='text-align: right;'>" + Math.round(data[i].pd_incen) + "</td><td style='text-align: right;'>0</td><td style='text-align: right;'>0</td><td>" + data[i].gross_salary + "</td><td>" + Math.round(data[i].pf_amount) + "</td><td>" + Math.round(data[i].esi_amount) + "</td><td style='text-align: right;'>0</td><td style='text-align: right;'>0</td><td style='text-align: right;'>0</td><td style='text-align: right;'>0</td><td style='text-align: right;'>0</td><td style='text-align: right;'>0</td><td>" + data[i].lwf + "</td><td style='text-align: right;'>" + Math.round(data[i].salary_advance) + "</td><td>" + Math.round(data[i].tot_deduction) + "</td><td>" + Math.round(data[i].netpay) + "</td><td></td><td></td><td></td><td></td></tr>";
+										//console.log();
+										m++;
+										//t_pd_wages += data[i].pd_wages;
+										t_no_of_days += data[i].no_of_days;
+										t_basic += data[i].basic;
+										t_pd_allow += data[i].pd_allow;
+										t_pd_incen += data[i].pd_incen;
+										t_gross_salary += data[i].gross_salary;
+										t_pf_amount += data[i].pf_amount;
+										t_esi_amount += data[i].esi_amount;
+										t_lwf += data[i].lwf;
+										t_adv += data[i].salary_advance;
+										t_tot_deduction += data[i].tot_deduction;
+										t_netpay += data[i].netpay;
+									}
+								}
+								//console.log(tpdwage)
+								tr += "<tr class='f-w-b fs-8 h-40'><th colspan = 4>GRAND TOTAL</th><th>" + t_no_of_days + "</th><th style='text-align: right;'>0</th><th>" + t_basic + "</th><th style='text-align: right;'>0</th><th style='text-align: right;'>0</th><th style='text-align: right;'>0</th><th style='text-align: right;'>0</th><th style='text-align: right;'>" + t_pd_allow + "</th><th style='text-align: right;'>" + Math.round(t_pd_incen) + "</th><th style='text-align: right;'>0</th><th style='text-align: right;'>0</th><th>" + t_gross_salary + "</th><th>" + Math.round(t_pf_amount) + "</th><th>" + Math.round(t_esi_amount) + "</th><th style='text-align: right;'>0</th><th style='text-align: right;'>0</th><th style='text-align: right;'>0</th><th style='text-align: right;'>0</th><th style='text-align: right;'>0</th><th>0</th><th>" + t_lwf + "</th><th style='text-align: right;'>" + Math.round(t_adv) + "</th><th>" + Math.round(t_tot_deduction) + "</th><th>" + Math.round(t_netpay) + "</th><th></th><th></th><th></th><th></th></th>";
+
+								tr += "</tbody></table></center>";
+
+
+								report_page.innerHTML += tr;
+
+							}
+
+						}
+					});
+				}
+			</script>
+
+			<!--Excel Download-->
+			<script>
+				function fnExcelReport() {
+					var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+					tab_text = tab_text + '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+					tab_text = tab_text + '<x:Name>Test Sheet</x:Name>';
+					tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+					tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+					tab_text = tab_text + "<table border='1px'>";
+
+					// Remove Dynamic hidden controls.
+					var list = $('#wage_register').find('.ng-hide');
+					for (var i = list.length - 1; 0 <= i; i--) {
+						if (list[i] && list[i].parentElement) {
+							list[i].parentElement.removeChild(list[i]);
+						}
+					}
+
+					// Getting dynamic controll values.
+					var list = $('#wage_register').find('.dvItems');
+					var values = "";
+					for (var i = 0; i <= list.length - 1; i++) {
+						if (list[i] && list[i].parentElement) {
+							values += $(list[i]).text().trim();
+						}
+					}
+					for (var i = 0; i <= list.length - 1; i++) {
+						if (i == 0) {
+							// Replace last comma and assign value.
+							$($('#wage_register').find('.dvItems')[i]).text(values.replace(/,\s*$/, ""));
+						}
+						else {
+							$($('#wage_register').find('.dvItems')[i]).text("");
+						}
+					}
+					tab_text = tab_text + $('#wage_register').html();
+					tab_text = tab_text + '</table></body></html>';
+					var data_type = 'data:application/vnd.ms-excel';
+					var ua = window.navigator.userAgent;
+					var msie = ua.indexOf("MSIE ");
+
+					if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+						if (window.navigator.msSaveBlob) {
+							var blob = new Blob([tab_text], {
+								type: "application/vnd.ms-excel;charset=utf-8;"
+							});
+							navigator.msSaveBlob(blob, 'Coupon.xls');
+						}
+					} else {
+						window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+					}
+				}
+			</script>
+
+			<!--print funtion-->
+			<script>
+				function printDiv(wage_register) {
+					var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+					mywindow.document.write('<html><head><title></title>');
+					mywindow.document.write(`<style>
+					table {
+					font-size: 0.7rem;
+					margin: 9px 0px 0px 0px;
+					border-collapse: collapse !important;}
+					table th {color: black;border: 1px solid black;font-size:10px}
+					table td {border: 1px solid black;font-size:10px}
+					.f-w-b {font-weight: bold;}
+					.fs-8 {font-size: 15px;}
+					.h-30 {height: 30px; !important}
+					.h-35 {height: 35px; !important}
+					.h-40 {height: 40px; !important}
+					.h-50 {height: 50px; !important}
+					</style></head><body>`);
+					//mywindow.document.write('<h1>' + document.title + '</h1>');
+					mywindow.document.write(document.getElementById(wage_register).innerHTML);
+					mywindow.document.write('</body></html>');
+
+					mywindow.document.close(); // necessary for IE >= 10
+					mywindow.focus(); // necessary for IE >= 10*/
+
+					mywindow.print();
+					mywindow.close();
+
+					return true;
+				}
+			</script>

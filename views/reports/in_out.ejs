@@ -1,0 +1,44 @@
+<%- include ('../nav/header')  %>        
+<!-- Sidebar Page -->
+<%- include('../nav/sidebar') %>
+
+  <div class="content-wrapper">
+		<div class="row">
+	 <div class="col-20 grid-margin stretch-card">
+			<div class="card">
+			  <div class="card-body">
+				<h4 class="card-title">IN-OUT Report</h4>
+				
+				<form class="form-inline">
+				  <label class="sr-only" for="inlineFormInputName2">From Date</label>
+				  <input type="date" class="form-control mb-2 mr-sm-2" id="from_dt" name="from_dt"  placeholder="from date">
+				  <label class="sr-only" for="inlineFormInputName2">To Date</label>
+				  <input type="date" class="form-control mb-2 mr-sm-2" id="to_dt" name="to_dt"  placeholder="to date">
+				  <label class="sr-only" for="inlineFormInputName2">Contractor Code</label>
+				  <input type="text" class="form-control mb-2 mr-sm-2" id="contractor_code" name="contractor_code"  placeholder="contractor code">
+				  
+ 				  <button type="submit" class="btn btn-gradient-primary mb-2">Go</button>
+ 				  <input type="hidden" name="msent" id="msent" />
+						 <div class="col-sm-12 text-right">
+					
+				 	   <div class="w3-show-inline-block">
+  <div class="w3-bar"> 
+					
+					<button type="button" class="btn btn-gradient-info btn-icon-text" onclick="window.print();"> Print <i class="mdi mdi-printer btn-icon-append"></i>
+					  </button>
+					 
+					 
+					  <button type="button" class="btn btn-gradient-info btn-icon-text" onclick="window.excel();"> Excel <i class="mdi mdi-excel btn-icon-append"></i>
+					  </button>
+					</div>
+					</div> 
+  </div>
+				</form>
+			  </div>
+			</div>
+		  </div>
+		  
+		  <!-- Footer Page-->
+<%- include('../nav/footer') %>
+		  
+		  

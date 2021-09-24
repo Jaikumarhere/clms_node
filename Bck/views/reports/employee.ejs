@@ -1,0 +1,72 @@
+<%- include ('../nav/header')  %>        
+<!-- Sidebar Page -->
+<%- include('../nav/sidebar') %>
+
+  <div class="content-wrapper">
+		<div class="col-lg-12 grid-margin stretch-card" id="table">
+			<div class="card overflow-x overflow-y-hidden">
+<!-- <div class="content-wrapper">
+		<div class="row">
+	 <div class="col-12 grid-margin stretch-card">
+			<div class="card">
+			  <div class="card-body">
+				<h4 class="card-title">Employee Master Report</h4>
+				
+				<form class="form-inline">
+				  <label class="sr-only" for="inlineFormInputName2">Employee</label>
+				  <input type="text" class="form-control mb-2 mr-sm-2" id="employee" name="employee"  placeholder="Employee">
+				  <label class="sr-only" for="inlineFormInputName2">Work Order</label>
+				  <input type="text" class="form-control mb-2 mr-sm-2" id="work_order" name="work_order"  placeholder="work order">
+				  <button type="submit" class="btn btn-gradient-primary mb-2">Go</button>
+				  </form> -->
+			  
+				
+				  
+					<!--   <div class="template-demo"> -->
+					  
+					 <div class="col-sm-12 text-right">
+					
+				 	   <div class="w3-show-inline-block">
+  <div class="w3-bar"> 
+					
+					<button type="button" class="btn btn-gradient-info btn-icon-text" onclick="window.print();"> Print <i class="mdi mdi-printer btn-icon-append"></i>
+					  </button>
+					 
+					 
+					  <button type="button" class="btn btn-gradient-info btn-icon-text" onclick="window.excel();"> Excel <i class="mdi mdi-excel btn-icon-append"></i>
+					  </button>
+					</div>
+					</div> 
+  </div>
+					<!-- </div> -->
+					
+<table class="table table-bordered"> 				
+<thead>
+<tr>
+	  <th>Cont Code:</th>			 
+      <th colspan="2">Cont Name:null</th>
+      <th colspan="2">Work Order No:null</th>
+</tr>	 
+</thead>
+<tbody>
+<tr>
+ 
+					<td>S.NO</td> 
+					<td>Emp Code</td>
+					<td>Emp Name</td>
+					<td>Dept</td>
+					<td>PO_No</td>
+					
+					
+					
+</tr> 
+
+</tbody>
+</table>
+</div>
+</div>
+</div>
+		  <!-- Footer Page-->
+<%- include('../nav/footer') %>
+		  
+		  

@@ -1,0 +1,224 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+	<a type="button" class="btn btn-gradient-danger btn-fw b-r-25 m-b-20" id="addbutton"
+    href="/contractornew">Back</a>
+	<div class="card tablecard">
+		<div class="card-body">
+
+			<h4 class="card-title titlealign">Contractor Master Edit</h4>
+
+			<% con_edit_data.forEach(function(cont_data){ %>
+				<form class="forms-sample" action="/contractornew/update" method="POST" autocomplete="off">
+					<input type="hidden" value="<%= cont_data.id %>" name="id">
+					<div style="margin-left: 10px;">
+						<div class="form-group row" style="max-height: 30px;align-items: baseline;">
+							<label for="exampleInputContractor_Code" class="col-form-label">Contractor
+								Code</label>
+							<div style="margin-left: 40px;">
+								<input type="text" class="form-control" id="exampleInputContractor_Code"
+									style="max-height: 20px;min-width: 200px;" name="Contractor_Code"
+									value="<%= cont_data.contractor_code %>" readonly>
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 35px;align-items: baseline;">
+							<label for="exampleInputContractor_Name" class="col-form-label">Contractor
+								Name</label>
+							<div style="margin-left: 37px;">
+								<input type="text" class="form-control" id="exampleInputContractor_Name"
+									name="Contractor_Name" value="<%= cont_data.contractor_name %>"
+									style="max-height: 20px;min-width: 200px;">
+							</div>
+						</div>
+						<!--<div class="form-group row">
+							<label for="Address" class="col-sm-3 col-form-label">Principle WorkOrder Number</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="Principle_wo_no" name="Principle_wo_no" 
+								value="<%= cont_data.PRINCIPLE_WO_NO %>" />
+							</div>
+						</div>-->
+						<div class="form-group row" style="max-height: 50px;align-items: baseline;">
+							<label for="exampleInputAddress" class="col-form-label">Address</label>
+							<div style="margin-left: 95px;min-width: 215px;">
+								<input type="text" class="form-control" id="exampleInputAddress" name="Address"
+									value="<%= cont_data.address %>" style="max-height: 90px;">
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 40px;align-items: baseline;">
+							<label for="exampleInputPrefix_Code" class="col-form-label">Prefix Code</label>
+							<div style="margin-left: 72px;min-width: 200px;">
+								<input type="text" class="form-control" id="exampleInputPrefix_Code"
+									style="max-height: 20px;" name="Prefix_Code"
+									value="<%= cont_data.prefix_code %>">
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 40px;align-items: baseline;">
+							<label for="exampleInputName of the proprietor" class="col-form-label">Name of
+								the
+								proprietor</label>
+							<div style="min-width: 200px;">
+								<input type="text" class="form-control" id="exampleInputName of the proprietor"
+									name="proprietor" value="<%= cont_data.proprietor %>" style="max-height: 20px;">
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 40px;align-items: baseline;">
+							<label for="exampleInputOwner" class="col-form-label">Owner</label>
+							<div style="margin-left: 105px;min-width: 200px;">
+								<input style="max-height: 20px;" type="text" class="form-control"
+									id="exampleInputowner" name="name" value="<%= cont_data.name %>">
+							</div>
+						</div>
+						<!--<div class="form-group row">
+							<label for="exampleInputMD"
+								class="col-sm-3 col-form-label">MD</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="exampleInputMD" name="md"
+									value="<%= cont_data.md %>">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="exampleInputpartner"
+								class="col-sm-3 col-form-label">Partner</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="exampleInputpartner" name="partner"
+									value="<%= cont_data.partner %>">
+							</div>
+						</div>-->
+						<div class="form-group row" style="max-height: 30px;align-items: baseline;">
+							<label for="exampleInputContractor E-mail ID" class="col-form-label">Contractor
+								E-mail ID</label>
+							<div style="margin-left: 19px;min-width: 200px;">
+								<input type="text" class="form-control" id="exampleInputContractor E-mail ID"
+									name="Contractor_Email" value="<%= cont_data.contractor_mail %>"
+									style="max-height: 20px;">
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 30px;align-items: baseline;">
+							<label for="exampleInputESI Code No" class="col-form-label">ESI Code No</label>
+							<div style="margin-left: 70px;min-width: 200px;">
+								<input type="text" class="form-control" id="exampleInputESI Code No"
+									name="ESI_Code_No" value="<%= cont_data.ESI_Code_No %>"
+									style="max-height: 20px;">
+							</div>
+						</div>
+					</div>
+					<div style="margin-left: 500px;margin-top: -360px;">
+						<div class="form-group row" style="max-height: 30px;align-items: baseline;">
+							<label for="exampleInputPF Code No" class="col-form-label">PF Code No</label>
+							<div style="margin-left: 63px;min-width: 200px;">
+								<input type="text" class="form-control" id="exampleInputPF Code No"
+									name="PF_Code_No" value="<%= cont_data.PF_Code_No %>" style="max-height: 20px;">
+							</div>
+						</div>
+
+						<div class="form-group row" style="max-height: 30px;align-items: baseline;">
+							<label for="exampleInputContractor PAN No" class="col-form-label">Contractor
+								PAN No</label>
+							<div style="margin-left: 17px;min-width: 200px;">
+								<input type="text" class="form-control" id="exampleInputContractor PAN No"
+									style="max-height: 20px;" name="Contractor_PAN_No"
+									value="<%= cont_data.Contractor_PAN_No %>">
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 30px;align-items: baseline;">
+							<label for="exampleInputContractor LIN" class="col-form-label">Contractor
+								LIN</label>
+							<div style="margin-left: 45px;min-width: 200px;">
+								<input type="text" class="form-control" id="exampleInputContractor LIN"
+									name="Contractor_LIN" value="<%= cont_data.Contractor_LIN %>"
+									style="max-height: 20px;">
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 30px;align-items: baseline;">
+							<label for="exampleInputMobile_No" class="col-form-label">Mobile No</label>
+							<div style="margin-left: 72px;min-width: 200px;">
+								<input type="text" class="form-control" id="exampleInputMobile_No" name="Mobile_No"
+									value="<%= cont_data.Mobile_No %>" style="max-height: 20px;">
+							</div>
+						</div>
+						<div class="form-group row" style="max-height: 40px;align-items: baseline;">
+							<label class="col-form-label">Status</label>
+
+							<div style="margin-left: 100px;min-width: 100px;">
+								<div class="form-check">
+									<label class="form-check-label">
+										<input type="hidden" value="<%= cont_data.status %>" id="STATUS" />
+										<input type="radio" class="form-check-input" name="status" id="active"
+											value="1">
+										Active </label>
+								</div>
+							</div>
+							<div style="margin-left: -20px;min-width: 100px;">
+								<div class="form-check">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" name="status" id="inactive"
+											value="2"> In Active
+									</label>
+								</div>
+							</div>
+						</div>
+						<!--<div class="form-group row">
+							<label for="Name_of_person" class="col-sm-3 col-form-label">Name of person</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="Name_of_person" name="Name_of_person"
+								  value="<%= cont_data.Name_of_person %>">
+							</div>
+						</div>-->
+						<div class="form-group row" style="max-height: 60px;align-items: baseline;">
+							<label style="max-width: 100px;" for="Name_of_person" class="col-form-label">Mail id who
+								is looking over
+								compliance</label>
+							<div style="margin-left: 38px;min-width: 200px;">
+								<input type="text" class="form-control" id="compliance_Mail_id"
+									style="max-height: 40px;" name="compliance_Mail_id"
+									value="<%= cont_data.compliance_Mail_id %>">
+							</div>
+						</div>
+						<!--<div class="form-group row">
+							<label for="Name_of_person" class="col-sm-3 col-form-label">HR
+								Department </label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="hr_department" name="hr_department"
+								value="<%= cont_data.hr_department %>">
+							</div>
+						</div>-->
+						<div class="form-group row" style="max-height: 60px;align-items: baseline;">
+							<label for="Name_of_person" class="col-form-label">User Name</label>
+							<div style="margin-left: 70px;min-width: 200px;">
+								<input type="text" class="form-control" id="username" name="username"
+									value="<%= cont_data.user_name %>" style="max-height: 40px;">
+							</div>
+						</div>
+
+						<div class="form-group row" style="max-height: 60px;align-items: baseline;">
+							<label for="Name_of_person" class="col-form-label">Password</label>
+							<div style="margin-left: 79px;min-width: 200px;">
+								<input type="text" class="form-control" id="Password" name="Password"
+									value="<%= cont_data.password %>" style="max-height: 40px;">
+							</div>
+						</div>
+					</div>
+					<% }) %>
+
+						<center>
+							<button type="submit" class="btn btn-primary">Update</button>
+						</center>
+				</form>
+		</div>
+	</div>
+<!-- Footer Page-->
+<%- include('../nav/footer') %>
+
+<!--Radio Button Ckecked-->
+<script>
+	//Status 
+	var status = document.getElementById("STATUS").value;
+	if (status == '1') {
+		document.getElementById("active").checked = true;
+	}else if(status == '2'){
+		document.getElementById("inactive").checked = true;
+	}else if(status == '' || status == 'NULL'){
+		document.getElementById("active").checked = false;
+		document.getElementById("inactive").checked = false;
+	}
+</script>

@@ -1,0 +1,245 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+		<style>
+			table {
+				border: 1px solid;
+				margin: 0px 15px 30px 15px;
+				font-size: 10px;
+			}
+
+			table th,
+			td {
+				border: 1px solid;
+			}
+		</style>
+		<div class="content-wrapper">
+			<div class="col-lg-12 grid-margin stretch-card" id="table">
+				<div class="card overflow-x overflow-y-hidden">
+
+					<div class="card-body">
+						<h4 class="card-title">Form D Attendance Register</h4>
+
+						<form class="form-inline" method="POST" action="/formDAttendance/formDAttendance">
+							<input list="cont_code" class="form-control" name="ccode" id="ccode">
+							<datalist id="cont_code">
+								<% form_d_data.forEach(function(formddata){ %>
+									<option value="<%= formddata.CODE_NAME %>">
+									</option>
+									<%})%>
+							</datalist>
+							&nbsp;
+							<select class="form-control mb-2 mr-sm-2 mr-10" name="month_data" id="month_data"
+								placeholder="Select Month">
+								<option value="">Select Month</option>
+								<% MonthDetails.forEach(function(Monthlist) { %>
+									<option value="<%= Monthlist.MONTH+'-'+Monthlist.YEAR%>">
+										<%= Monthlist.MONTH+'-'+Monthlist.YEAR %>
+									</option>
+									<% }) %>
+							</select>
+							<input type="button" class="btn btn-gradient-primary mb-2 mr-10" value="Go"
+								onClick="get_from_d_attendance()">
+						</form>
+					</div>
+
+					<div id="form_d_table" class="dis-none">
+					<div class="col-sm-12 text-right">
+						<div class="w3-show-inline-block">
+							<div class="w3-bar">
+
+								<button type="button" class="btn btn-gradient-info btn-icon-text"
+									onclick="window.print();"> Print <i class="mdi mdi-printer btn-icon-append"></i>
+								</button>
+
+
+								<button type="button" class="btn btn-gradient-info btn-icon-text"
+									onclick="window.excel();"> Excel <i class="mdi mdi-excel btn-icon-append"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="card overflow-x overflow-y-hidden">
+						<br />
+						<center>
+							<h5>FORM D</br>Attendance Register</h5>
+						</center>
+						<table >
+								<tr>
+									<th colspan="3">Name and address of Contractor :</th>
+									<th colspan="13" id="conname">
+										<!--Append Data-->
+									</th>
+									<th colspan="5">Name and address of Principal employer :</th>
+									<th colspan="13">
+										<p class="fs-10 f-w-500">CHENNAI PETROLEUM CORPORATION LIMITED
+											MANALI, CHENNAI-600068
+										</p>
+									</th>
+									<th colspan="4">Name of Owner <br /> LIN</th>
+									<th colspan="3"></th>
+								</tr>
+								<tr id="date_period">
+									
+								</tr>
+								<tr>
+									<th rowspan="2">S.No</th>
+									<th rowspan="2">Sl. No. in <br />Employee Register</th>
+									<th rowspan="2">Name</th>
+
+									<th rowspan="2">Relay # or Set Work</th>
+									<th rowspan="2">Place of Work*</th>
+									<th rowspan="2">IN OUT</th>
+
+									<th colspan="31" class="t-a-c">DATES</th>
+
+									<th rowspan="2">Summary <br />No.of Days</th>
+									<th rowspan="2">Remarks <br />No.of Hours</th>
+									<th rowspan="2" >**Signature of <br />Register Keeper</th>
+								</tr>
+								<tr id="dayscount">
+
+								</tr>
+								<tr class="t-a-c">
+									<td>1</td>
+									<td>1(a)</td>
+									<td>2</td>
+									<td>3</td>
+									<td>4</td>
+									<td>5,6</td>
+									<td colspan="31" class="t-a-c">7</td>
+									<td>8</td>
+									<td>9</td>
+									<td colspan="2">10</td>
+								</tr>
+								<tbody  id="formddata">
+
+								</tbody>
+							
+						</table>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Footer Page-->
+		<%- include('../nav/footer') %>
+
+			<script>
+				function get_from_d_attendance() {
+
+
+					document.getElementById('form_d_table').style.display = 'block';
+					var ccode = document.getElementById("ccode").value;
+					var month = document.getElementById("month_data").value;
+					$('#conname').empty();
+					$('#conname').empty();
+					$('#conname').append(`<p class="fs-10 f-w-500">${ccode}</p>`)
+					//alert(ccode);
+					//alert(month)
+					$.ajax({
+						method: 'POST',
+						url: '/pay_roll/form_d_attendance_data',
+						data: { ccode: ccode, month: month },
+						success: function (data) {
+							$('#formddata').empty();
+							$('#dayscount').empty();
+							//<---- Days Append ------>
+							//console.log(data.days);
+							for (var i = 1; i <= data.days; i++) {
+								$('#dayscount').append
+								(`
+									<th id="days">${i}</th>
+								`);
+							}//console.log(i);
+
+
+							//console.log(data.PayrollData);
+							var flags = [], output = [], i;
+							for( i=0; i<data.PayrollData.length; i++) {
+								if( flags[data.PayrollData[i].EMPCODE]) continue;
+								flags[data.PayrollData[i].EMPCODE] = true;
+								output.push(data.PayrollData[i]);
+							}
+								//Distinct employee code  (output) array  2 count of employee
+
+
+
+							//console.log(output.length);
+							fArr = []
+							pArr = [];
+							for( h=0;h<output.length;h++){
+								console.log("code"+output[h].EMPCODE);
+								fArr = [];
+								for(k=0;k<data.PayrollData.length;k++){
+									
+									if(output[h].EMPCODE == data.PayrollData[k].EMPCODE){
+										var shiftDate = data.PayrollData[k].Shift_date;
+										//console.log(shiftDate);
+										fArr.push(shiftDate);
+										//console.log(fArr);
+									}
+								}
+								//console.log(fArr);
+
+								// seven times check and stored in array
+								
+								for(a=0;a<fArr.length;a++){
+									//console.log(fArr[0]);
+									var date = fArr[a].split('-');
+									var day = date[2].split('T');
+									var fday = day[0];
+									//console.log(fday);
+									for (var m = 1; m <= data.days; m++) {
+										if(fday == m ){
+											//console.log("p");
+											ap = 'P' 
+											pArr.push(ap);
+										}else {
+											//console.log("a")
+											ap = 'A'
+											pArr.push(ap);
+										}
+									}  
+								} 
+								//console.log(pArr);
+								/* $(function () {
+									var tableTag = $(`<tr>
+									<td  class="t-a-c">${h+1}</td>
+									<td></td>
+									<td></td>
+									<td>${output[h].Employee_Name}</td>
+									<td></td>
+									<td></td>`);
+
+									$('#formddata').append( tableTag );
+										//console.log(pArr.length);
+									for ( j = 0; j < pArr.length; j++) {
+										//console.log(pArr[0])
+										$( tableTag ).append(`<td >${pArr[j]}</td>`);
+
+									}
+									$( tableTag ).append(`<td class="t-a-c">hello</td><td></td><td></td><tr>`);
+									$('#formddata').append( tableTag );
+								}) */
+							}
+							/* 
+						  	for(var k=0;k<data.PayrollData.length;k++){
+								//console.log(output[k].Shift_date);
+								var fempcode = data.PayrollData[k].EMPCODE;
+								if(dempcode == fempcode){
+								var date = data.PayrollData[k].Shift_date.split('-');
+									var day = date[2].split('T');
+									var fday = day[0];
+									//console.log(fday);
+								}else {
+									//console.log('nocode')
+								}
+							}   */
+						
+						}
+					});
+				}
+			</script>

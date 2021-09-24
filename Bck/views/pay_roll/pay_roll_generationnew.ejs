@@ -1,0 +1,299 @@
+<%- include ('../nav/header') %>
+	<!-- Sidebar Page -->
+	<%- include('../nav/sidebar') %>
+    <style>
+        .lds-hourglass {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+        }
+        .lds-hourglass:after {
+        content: " ";
+        display: block;
+        border-radius: 50%;
+        width: 0;
+        height: 0;
+        margin: 8px;
+        box-sizing: border-box;
+        border: 32px solid #fff;
+        border-color: #fff transparent #fff transparent;
+        animation: lds-hourglass 1.2s infinite;
+        }
+        @keyframes lds-hourglass {
+        0% {
+            transform: rotate(0);
+            animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        }
+        50% {
+            transform: rotate(900deg);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        100% {
+            transform: rotate(1800deg);
+        }
+        }
+
+    </style>
+    <div id="overlay">
+        <!--payroll Generate--->
+		<div class="col-lg-12 grid-margin stretch-card" id="table">
+			<div class="card overflow-x overflow-y-hidden">
+				<div class="card-body">
+                    <h4 >Payroll Generation</h4><br/>
+					<form class="form-inline" align="center" method="POST" action="/payroll/generate" onsubmit="showAlert()">
+                        <div class="row w-100">
+                            <div class="col-sm-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <h2 class="card-title">Month</h2>
+                                    </div>                            
+                                    <div class="col-sm-4">
+                                        <% MonthlList.forEach(function(MonthData)  {   %>
+                                        <%  if(MonthData.month=='1'){ 
+                                                month="January"; 
+                                            }else if(MonthData.month=='2'){
+                                                month="February"; 
+                                            }else if(MonthData.month=='3'){
+                                                month ="March";
+                                            }else if(MonthData.month=='4'){
+                                                month = "April";
+                                            }else if(MonthData.month=='5'){
+                                                month ="May";
+                                            }else if(MonthData.month=='6'){
+                                                month ="June";
+                                            }else if(MonthData.month=='7'){
+                                                month ="July";
+                                            }else if(MonthData.month=='8'){
+                                                month ="August";
+                                            }else if(MonthData.month=='9'){
+                                                month ="September";
+                                            }else if(MonthData.month=='10'){
+                                                month ="October";
+                                            }else if(MonthData.month=='11'){
+                                                month ="November";
+                                            }else if(MonthData.month=='12'){
+                                                month ="December";
+                                            }
+                                        %>
+                                        <input type="hidden" value="<%= MonthData.month+'-'+MonthData.year %>" name="id" id="payroll_id">
+                                        <%= month+'-'+MonthData.year %>  
+                                                                      
+                                    </div>
+                                    <% if(MonthData.flag!=='2'){ %> 
+                                        
+                                    <div class="col-sm-2">                                
+                                        <input type="button"  class="btn btn-gradient-primary mb-2" value="View" id="Generate" onclick="payroll_generate()">
+                                    </div>
+                                    <% }else{ %> 
+                                     <div class="col-sm-2">                                
+                                        <input type="button"  class="btn btn-danger mb-2" value="Pay Roll Delete" onclick="payRollDelete()">
+                                    </div>
+                                    <%  } %> 
+                                    <%  }) %>  
+                                </div>
+                    </div>
+                    <!--<div class="col-sm-4">
+                        <div class="col-sm-12">   
+                            &nbsp;&nbsp;&nbsp;&nbsp; 
+                            <input type="button"  class="btn btn-sm btn-danger f-r h-2p5_rem mb-2" value="Pay Roll Delete"  onclick="payRollDelete()">
+                        </div>
+                    </div> -->
+                    </div>
+                    </form>
+				</div>
+			</div>
+		</div>
+        <!--Loading Images-->
+        <div class="preload loading_position">
+            <img src="assets/loading/Hourglass.gif">
+        </div>
+        <!--payroll list--->
+        <div id="hide_details" class="dis-none">
+        <div class="col-lg-12 grid-margin stretch-card" id="table">
+			<div class="card overflow-x overflow-y-hidden">
+				<div class="card-body">
+					<h4 class="card-title">Payroll Insert</h4>
+                    <div class="form-group row">
+                        <div class="col-sm-6"> 
+                            <!--Search Filter-->
+                            <input type="search" placeholder="Search Here" class="form-control search-input" data-table="customers-list"/>
+                        </div>
+                        <div class="col-sm-3"> 
+                        <a href="#" id="test" onclick="fnExcelReport();"
+								class="btn btn-success btn-sm h-2p5_rem p-12"><span
+								class="glyphicon glyphicon-download-alt"></span>Export to Excel</a>
+                        </div>
+                        <div class="col-sm-3">                              
+                            <input type="button"  class="btn btn-gradient-primary mb-2" value="Payroll Generate" onclick="payroll_insert()">
+                        </div>
+                    </div>
+					<table class="table table-striped mt32 customers-list" id="payroll_list">
+						<thead>
+							<tr>
+								
+                                <th>IDCARD NO</th>
+								<th>EMPLOYEE NAME</th>
+								<th>PO No</th>
+								<th>NO OF DAYS</th>	
+							</tr>
+						</thead>
+						<tbody class="payroll_list_data">
+                        </tbody>
+					</table>
+					<br/>
+				</div>
+			</div>
+		</div>
+        </div>
+    </div>
+		<!-- Footer Page-->
+        <%- include('../nav/footer') %>
+
+       	<!--Excel Download-->
+		<script>
+			function fnExcelReport() {
+				var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+				tab_text = tab_text + '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+				tab_text = tab_text + '<x:Name>Test Sheet</x:Name>';
+				tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+				tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+				tab_text = tab_text + "<table border='1px'>";
+
+				// Remove Dynamic hidden controls.
+				var list = $('#payroll_list').find('.ng-hide');
+				for (var i = list.length - 1; 0 <= i; i--) {
+					if (list[i] && list[i].parentElement) {
+						list[i].parentElement.removeChild(list[i]);
+					}
+				}
+
+				// Getting dynamic controll values.
+				var list = $('#payroll_list').find('.dvItems');
+				var values = "";
+				for (var i = 0; i <= list.length - 1; i++) {
+					if (list[i] && list[i].parentElement) {
+						values += $(list[i]).text().trim();
+					}
+				}
+				for (var i = 0; i <= list.length - 1; i++) {
+					if (i == 0) {
+						// Replace last comma and assign value.
+						$($('#payroll_list').find('.dvItems')[i]).text(values.replace(/,\s*$/, ""));
+					}
+					else {
+						$($('#payroll_list').find('.dvItems')[i]).text("");
+					}
+				}
+				tab_text = tab_text + $('#payroll_list').html();
+				tab_text = tab_text + '</table></body></html>';
+				var data_type = 'data:application/vnd.ms-excel';
+				var ua = window.navigator.userAgent;
+				var msie = ua.indexOf("MSIE ");
+
+				if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+					if (window.navigator.msSaveBlob) {
+						var blob = new Blob([tab_text], {
+							type: "application/vnd.ms-excel;charset=utf-8;"
+						});
+						navigator.msSaveBlob(blob, 'Coupon.xls');
+					}
+				} else {
+					window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+				}
+			}
+		</script>
+    
+
+        <!--Initial Loading-->
+        <script type="text/javascript">
+            window.onload = function () {
+                $(".preload").hide();
+                document.getElementById("overlay").style.display = "block";
+            };
+        </script>
+        <!--Show Alert-->
+        <script>
+            function showAlert() {
+                alert("Payroll Generated Successfully");
+                Response.redirect('/payroll/pay_roll_generationnew');
+            }
+        </script>
+
+        <!--payroll_list attendance data-->
+        <script>
+            function payroll_generate() {
+                $(".preload").show();
+                //var ccode = document.getElementById("contract_code_data").value;
+                var month = document.getElementById("payroll_id").value;
+                //alert(ccode);
+                //alert(month)
+                document.getElementById("Generate").style.display = "block";
+
+                $.ajax({
+                    method: 'POST',
+                    url: '/report/payroll_list',
+                    data: { month: month },
+                    dataType: 'json',
+                    success: function (data) {
+                        $(".preload").hide();
+                        document.getElementById("hide_details").style.display = "block";
+                        //console.log(data)
+                        $('.payroll_list_data').empty();
+                        var n = 1;
+                        $.each(data, function (index, attendancedetails) {
+                            //console.log(attendancedetails.CCODE);
+                            $('.payroll_list_data').append('<tr><td>'+attendancedetails.IDCARDNO+'</td><td>'+attendancedetails.Employee_Name+'</td><td>'+attendancedetails.PO_NUM+'</td><td>'+attendancedetails.no_of_days+'</td></tr>');
+                        });
+                    }
+                });
+            }
+        </script>
+
+        <!--insert payroll-->
+        <script>
+            function payroll_insert()
+            {
+                //$('#payroll_view').html('<br><div style="text-align: center;"><img src="/CLMS/images/images/pageLoader.gif"></div>');
+                var month = document.getElementById("payroll_id").value;
+                $.ajax({
+                type: 'POST',
+                url: '/report/payroll_insert',
+                data: { month: month },
+                success: function(data)
+                {
+                    //console.log(data)
+                    alert("Payroll Generated Successfully");
+                    $('#payroll_view').html(data);
+                }
+                });
+            }
+        </script>
+
+        <!--Payroll Delete-->
+        <script>
+            function payRollDelete(month) {
+                var date = document.getElementById('payroll_id').value;
+                //alert(date);
+                var sdate = date.split('-');
+                var month = sdate[0];
+                var year = sdate[1];
+                //alert(month);
+                //alert(year);
+                 if (confirm("Are you sure you want to delete payroll")) {
+                // Delete Employee
+                $.ajax({
+                    type: 'POST',
+                    data: { "month" : month,"year" : year},
+                    url: '/payroll/delete',
+                    success: function(data){
+                        //console.log(data);
+                        alert(data+"-->Deleted Successfully");
+                        //location.reload();
+                    }
+                });
+                } else {
+                // Do nothing
+                } 
+            }
+        </script>
