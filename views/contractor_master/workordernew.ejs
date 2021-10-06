@@ -89,7 +89,9 @@
                       <label class="badge badge-gradient-info">
                         <%= moment(work_order.Work_order_date).format('DD-MM-YYYY');   %>
                       </label>
-                    <% }%>
+                    <% 
+                    }                    
+                    %>
                     </td>
                     <td>
                       <%  if (work_order.Wo_to_date === null){ %>
@@ -298,7 +300,8 @@
           var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
           var textRange; var j = 0;
           tab = document.getElementById(tableid);//.getElementsByTagName('table'); // id of table
-          if (tab == null) {
+          if (tab == null) 
+          {
             return false;
           }
           if (tab.rows.length == 0) {
